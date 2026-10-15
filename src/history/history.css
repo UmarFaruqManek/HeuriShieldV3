@@ -1,0 +1,138 @@
+/* Gaya riwayat analisis: filter, daftar URL, dan status keputusan. Aturan tampilan tidak mengubah keputusan klasifikasi. */
+.shell {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  max-width: 1180px;
+  margin: 0 auto 14px;
+  padding: 18px;
+  border: 1px solid var(--hs-line);
+  border-radius: var(--hs-r-lg);
+  background: var(--hs-surface);
+  box-shadow: var(--hs-shadow);
+}
+
+.title-block {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.product-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #bad2dc;
+  border-radius: var(--hs-r-lg);
+  background: var(--hs-primary-soft);
+  color: var(--hs-primary);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.page-head h1 {
+  margin-top: 3px;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.page-head p {
+  margin-top: 6px;
+  color: var(--hs-ink-muted);
+  font-size: 14px;
+}
+
+.head-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 220px;
+  gap: 10px;
+  max-width: 1180px;
+  margin: 0 auto 14px;
+  padding: 12px;
+  border: 1px solid var(--hs-line);
+  border-radius: var(--hs-r-lg);
+  background: var(--hs-surface);
+}
+
+.table-panel {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.table-scroll {
+  max-height: calc(100vh - 210px);
+}
+
+.history-table {
+  min-width: 980px;
+}
+
+.url-cell,
+.reason-cell {
+  display: block;
+  max-width: 360px;
+  overflow-wrap: anywhere;
+}
+
+.domain-cell,
+.id-cell,
+.score-cell,
+.time-cell {
+  display: block;
+  white-space: nowrap;
+}
+
+.reason-cell {
+  color: var(--hs-ink-muted);
+  line-height: 1.4;
+}
+
+.score-cell {
+  font-variant-numeric: tabular-nums;
+  font-weight: 750;
+}
+
+.hs-pill[data-verdict="SAFE"],
+.hs-pill[data-verdict="WARNING"],
+.hs-pill[data-verdict="SUSPICIOUS"],
+.hs-pill[data-verdict="DANGEROUS"],
+.hs-pill[data-verdict="LIMITED"] {
+  justify-content: center;
+}
+
+@media (max-width: 720px) {
+  .shell {
+    padding: 14px;
+  }
+
+  .page-head {
+    display: grid;
+  }
+
+  .head-actions {
+    justify-content: stretch;
+  }
+
+  .head-actions .hs-btn {
+    flex: 1;
+  }
+
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+}

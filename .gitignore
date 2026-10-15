@@ -1,0 +1,19 @@
+# Repository publik hanya berisi paket extension dan dokumentasi.
+/*
+!/.gitignore
+!/README.md
+!/PRIVACY.md
+!/manifest.json
+!/src/
+!/assets/
+
+# Jangan commit data pengujian, file hasil pencatatan, secret, atau cache.
+**/node_modules/
+**/__pycache__/
+**/.env
+**/.env.*
+**/*.log
+**/HeuriShield_Dataset*.json
+**/evaluationDataset*.json
+**/.DS_Store
+**/Thumbs.db

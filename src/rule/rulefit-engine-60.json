@@ -1,0 +1,4301 @@
+{
+  "model_family": "RuleFit",
+  "model_name": "RuleFitCompact60V2",
+  "runtime_schema": "heurishield_rulefit_60_v2",
+  "feature_count": 60,
+  "features": [
+    "original_domain_age_days",
+    "final_domain_age_days",
+    "brand_top_candidate_search_score",
+    "brand_top_candidate_quality_score",
+    "brand_candidate_original_domain_similarity",
+    "original_path_length",
+    "brand_candidate_final_domain_similarity",
+    "resource_count",
+    "anchor_count",
+    "script_count",
+    "brand_candidate_matches_final_domain",
+    "brand_candidate_matches_original_domain",
+    "internal_anchor_count",
+    "external_anchor_count",
+    "original_url_token_count",
+    "original_special_char_ratio",
+    "final_subdomain_count",
+    "external_anchor_ratio",
+    "original_subdomain_count",
+    "final_dot_count",
+    "dot_count",
+    "hostname_length",
+    "original_hostname_length",
+    "final_hostname_length",
+    "final_url_entropy",
+    "visible_text_length",
+    "original_query_length",
+    "brand_candidate_in_original_subdomain",
+    "original_uses_shared_hosting_domain",
+    "original_skip_domain_age_lookup",
+    "dom_node_count",
+    "html_length",
+    "final_path_length",
+    "original_special_char_count",
+    "final_url_token_count",
+    "external_script_ratio",
+    "original_url_entropy",
+    "external_resource_count",
+    "external_resource_ratio",
+    "inline_script_count",
+    "external_script_count",
+    "unique_external_domain_count",
+    "image_count",
+    "external_image_ratio",
+    "original_url_length",
+    "raw_redirect_count",
+    "final_url_length",
+    "brand_candidate_found",
+    "brand_lookup_status",
+    "brand_candidate_in_original_path",
+    "brand_candidate_in_original_query",
+    "credential_form_count",
+    "input_count",
+    "email_input_count",
+    "password_input_count",
+    "otp_mfa_field_count",
+    "form_action_same_domain_count",
+    "form_action_https_count",
+    "sensitive_word_count",
+    "original_embedded_domain_count"
+  ],
+  "threshold": 0.8,
+  "threshold_metrics": {
+    "threshold": 0.8,
+    "accuracy": 0.9602363099295614,
+    "balanced_accuracy": 0.9608335405718854,
+    "precision_phishing": 0.9919105400904116,
+    "recall_phishing": 0.9295429208472686,
+    "f1_phishing": 0.9597145488029466,
+    "roc_auc": 0.9915539121086453,
+    "pr_auc": 0.9934773089618378,
+    "tn": 4283,
+    "fp": 34,
+    "fn": 316,
+    "tp": 4169,
+    "fpr": 0.007875839703497799,
+    "fnr": 0.07045707915273133,
+    "samples": 8802,
+    "selection_rule": "fixed threshold 0.80 requested for final live-retrain experiment"
+  },
+  "intercept": -1.0,
+  "imputer_strategy": "median",
+  "imputer_median": {
+    "original_domain_age_days": 5368.0,
+    "final_domain_age_days": 5368.0,
+    "brand_top_candidate_search_score": 72.453835,
+    "brand_top_candidate_quality_score": 0.729692374730786,
+    "brand_candidate_original_domain_similarity": 0.375,
+    "original_path_length": 1.0,
+    "brand_candidate_final_domain_similarity": 0.375,
+    "resource_count": 22.5,
+    "anchor_count": 29.0,
+    "script_count": 10.0,
+    "brand_candidate_matches_final_domain": 0.0,
+    "brand_candidate_matches_original_domain": 0.0,
+    "internal_anchor_count": 20.0,
+    "external_anchor_count": 1.0,
+    "original_url_token_count": 5.0,
+    "original_special_char_ratio": 0.1851851851851852,
+    "final_subdomain_count": 1.0,
+    "external_anchor_ratio": 0.00615469116962665,
+    "original_subdomain_count": 0.0,
+    "final_dot_count": 2.0,
+    "dot_count": 2.0,
+    "hostname_length": 17.0,
+    "original_hostname_length": 16.0,
+    "final_hostname_length": 17.0,
+    "final_url_entropy": 4.039148671903071,
+    "visible_text_length": 2907.5,
+    "original_query_length": 0.0,
+    "brand_candidate_in_original_subdomain": 0.0,
+    "original_uses_shared_hosting_domain": 0.0,
+    "original_skip_domain_age_lookup": 0.0,
+    "dom_node_count": 319.0,
+    "html_length": 76492.5,
+    "final_path_length": 1.0,
+    "original_special_char_count": 6.0,
+    "final_url_token_count": 5.0,
+    "external_script_ratio": 0.1428571428571428,
+    "original_url_entropy": 4.044782668929139,
+    "external_resource_count": 3.0,
+    "external_resource_ratio": 0.1212121212121212,
+    "inline_script_count": 5.0,
+    "external_script_count": 2.0,
+    "unique_external_domain_count": 2.0,
+    "image_count": 3.0,
+    "external_image_ratio": 0.0,
+    "original_url_length": 32.0,
+    "raw_redirect_count": 1.0,
+    "final_url_length": 33.0,
+    "brand_candidate_found": 1.0,
+    "brand_lookup_status": 1.0,
+    "brand_candidate_in_original_path": 0.0,
+    "brand_candidate_in_original_query": 0.0,
+    "credential_form_count": 0.0,
+    "input_count": 1.0,
+    "email_input_count": 0.0,
+    "password_input_count": 0.0,
+    "otp_mfa_field_count": 0.0,
+    "form_action_same_domain_count": 0.0,
+    "form_action_https_count": 0.0,
+    "sensitive_word_count": 0.0,
+    "original_embedded_domain_count": 0.0
+  },
+  "rules": [
+    {
+      "id": "R001",
+      "expression": "X10 > 0.5 and X13 > 0.5 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "brand_candidate_matches_final_domain",
+          "feature_index": 10,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -1.6154293468414918,
+      "direction": "legitimate",
+      "support": 0.006816632583503749,
+      "importance": 0.0664595864690737
+    },
+    {
+      "id": "R002",
+      "expression": "X11 > 0.5 and X17 > 0.00138122 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "brand_candidate_matches_original_domain",
+          "feature_index": 11,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "external_anchor_ratio",
+          "feature_index": 17,
+          "operator": ">",
+          "threshold": 0.00138122
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -1.4514143913047965,
+      "direction": "legitimate",
+      "support": 0.006816632583503749,
+      "importance": 0.05971192762467743
+    },
+    {
+      "id": "R003",
+      "expression": "X0 <= 5430.5 and X25 <= 3.0 and X5 > 0.5 and X7 <= 17.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5430.5
+        },
+        {
+          "feature": "visible_text_length",
+          "feature_index": 25,
+          "operator": "<=",
+          "threshold": 3.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 17.5
+        }
+      ],
+      "coefficient": -2.2053572515371473,
+      "direction": "legitimate",
+      "support": 0.0062485798682117705,
+      "importance": 0.08689174121824145
+    },
+    {
+      "id": "R004",
+      "expression": "X0 > 10870.0 and X12 <= 10.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 10870.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 10.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.7958825566327404,
+      "direction": "legitimate",
+      "support": 0.024312656214496704,
+      "importance": 0.06129012837951528
+    },
+    {
+      "id": "R005",
+      "expression": "X36 <= 3.76495 and X5 > 0.5 and X7 <= 9.5",
+      "conditions": [
+        {
+          "feature": "original_url_entropy",
+          "feature_index": 36,
+          "operator": "<=",
+          "threshold": 3.76495
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 9.5
+        }
+      ],
+      "coefficient": -2.887939592052742,
+      "direction": "legitimate",
+      "support": 0.01954101340604408,
+      "importance": 0.19986942641844258
+    },
+    {
+      "id": "R006",
+      "expression": "X12 > 1.5 and X29 <= 0.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 1.5
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.14675860619227504,
+      "direction": "legitimate",
+      "support": 0.43058395819132017,
+      "importance": 0.03633434660439032
+    },
+    {
+      "id": "R007",
+      "expression": "X1 <= 10683.5 and X22 <= 11.5 and X3 > 0.739261 and X8 <= 36.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 10683.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 11.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.739261
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 36.5
+        }
+      ],
+      "coefficient": -0.09935692951250068,
+      "direction": "legitimate",
+      "support": 0.021586003181095204,
+      "importance": 0.007219641171612873
+    },
+    {
+      "id": "R008",
+      "expression": "X22 <= 19.5 and X25 > 1289.0 and X3 > 0.217949 and X38 > 0.366667 and X40 <= 85.0 and X5 > 0.5 and X7 <= 10.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 19.5
+        },
+        {
+          "feature": "visible_text_length",
+          "feature_index": 25,
+          "operator": ">",
+          "threshold": 1289.0
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.217949
+        },
+        {
+          "feature": "external_resource_ratio",
+          "feature_index": 38,
+          "operator": ">",
+          "threshold": 0.366667
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": "<=",
+          "threshold": 85.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 10.5
+        }
+      ],
+      "coefficient": -1.9545910057528386,
+      "direction": "legitimate",
+      "support": 0.003749147920927062,
+      "importance": 0.059727803126946824
+    },
+    {
+      "id": "R009",
+      "expression": "X5 > 0.5 and X8 > 35.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": ">",
+          "threshold": 35.5
+        }
+      ],
+      "coefficient": 0.8721726990356292,
+      "direction": "phishing",
+      "support": 0.358782094978414,
+      "importance": 0.2091658085157245
+    },
+    {
+      "id": "R010",
+      "expression": "X5 > 0.5 and X8 > 13.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": ">",
+          "threshold": 13.5
+        }
+      ],
+      "coefficient": 1.5299809461756069,
+      "direction": "phishing",
+      "support": 0.4107021131561009,
+      "importance": 0.3763456817433063
+    },
+    {
+      "id": "R011",
+      "expression": "X27 <= 0.5 and X5 > 0.5 and X7 > 17.5",
+      "conditions": [
+        {
+          "feature": "brand_candidate_in_original_subdomain",
+          "feature_index": 27,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 17.5
+        }
+      ],
+      "coefficient": -1.1369003049943385,
+      "direction": "legitimate",
+      "support": 0.407861849579641,
+      "importance": 0.27935757423957824
+    },
+    {
+      "id": "R012",
+      "expression": "X12 > 8.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 8.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.24337488492855539,
+      "direction": "phishing",
+      "support": 0.3993410588502613,
+      "importance": 0.05959800457263989
+    },
+    {
+      "id": "R013",
+      "expression": "X12 <= 6.5 and X23 <= 18.5 and X5 > 0.5 and X6 > 0.177866",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 6.5
+        },
+        {
+          "feature": "final_hostname_length",
+          "feature_index": 23,
+          "operator": "<=",
+          "threshold": 18.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_candidate_final_domain_similarity",
+          "feature_index": 6,
+          "operator": ">",
+          "threshold": 0.177866
+        }
+      ],
+      "coefficient": -0.5112168558511953,
+      "direction": "legitimate",
+      "support": 0.07736877982276755,
+      "importance": 0.06829235925104907
+    },
+    {
+      "id": "R014",
+      "expression": "X1 > 9765.5 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 9765.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.7470802442789005,
+      "direction": "legitimate",
+      "support": 0.008748011815496478,
+      "importance": 0.03478435643402947
+    },
+    {
+      "id": "R015",
+      "expression": "X2 <= 20.95503 and X44 <= 24.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": "<=",
+          "threshold": 20.95503
+        },
+        {
+          "feature": "original_url_length",
+          "feature_index": 44,
+          "operator": "<=",
+          "threshold": 24.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -3.363644110939288,
+      "direction": "legitimate",
+      "support": 0.0034083162917518746,
+      "importance": 0.09801862775559485
+    },
+    {
+      "id": "R016",
+      "expression": "X5 > 0.5 and X8 > 7.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": ">",
+          "threshold": 7.5
+        }
+      ],
+      "coefficient": -0.32254310152984655,
+      "direction": "legitimate",
+      "support": 0.43342422176778006,
+      "importance": 0.07991776928981291
+    },
+    {
+      "id": "R017",
+      "expression": "X1 <= 4436.0 and X12 > 6.5 and X2 <= 63.78624 and X22 > 19.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 4436.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 6.5
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": "<=",
+          "threshold": 63.78624
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 19.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.7634400974024506,
+      "direction": "legitimate",
+      "support": 0.0021586003181095206,
+      "importance": 0.01771584403331816
+    },
+    {
+      "id": "R018",
+      "expression": "X0 <= 5929.0 and X12 <= 56.5 and X15 <= 0.236695 and X33 > 16.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5929.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 56.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.236695
+        },
+        {
+          "feature": "original_special_char_count",
+          "feature_index": 33,
+          "operator": ">",
+          "threshold": 16.5
+        }
+      ],
+      "coefficient": -1.7567030065024585,
+      "direction": "legitimate",
+      "support": 0.011588275391956374,
+      "importance": 0.09400407858204042
+    },
+    {
+      "id": "R019",
+      "expression": "X10 > 0.5 and X28 <= 0.5 and X3 > 0.350563 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_candidate_matches_final_domain",
+          "feature_index": 10,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.350563
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -1.7896570378184653,
+      "direction": "legitimate",
+      "support": 0.2501704158145876,
+      "importance": 0.38756011653700684
+    },
+    {
+      "id": "R020",
+      "expression": "X5 > 0.5 and X7 > 12.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 12.5
+        }
+      ],
+      "coefficient": -0.6078841711881591,
+      "direction": "legitimate",
+      "support": 0.4430811179277437,
+      "importance": 0.15098313262041257
+    },
+    {
+      "id": "R021",
+      "expression": "X11 > 0.5 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "brand_candidate_matches_original_domain",
+          "feature_index": 11,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -2.6969768225348343,
+      "direction": "legitimate",
+      "support": 0.011361054305839582,
+      "importance": 0.14291420369051427
+    },
+    {
+      "id": "R022",
+      "expression": "X30 > 195.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "dom_node_count",
+          "feature_index": 30,
+          "operator": ">",
+          "threshold": 195.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.449974546155356,
+      "direction": "legitimate",
+      "support": 0.4161554192229039,
+      "importance": 0.11090071748801043
+    },
+    {
+      "id": "R023",
+      "expression": "X0 > 7711.5 and X10 <= 0.5 and X28 <= 0.5 and X3 > 0.350563 and X39 <= 3.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 7711.5
+        },
+        {
+          "feature": "brand_candidate_matches_final_domain",
+          "feature_index": 10,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.350563
+        },
+        {
+          "feature": "inline_script_count",
+          "feature_index": 39,
+          "operator": "<=",
+          "threshold": 3.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.26054411831733937,
+      "direction": "legitimate",
+      "support": 0.024880708929788685,
+      "importance": 0.02029137735214829
+    },
+    {
+      "id": "R024",
+      "expression": "X0 > 10743.0 and X13 <= 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 10743.0
+        },
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -1.8037486775079818,
+      "direction": "legitimate",
+      "support": 0.02419904567143831,
+      "importance": 0.13858804514967663
+    },
+    {
+      "id": "R025",
+      "expression": "X12 > 10.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 10.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.0605069512615303,
+      "direction": "legitimate",
+      "support": 0.38991138377641443,
+      "importance": 0.014755525922589446
+    },
+    {
+      "id": "R026",
+      "expression": "X0 <= 1226.5 and X2 > 21.65985 and X28 <= 0.5 and X33 <= 5.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 1226.5
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 21.65985
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_special_char_count",
+          "feature_index": 33,
+          "operator": "<=",
+          "threshold": 5.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -4.233555046294709,
+      "direction": "legitimate",
+      "support": 0.016700749829584187,
+      "importance": 0.27126018561693477
+    },
+    {
+      "id": "R027",
+      "expression": "X1 > 4436.0 and X12 > 6.5 and X15 <= 0.207143 and X22 > 19.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 4436.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 6.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.207143
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 19.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.9901155105918692,
+      "direction": "legitimate",
+      "support": 0.039650079527380144,
+      "importance": 0.09660345342518496
+    },
+    {
+      "id": "R028",
+      "expression": "X25 > 1491.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "visible_text_length",
+          "feature_index": 25,
+          "operator": ">",
+          "threshold": 1491.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.12959730754593238,
+      "direction": "legitimate",
+      "support": 0.3778686662122245,
+      "importance": 0.031417922292879014
+    },
+    {
+      "id": "R029",
+      "expression": "X0 > 5464.5 and X2 > 58.17926 and X29 <= 0.5 and X7 <= 25.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5464.5
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 58.17926
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 25.5
+        }
+      ],
+      "coefficient": -0.8568837311249049,
+      "direction": "legitimate",
+      "support": 0.07998182231311066,
+      "importance": 0.11622130650126147
+    },
+    {
+      "id": "R030",
+      "expression": "X30 > 211.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "dom_node_count",
+          "feature_index": 30,
+          "operator": ">",
+          "threshold": 211.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.050617124180693196,
+      "direction": "legitimate",
+      "support": 0.4082026812088162,
+      "importance": 0.012439184071884216
+    },
+    {
+      "id": "R031",
+      "expression": "X12 > 2.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 2.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.6455957006690406,
+      "direction": "legitimate",
+      "support": 0.44648943421949555,
+      "importance": 0.16047197017983358
+    },
+    {
+      "id": "R032",
+      "expression": "X22 <= 19.5 and X3 > 0.217949 and X40 <= 85.0 and X5 > 0.5 and X7 > 10.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 19.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.217949
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": "<=",
+          "threshold": 85.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 10.5
+        }
+      ],
+      "coefficient": -2.180538806179711,
+      "direction": "legitimate",
+      "support": 0.37616450806634855,
+      "importance": 0.5281505937758072
+    },
+    {
+      "id": "R033",
+      "expression": "X22 <= 19.5 and X3 > 0.217949 and X38 <= 0.366667 and X40 <= 85.0 and X5 > 0.5 and X54 <= 0.5 and X7 <= 10.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 19.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.217949
+        },
+        {
+          "feature": "external_resource_ratio",
+          "feature_index": 38,
+          "operator": "<=",
+          "threshold": 0.366667
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": "<=",
+          "threshold": 85.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "password_input_count",
+          "feature_index": 54,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 10.5
+        }
+      ],
+      "coefficient": -1.5307244191145948,
+      "direction": "legitimate",
+      "support": 0.05680527152919791,
+      "importance": 0.1771585092773172
+    },
+    {
+      "id": "R034",
+      "expression": "X17 > 0.00138122 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "external_anchor_ratio",
+          "feature_index": 17,
+          "operator": ">",
+          "threshold": 0.00138122
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.6120091626401974,
+      "direction": "phishing",
+      "support": 0.4341058850261304,
+      "importance": 0.1516677884097409
+    },
+    {
+      "id": "R035",
+      "expression": "X12 <= 7.5 and X22 <= 12.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 7.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 12.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.2707028119994572,
+      "direction": "legitimate",
+      "support": 0.0516927970915701,
+      "importance": 0.029967624090229503
+    },
+    {
+      "id": "R036",
+      "expression": "X0 > 6227.0 and X29 <= 0.5 and X5 > 0.5 and X8 <= 7.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 6227.0
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 7.5
+        }
+      ],
+      "coefficient": 0.7449051922004737,
+      "direction": "phishing",
+      "support": 0.0653260622585776,
+      "importance": 0.0920331554583186
+    },
+    {
+      "id": "R037",
+      "expression": "X12 <= 6.5 and X23 > 18.5 and X25 <= 37.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 6.5
+        },
+        {
+          "feature": "final_hostname_length",
+          "feature_index": 23,
+          "operator": ">",
+          "threshold": 18.5
+        },
+        {
+          "feature": "visible_text_length",
+          "feature_index": 25,
+          "operator": "<=",
+          "threshold": 37.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -1.2602120161878554,
+      "direction": "legitimate",
+      "support": 0.01170188593501477,
+      "importance": 0.06776189366095975
+    },
+    {
+      "id": "R038",
+      "expression": "X0 > 1142.0 and X12 > 55.0 and X2 > 28.41556",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 1142.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 55.0
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 28.41556
+        }
+      ],
+      "coefficient": -0.9271761957341225,
+      "direction": "legitimate",
+      "support": 0.28391274710293113,
+      "importance": 0.20902955441637067
+    },
+    {
+      "id": "R039",
+      "expression": "X0 > 2956.5 and X7 > 9.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 2956.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 9.5
+        }
+      ],
+      "coefficient": 0.21534043944040013,
+      "direction": "phishing",
+      "support": 0.4566007725516928,
+      "importance": 0.05363193035038457
+    },
+    {
+      "id": "R040",
+      "expression": "X1 > 1043.0 and X12 > 1.5 and X8 > 36.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 1043.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 1.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": ">",
+          "threshold": 36.5
+        }
+      ],
+      "coefficient": -2.500924016918012,
+      "direction": "legitimate",
+      "support": 0.36025903203817317,
+      "importance": 0.600316142910429
+    },
+    {
+      "id": "R041",
+      "expression": "X25 > 1560.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "visible_text_length",
+          "feature_index": 25,
+          "operator": ">",
+          "threshold": 1560.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.9537069399700115,
+      "direction": "legitimate",
+      "support": 0.3741195182912974,
+      "importance": 0.2307468784487299
+    },
+    {
+      "id": "R042",
+      "expression": "X0 > 5932.5 and X28 <= 0.5 and X8 <= 62.0",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5932.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 62.0
+        }
+      ],
+      "coefficient": -0.4819495088708477,
+      "direction": "legitimate",
+      "support": 0.13815042035900932,
+      "importance": 0.08315021735448032
+    },
+    {
+      "id": "R043",
+      "expression": "X1 <= 10683.5 and X22 > 11.5 and X26 > 6.5 and X3 > 0.635292 and X8 <= 36.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 10683.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 11.5
+        },
+        {
+          "feature": "original_query_length",
+          "feature_index": 26,
+          "operator": ">",
+          "threshold": 6.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.635292
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 36.5
+        }
+      ],
+      "coefficient": -0.26621067177321706,
+      "direction": "legitimate",
+      "support": 0.026584867075664622,
+      "importance": 0.021412223065892844
+    },
+    {
+      "id": "R044",
+      "expression": "X0 > 5864.0 and X2 > 21.86567 and X28 <= 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5864.0
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 21.86567
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.19115058792659576,
+      "direction": "legitimate",
+      "support": 0.34151329243353784,
+      "importance": 0.04532344937563661
+    },
+    {
+      "id": "R045",
+      "expression": "X0 > 152.5 and X12 > 56.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 152.5
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 56.5
+        }
+      ],
+      "coefficient": -0.8822271466026741,
+      "direction": "legitimate",
+      "support": 0.2989093387866394,
+      "importance": 0.20193298005238605
+    },
+    {
+      "id": "R046",
+      "expression": "X1 > 5864.0 and X29 <= 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 5864.0
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.21369835661202402,
+      "direction": "legitimate",
+      "support": 0.3503749147920927,
+      "importance": 0.05097639069461015
+    },
+    {
+      "id": "R047",
+      "expression": "X1 > 5467.0 and X29 > 0.5 and X3 <= 0.960494",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 5467.0
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": "<=",
+          "threshold": 0.960494
+        }
+      ],
+      "coefficient": -1.005568304313674,
+      "direction": "legitimate",
+      "support": 0.010793001590547602,
+      "importance": 0.05195128460112953
+    },
+    {
+      "id": "R048",
+      "expression": "X0 > 1150.0 and X22 <= 15.5 and X8 <= 63.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 1150.0
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 15.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 63.5
+        }
+      ],
+      "coefficient": -1.3228828460422237,
+      "direction": "legitimate",
+      "support": 0.14508066348557147,
+      "importance": 0.23294786038287232
+    },
+    {
+      "id": "R049",
+      "expression": "X12 <= 7.5 and X22 > 12.5 and X26 > 11.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 7.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 12.5
+        },
+        {
+          "feature": "original_query_length",
+          "feature_index": 26,
+          "operator": ">",
+          "threshold": 11.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.6053369571876603,
+      "direction": "legitimate",
+      "support": 0.035219268348102704,
+      "importance": 0.055791966486067726
+    },
+    {
+      "id": "R050",
+      "expression": "X0 <= 5400.5 and X15 > 0.236695",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5400.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": ">",
+          "threshold": 0.236695
+        }
+      ],
+      "coefficient": -1.9444461763017606,
+      "direction": "legitimate",
+      "support": 0.08872983412860713,
+      "importance": 0.276454931395809
+    },
+    {
+      "id": "R051",
+      "expression": "X46 <= 32.5 and X5 > 0.5 and X7 <= 12.5",
+      "conditions": [
+        {
+          "feature": "final_url_length",
+          "feature_index": 46,
+          "operator": "<=",
+          "threshold": 32.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 12.5
+        }
+      ],
+      "coefficient": 0.11502705843111126,
+      "direction": "phishing",
+      "support": 0.04214951147466485,
+      "importance": 0.011556202764766235
+    },
+    {
+      "id": "R052",
+      "expression": "X5 > 0.5 and X7 > 11.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 11.5
+        }
+      ],
+      "coefficient": 0.23313663535353046,
+      "direction": "phishing",
+      "support": 0.44728470802090436,
+      "importance": 0.0579593216931467
+    },
+    {
+      "id": "R053",
+      "expression": "X1 > 5467.0 and X29 <= 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 5467.0
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.43379357718283773,
+      "direction": "legitimate",
+      "support": 0.3611679163826403,
+      "importance": 0.10418400857928015
+    },
+    {
+      "id": "R054",
+      "expression": "X0 > 5370.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5370.5
+        }
+      ],
+      "coefficient": -0.0009104361199761996,
+      "direction": "legitimate",
+      "support": 0.41149738695750965,
+      "importance": 0.0002240150632721055
+    },
+    {
+      "id": "R055",
+      "expression": "X5 > 0.5 and X7 > 25.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 25.5
+        }
+      ],
+      "coefficient": 2.0983388492227046,
+      "direction": "phishing",
+      "support": 0.375710065894115,
+      "importance": 0.5081187339345494
+    },
+    {
+      "id": "R056",
+      "expression": "X1 > 6724.0",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 6724.0
+        }
+      ],
+      "coefficient": -0.19058818885650822,
+      "direction": "legitimate",
+      "support": 0.3561690524880709,
+      "importance": 0.045633103074368325
+    },
+    {
+      "id": "R057",
+      "expression": "X13 > 1.5",
+      "conditions": [
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": ">",
+          "threshold": 1.5
+        }
+      ],
+      "coefficient": -0.2889769650010213,
+      "direction": "legitimate",
+      "support": 0.46057714155873664,
+      "importance": 0.07201933268564706
+    },
+    {
+      "id": "R058",
+      "expression": "X5 > 0.5 and X7 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.5327071622151188,
+      "direction": "legitimate",
+      "support": 0.5845262440354465,
+      "importance": 0.13125998361667945
+    },
+    {
+      "id": "R059",
+      "expression": "X1 > 3857.0 and X2 > 20.95503 and X22 > 20.5 and X28 <= 0.5 and X5 > 0.5 and X7 > 0.5 and X9 <= 123.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 3857.0
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 20.95503
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 20.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "script_count",
+          "feature_index": 9,
+          "operator": "<=",
+          "threshold": 123.5
+        }
+      ],
+      "coefficient": -1.279816301284854,
+      "direction": "legitimate",
+      "support": 0.04942058623040218,
+      "importance": 0.1386965922430068
+    },
+    {
+      "id": "R060",
+      "expression": "X2 > 22.47024 and X28 <= 0.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 22.47024
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.9104399002827052,
+      "direction": "legitimate",
+      "support": 0.5264712565326062,
+      "importance": 0.22729076613296803
+    },
+    {
+      "id": "R061",
+      "expression": "X8 > 61.5",
+      "conditions": [
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": ">",
+          "threshold": 61.5
+        }
+      ],
+      "coefficient": -0.08731342304272256,
+      "direction": "legitimate",
+      "support": 0.3483299250170416,
+      "importance": 0.02079985471026128
+    },
+    {
+      "id": "R062",
+      "expression": "X1 <= 5368.5 and X15 > 0.236695 and X8 <= 57.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 5368.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": ">",
+          "threshold": 0.236695
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 57.5
+        }
+      ],
+      "coefficient": 1.1133520236958396,
+      "direction": "phishing",
+      "support": 0.04135423767325608,
+      "importance": 0.1108387438737168
+    },
+    {
+      "id": "R063",
+      "expression": "X22 <= 11.5 and X7 <= 25.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 11.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 25.5
+        }
+      ],
+      "coefficient": -0.652365853828661,
+      "direction": "legitimate",
+      "support": 0.06294024085435128,
+      "importance": 0.07921529971232065
+    },
+    {
+      "id": "R064",
+      "expression": "X0 > 5430.5 and X5 > 0.5 and X7 <= 17.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5430.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 17.5
+        }
+      ],
+      "coefficient": 1.074265960811857,
+      "direction": "phishing",
+      "support": 0.10247670983867303,
+      "importance": 0.162898569075947
+    },
+    {
+      "id": "R065",
+      "expression": "X12 <= 8.5 and X22 <= 15.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 8.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 15.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.028653444676200956,
+      "direction": "phishing",
+      "support": 0.09236537150647581,
+      "importance": 0.004148173981869536
+    },
+    {
+      "id": "R066",
+      "expression": "X1 <= 5538.5 and X13 > 3.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 5538.5
+        },
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": ">",
+          "threshold": 3.5
+        }
+      ],
+      "coefficient": -0.39868075146517473,
+      "direction": "legitimate",
+      "support": 0.13451488298114064,
+      "importance": 0.06801586782289196
+    },
+    {
+      "id": "R067",
+      "expression": "X8 <= 62.5 and X9 > 15.5",
+      "conditions": [
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 62.5
+        },
+        {
+          "feature": "script_count",
+          "feature_index": 9,
+          "operator": ">",
+          "threshold": 15.5
+        }
+      ],
+      "coefficient": -0.6810442138317644,
+      "direction": "legitimate",
+      "support": 0.11077027948193592,
+      "importance": 0.10687199643987193
+    },
+    {
+      "id": "R068",
+      "expression": "X1 > 5430.5 and X8 <= 58.0",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 5430.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 58.0
+        }
+      ],
+      "coefficient": 0.5868937419231387,
+      "direction": "phishing",
+      "support": 0.18382185866848444,
+      "importance": 0.11366337286191902
+    },
+    {
+      "id": "R069",
+      "expression": "X0 > 6748.5 and X17 <= 0.000984252",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 6748.5
+        },
+        {
+          "feature": "external_anchor_ratio",
+          "feature_index": 17,
+          "operator": "<=",
+          "threshold": 0.000984252
+        }
+      ],
+      "coefficient": 1.1966915944052834,
+      "direction": "phishing",
+      "support": 0.08623040218132243,
+      "importance": 0.167958041930286
+    },
+    {
+      "id": "R070",
+      "expression": "X1 > 2790.0",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 2790.0
+        }
+      ],
+      "coefficient": -0.26179178397238745,
+      "direction": "legitimate",
+      "support": 0.6371279254714838,
+      "importance": 0.06293845983427131
+    },
+    {
+      "id": "R071",
+      "expression": "X0 > 6008.5 and X8 <= 61.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 6008.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 61.5
+        }
+      ],
+      "coefficient": 0.32037191172557694,
+      "direction": "phishing",
+      "support": 0.17609634174051353,
+      "importance": 0.06101516916162484
+    },
+    {
+      "id": "R072",
+      "expression": "X5 > 0.5 and X8 <= 35.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 35.5
+        }
+      ],
+      "coefficient": -0.9353878722240571,
+      "direction": "legitimate",
+      "support": 0.28379913655987277,
+      "importance": 0.21085538367207332
+    },
+    {
+      "id": "R073",
+      "expression": "X2 > 22.47024 and X5 > 0.5 and X8 <= 13.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 22.47024
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 13.5
+        }
+      ],
+      "coefficient": -0.2196260923119057,
+      "direction": "legitimate",
+      "support": 0.17461940468075438,
+      "importance": 0.0416895605886494
+    },
+    {
+      "id": "R074",
+      "expression": "X0 > 5766.5 and X12 <= 8.5 and X22 > 15.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5766.5
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 8.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 15.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -2.631112392514407,
+      "direction": "legitimate",
+      "support": 0.06203135650988412,
+      "importance": 0.31732859125377505
+    },
+    {
+      "id": "R075",
+      "expression": "X12 <= 16.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 16.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.05609999410759052,
+      "direction": "legitimate",
+      "support": 0.2741422403999091,
+      "importance": 0.012512571171752545
+    },
+    {
+      "id": "R076",
+      "expression": "X22 > 22.5 and X5 > 0.5 and X7 > 9.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 22.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 9.5
+        }
+      ],
+      "coefficient": 0.8854257325178162,
+      "direction": "phishing",
+      "support": 0.044989775051124746,
+      "importance": 0.09176626702640892
+    },
+    {
+      "id": "R077",
+      "expression": "X5 > 0.5 and X8 <= 8.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 8.5
+        }
+      ],
+      "coefficient": -0.3736689233650265,
+      "direction": "legitimate",
+      "support": 0.21426948420813452,
+      "importance": 0.07666090772387721
+    },
+    {
+      "id": "R078",
+      "expression": "X0 > 1226.5 and X2 > 21.65985 and X28 <= 0.5 and X5 > 0.5 and X9 <= 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 1226.5
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 21.65985
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "script_count",
+          "feature_index": 9,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.8797163724732205,
+      "direction": "phishing",
+      "support": 0.02192683481027039,
+      "importance": 0.06441489797447626
+    },
+    {
+      "id": "R079",
+      "expression": "X12 > 1.5 and X29 > 0.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 1.5
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -3.7948179435414966,
+      "direction": "legitimate",
+      "support": 0.03453760508975233,
+      "importance": 0.34647726356921255
+    },
+    {
+      "id": "R080",
+      "expression": "X5 > 0.5 and X7 <= 11.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 11.5
+        }
+      ],
+      "coefficient": -1.5671403376969406,
+      "direction": "legitimate",
+      "support": 0.19529652351738241,
+      "importance": 0.3106297797263772
+    },
+    {
+      "id": "R081",
+      "expression": "X0 <= 7711.5 and X10 <= 0.5 and X28 <= 0.5 and X3 > 0.350563 and X39 <= 3.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 7711.5
+        },
+        {
+          "feature": "brand_candidate_matches_final_domain",
+          "feature_index": 10,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.350563
+        },
+        {
+          "feature": "inline_script_count",
+          "feature_index": 39,
+          "operator": "<=",
+          "threshold": 3.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.9274051573639187,
+      "direction": "phishing",
+      "support": 0.08270847534651216,
+      "importance": 0.1277227347787161
+    },
+    {
+      "id": "R082",
+      "expression": "X12 <= 6.5 and X23 <= 18.5 and X5 > 0.5 and X6 <= 0.177866",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 6.5
+        },
+        {
+          "feature": "final_hostname_length",
+          "feature_index": 23,
+          "operator": "<=",
+          "threshold": 18.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_candidate_final_domain_similarity",
+          "feature_index": 6,
+          "operator": "<=",
+          "threshold": 0.177866
+        }
+      ],
+      "coefficient": 3.2860345146652588,
+      "direction": "phishing",
+      "support": 0.03556009997727789,
+      "importance": 0.3042714445794154
+    },
+    {
+      "id": "R083",
+      "expression": "X1 <= 6724.0",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 6724.0
+        }
+      ],
+      "coefficient": 0.0299524137801904,
+      "direction": "phishing",
+      "support": 0.6438309475119292,
+      "importance": 0.007171596485376247
+    },
+    {
+      "id": "R084",
+      "expression": "X5 > 0.5 and X7 <= 10.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 10.5
+        }
+      ],
+      "coefficient": -0.37791985198789696,
+      "direction": "legitimate",
+      "support": 0.18825266984776187,
+      "importance": 0.07386704347027612
+    },
+    {
+      "id": "R085",
+      "expression": "X12 <= 2.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 2.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.325339912422566,
+      "direction": "phishing",
+      "support": 0.19609179731879117,
+      "importance": 0.06458628331653299
+    },
+    {
+      "id": "R086",
+      "expression": "X9 <= 11.5",
+      "conditions": [
+        {
+          "feature": "script_count",
+          "feature_index": 9,
+          "operator": "<=",
+          "threshold": 11.5
+        }
+      ],
+      "coefficient": -0.13906221956202017,
+      "direction": "legitimate",
+      "support": 0.5624857986821177,
+      "importance": 0.03449300405234661
+    },
+    {
+      "id": "R087",
+      "expression": "X21 > 19.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "hostname_length",
+          "feature_index": 21,
+          "operator": ">",
+          "threshold": 19.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.03982176297511258,
+      "direction": "legitimate",
+      "support": 0.1740513519654624,
+      "importance": 0.007549283089717577
+    },
+    {
+      "id": "R088",
+      "expression": "X12 <= 7.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 7.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.05752759843469654,
+      "direction": "legitimate",
+      "support": 0.24017268802544875,
+      "importance": 0.012287555940490316
+    },
+    {
+      "id": "R089",
+      "expression": "X0 <= 5929.0 and X12 <= 56.5 and X14 > 3.5 and X15 > 0.236695",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5929.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 56.5
+        },
+        {
+          "feature": "original_url_token_count",
+          "feature_index": 14,
+          "operator": ">",
+          "threshold": 3.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": ">",
+          "threshold": 0.236695
+        }
+      ],
+      "coefficient": 3.763359474656054,
+      "direction": "phishing",
+      "support": 0.02340377187002954,
+      "importance": 0.2844763438274492
+    },
+    {
+      "id": "R090",
+      "expression": "X0 <= 5370.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5370.5
+        }
+      ],
+      "coefficient": 0.1137678667301591,
+      "direction": "phishing",
+      "support": 0.5885026130424903,
+      "importance": 0.027992865512140815
+    },
+    {
+      "id": "R091",
+      "expression": "X5 > 0.5 and X7 <= 12.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 12.5
+        }
+      ],
+      "coefficient": 0.16326508519618763,
+      "direction": "phishing",
+      "support": 0.19950011361054307,
+      "importance": 0.03262237191257091
+    },
+    {
+      "id": "R092",
+      "expression": "X5 <= 0.5 and X7 > 25.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 25.5
+        }
+      ],
+      "coefficient": -1.2000337722066041,
+      "direction": "legitimate",
+      "support": 0.06566689388775278,
+      "importance": 0.14862353220566904
+    },
+    {
+      "id": "R093",
+      "expression": "X0 <= 5864.0 and X15 <= 0.239048",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5864.0
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.239048
+        }
+      ],
+      "coefficient": 0.4148343290511182,
+      "direction": "phishing",
+      "support": 0.5227221086116791,
+      "importance": 0.10360143863342958
+    },
+    {
+      "id": "R094",
+      "expression": "X8 <= 62.5 and X9 <= 15.5",
+      "conditions": [
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 62.5
+        },
+        {
+          "feature": "script_count",
+          "feature_index": 9,
+          "operator": "<=",
+          "threshold": 15.5
+        }
+      ],
+      "coefficient": 0.1975049186472536,
+      "direction": "phishing",
+      "support": 0.543626448534424,
+      "importance": 0.04918791827204681
+    },
+    {
+      "id": "R095",
+      "expression": "X1 > 5370.5 and X28 > 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 5370.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -1.394674477468952,
+      "direction": "legitimate",
+      "support": 0.0489661440581686,
+      "importance": 0.1504834708610412
+    },
+    {
+      "id": "R096",
+      "expression": "X1 <= 5370.5 and X15 <= 0.215251",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 5370.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.215251
+        }
+      ],
+      "coefficient": 0.2338422247660568,
+      "direction": "phishing",
+      "support": 0.45478300386275844,
+      "importance": 0.058221011231220796
+    },
+    {
+      "id": "R097",
+      "expression": "X0 <= 10870.0 and X12 <= 10.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 10870.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 10.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.1437869418937523,
+      "direction": "phishing",
+      "support": 0.2283571915473756,
+      "importance": 0.24006599184889027
+    },
+    {
+      "id": "R098",
+      "expression": "X0 <= 1142.0 and X12 > 55.0",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 1142.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 55.0
+        }
+      ],
+      "coefficient": -0.835470017688846,
+      "direction": "legitimate",
+      "support": 0.032151783685526014,
+      "importance": 0.07368974201570687
+    },
+    {
+      "id": "R099",
+      "expression": "X44 > 25.5 and X5 > 0.5 and X7 <= 13.5",
+      "conditions": [
+        {
+          "feature": "original_url_length",
+          "feature_index": 44,
+          "operator": ">",
+          "threshold": 25.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 13.5
+        }
+      ],
+      "coefficient": 0.6126357817431407,
+      "direction": "phishing",
+      "support": 0.17791411042944785,
+      "importance": 0.11714834479668233
+    },
+    {
+      "id": "R100",
+      "expression": "X0 <= 10601.0 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 10601.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.7367652420587056,
+      "direction": "phishing",
+      "support": 0.3516246307657351,
+      "importance": 0.4146331509276971
+    },
+    {
+      "id": "R101",
+      "expression": "X1 <= 1043.0 and X8 > 36.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 1043.0
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": ">",
+          "threshold": 36.5
+        }
+      ],
+      "coefficient": -0.9798516968677057,
+      "direction": "legitimate",
+      "support": 0.0814587593728698,
+      "importance": 0.13401350907482046
+    },
+    {
+      "id": "R102",
+      "expression": "X1 <= 5467.0 and X15 <= 0.237469 and X40 <= 2.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 5467.0
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.237469
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": "<=",
+          "threshold": 2.5
+        }
+      ],
+      "coefficient": 1.7964271179538276,
+      "direction": "phishing",
+      "support": 0.396955237446035,
+      "importance": 0.4394658674866957
+    },
+    {
+      "id": "R103",
+      "expression": "X1 <= 10683.5 and X22 <= 11.5 and X3 <= 0.739261 and X6 <= 0.916667 and X8 <= 36.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 10683.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 11.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": "<=",
+          "threshold": 0.739261
+        },
+        {
+          "feature": "brand_candidate_final_domain_similarity",
+          "feature_index": 6,
+          "operator": "<=",
+          "threshold": 0.916667
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 36.5
+        }
+      ],
+      "coefficient": 1.1102789427855675,
+      "direction": "phishing",
+      "support": 0.02340377187002954,
+      "importance": 0.08392716571438084
+    },
+    {
+      "id": "R104",
+      "expression": "X22 > 15.5 and X8 <= 63.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 15.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 63.5
+        }
+      ],
+      "coefficient": 0.043840429232962566,
+      "direction": "phishing",
+      "support": 0.42274483072029084,
+      "importance": 0.010828489260988856
+    },
+    {
+      "id": "R105",
+      "expression": "X1 <= 6287.5 and X12 <= 55.0 and X15 <= 0.236695",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 6287.5
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 55.0
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.236695
+        }
+      ],
+      "coefficient": 0.9302081826705016,
+      "direction": "phishing",
+      "support": 0.44364917064303566,
+      "importance": 0.2310704269176165
+    },
+    {
+      "id": "R106",
+      "expression": "X0 <= 5400.5 and X15 <= 0.236695 and X40 <= 3.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5400.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.236695
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": "<=",
+          "threshold": 3.5
+        }
+      ],
+      "coefficient": 0.30257842070096236,
+      "direction": "phishing",
+      "support": 0.434560327198364,
+      "importance": 0.07499393326681562
+    },
+    {
+      "id": "R107",
+      "expression": "X0 <= 6011.0 and X13 <= 1.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 6011.0
+        },
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": "<=",
+          "threshold": 1.5
+        }
+      ],
+      "coefficient": 0.19145105070522153,
+      "direction": "phishing",
+      "support": 0.418200408997955,
+      "importance": 0.047217902481535026
+    },
+    {
+      "id": "R108",
+      "expression": "X1 <= 2790.0",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 2790.0
+        }
+      ],
+      "coefficient": 0.2887998379815758,
+      "direction": "phishing",
+      "support": 0.3628720745285162,
+      "importance": 0.06943157927700533
+    },
+    {
+      "id": "R109",
+      "expression": "X1 <= 5538.5 and X13 <= 3.5 and X15 <= 0.236695",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 5538.5
+        },
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": "<=",
+          "threshold": 3.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.236695
+        }
+      ],
+      "coefficient": 0.1281412251510505,
+      "direction": "phishing",
+      "support": 0.41729152465348784,
+      "importance": 0.031593979044558185
+    },
+    {
+      "id": "R110",
+      "expression": "X12 <= 7.5 and X22 > 12.5 and X26 <= 11.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 7.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 12.5
+        },
+        {
+          "feature": "original_query_length",
+          "feature_index": 26,
+          "operator": "<=",
+          "threshold": 11.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.2518755396025179,
+      "direction": "phishing",
+      "support": 0.15326062258577597,
+      "importance": 0.045367638052961616
+    },
+    {
+      "id": "R111",
+      "expression": "X1 <= 5430.5 and X8 <= 58.0",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 5430.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 58.0
+        }
+      ],
+      "coefficient": -0.2824501891850474,
+      "direction": "legitimate",
+      "support": 0.46091797318791183,
+      "importance": 0.07039650892250392
+    },
+    {
+      "id": "R112",
+      "expression": "X0 <= 2956.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 2956.5
+        }
+      ],
+      "coefficient": -0.47844595081077446,
+      "direction": "legitimate",
+      "support": 0.3690070438536696,
+      "importance": 0.11543366150529402
+    },
+    {
+      "id": "R113",
+      "expression": "X0 <= 177.0 and X7 > 25.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 177.0
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 25.5
+        }
+      ],
+      "coefficient": 1.6057877318546045,
+      "direction": "phishing",
+      "support": 0.04158145875937287,
+      "importance": 0.1602823140794388
+    },
+    {
+      "id": "R114",
+      "expression": "X0 <= 5464.5 and X7 <= 25.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5464.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 25.5
+        }
+      ],
+      "coefficient": 0.08538515493055515,
+      "direction": "phishing",
+      "support": 0.4097932288116337,
+      "importance": 0.020996014208602233
+    },
+    {
+      "id": "R115",
+      "expression": "X1 <= 5368.5 and X15 <= 0.236695 and X8 <= 57.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 5368.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.236695
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 57.5
+        }
+      ],
+      "coefficient": -0.3792422657465309,
+      "direction": "legitimate",
+      "support": 0.4168370824812543,
+      "importance": 0.09348993561301491
+    },
+    {
+      "id": "R116",
+      "expression": "X0 <= 10743.0 and X13 <= 0.5 and X15 <= 0.226418",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 10743.0
+        },
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": "<=",
+          "threshold": 0.226418
+        }
+      ],
+      "coefficient": 0.8517045297642163,
+      "direction": "phishing",
+      "support": 0.41729152465348784,
+      "importance": 0.20999280312644442
+    },
+    {
+      "id": "R117",
+      "expression": "X1 <= 11404.0 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 11404.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.1104293466742143,
+      "direction": "phishing",
+      "support": 0.35401045216996135,
+      "importance": 0.2655105138256166
+    },
+    {
+      "id": "R118",
+      "expression": "X1 <= 7627.0 and X12 <= 1.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 7627.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 1.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.8183936216020934,
+      "direction": "phishing",
+      "support": 0.13667348329925016,
+      "importance": 0.14056005290371862
+    },
+    {
+      "id": "R119",
+      "expression": "X23 > 18.5 and X5 > 0.5 and X8 <= 7.5",
+      "conditions": [
+        {
+          "feature": "final_hostname_length",
+          "feature_index": 23,
+          "operator": ">",
+          "threshold": 18.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 7.5
+        }
+      ],
+      "coefficient": 0.5155321792776046,
+      "direction": "phishing",
+      "support": 0.11156555328334469,
+      "importance": 0.08115280572803392
+    },
+    {
+      "id": "R120",
+      "expression": "X0 <= 5433.5 and X17 <= 0.00138122",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5433.5
+        },
+        {
+          "feature": "external_anchor_ratio",
+          "feature_index": 17,
+          "operator": "<=",
+          "threshold": 0.00138122
+        }
+      ],
+      "coefficient": 0.5063077618980839,
+      "direction": "phishing",
+      "support": 0.3858214042263122,
+      "importance": 0.12323245116043778
+    },
+    {
+      "id": "R121",
+      "expression": "X2 <= 22.47024 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": "<=",
+          "threshold": 22.47024
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.9421644659724475,
+      "direction": "phishing",
+      "support": 0.06384912519881845,
+      "importance": 0.2374140451237716
+    },
+    {
+      "id": "R122",
+      "expression": "X12 <= 6.5 and X22 > 19.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 6.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 19.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.5720918288537675,
+      "direction": "phishing",
+      "support": 0.10429447852760736,
+      "importance": 0.24024878439803934
+    },
+    {
+      "id": "R123",
+      "expression": "X1 > 5467.0 and X29 > 0.5 and X3 > 0.960494",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 5467.0
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.960494
+        }
+      ],
+      "coefficient": 5.797422031908848,
+      "direction": "phishing",
+      "support": 0.03760508975232901,
+      "importance": 0.5514484171694296
+    },
+    {
+      "id": "R124",
+      "expression": "X1 > 3044.0 and X5 <= 0.5 and X58 <= 1.5 and X7 <= 14.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 3044.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "sensitive_word_count",
+          "feature_index": 58,
+          "operator": "<=",
+          "threshold": 1.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 14.5
+        }
+      ],
+      "coefficient": -0.28073593234190775,
+      "direction": "legitimate",
+      "support": 0.032719836400818,
+      "importance": 0.02497179206089303
+    },
+    {
+      "id": "R125",
+      "expression": "X0 > 5932.5 and X28 > 0.5 and X8 <= 62.0",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5932.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 62.0
+        }
+      ],
+      "coefficient": 2.284922666526285,
+      "direction": "phishing",
+      "support": 0.041467848216314475,
+      "importance": 0.2277721403319244
+    },
+    {
+      "id": "R126",
+      "expression": "X1 > 3044.0 and X2 <= 26.56412 and X7 > 14.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 3044.0
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": "<=",
+          "threshold": 26.56412
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 14.5
+        }
+      ],
+      "coefficient": 1.5073373072099603,
+      "direction": "phishing",
+      "support": 0.007725516927970915,
+      "importance": 0.06598726654050636
+    },
+    {
+      "id": "R127",
+      "expression": "X0 <= 1226.5 and X2 > 21.65985 and X28 <= 0.5 and X33 > 5.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 1226.5
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 21.65985
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_special_char_count",
+          "feature_index": 33,
+          "operator": ">",
+          "threshold": 5.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 2.1898078324212094,
+      "direction": "phishing",
+      "support": 0.02192683481027039,
+      "importance": 0.16034287018275895
+    },
+    {
+      "id": "R128",
+      "expression": "X2 > 22.47024 and X28 > 0.5 and X30 <= 370.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 22.47024
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "dom_node_count",
+          "feature_index": 30,
+          "operator": "<=",
+          "threshold": 370.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.9827172193795028,
+      "direction": "phishing",
+      "support": 0.04260395364689843,
+      "importance": 0.20021727639968678
+    },
+    {
+      "id": "R129",
+      "expression": "X3 <= 0.350563 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": "<=",
+          "threshold": 0.350563
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.5719845718161511,
+      "direction": "phishing",
+      "support": 0.06475800954328562,
+      "importance": 0.19343142363087518
+    },
+    {
+      "id": "R130",
+      "expression": "X2 <= 21.65985 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": "<=",
+          "threshold": 21.65985
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -1.4685539383780675,
+      "direction": "legitimate",
+      "support": 0.06294024085435128,
+      "importance": 0.1783231597570421
+    },
+    {
+      "id": "R131",
+      "expression": "X5 > 0.5 and X7 <= 0.5",
+      "conditions": [
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.8879904539706194,
+      "direction": "phishing",
+      "support": 0.058054987502840265,
+      "importance": 0.1038271289133191
+    },
+    {
+      "id": "R132",
+      "expression": "X1 <= 9765.5 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 9765.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 2.8240560383002,
+      "direction": "phishing",
+      "support": 0.3486707566462168,
+      "importance": 0.6729012971140946
+    },
+    {
+      "id": "R133",
+      "expression": "X12 <= 24.0 and X2 > 21.65985 and X29 > 0.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 24.0
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 21.65985
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.0500646070775017,
+      "direction": "phishing",
+      "support": 0.043626448534423996,
+      "importance": 0.10724442711611652
+    },
+    {
+      "id": "R134",
+      "expression": "X2 > 20.95503 and X28 > 0.5 and X3 > 0.718381 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 20.95503
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.718381
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 3.362725758809267,
+      "direction": "phishing",
+      "support": 0.041467848216314475,
+      "importance": 0.33521276437671077
+    },
+    {
+      "id": "R135",
+      "expression": "X2 <= 22.47024 and X5 > 0.5 and X8 <= 13.5",
+      "conditions": [
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": "<=",
+          "threshold": 22.47024
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 13.5
+        }
+      ],
+      "coefficient": -0.006753077568401839,
+      "direction": "legitimate",
+      "support": 0.05725971370143149,
+      "importance": 0.0007844989412370558
+    },
+    {
+      "id": "R136",
+      "expression": "X1 > 6287.5 and X12 <= 55.0 and X29 <= 0.5 and X31 <= 254.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 6287.5
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 55.0
+        },
+        {
+          "feature": "original_skip_domain_age_lookup",
+          "feature_index": 29,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "html_length",
+          "feature_index": 31,
+          "operator": "<=",
+          "threshold": 254.5
+        }
+      ],
+      "coefficient": -0.10902234464604066,
+      "direction": "legitimate",
+      "support": 0.006362190411270166,
+      "importance": 0.004334139722965113
+    },
+    {
+      "id": "R137",
+      "expression": "X0 > 1142.0 and X12 > 55.0 and X2 <= 28.41556",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 1142.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 55.0
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": "<=",
+          "threshold": 28.41556
+        }
+      ],
+      "coefficient": 5.670109079793416,
+      "direction": "phishing",
+      "support": 0.005112474437627812,
+      "importance": 0.20219200814722924
+    },
+    {
+      "id": "R138",
+      "expression": "X11 <= 0.5 and X5 <= 0.5",
+      "conditions": [
+        {
+          "feature": "brand_candidate_matches_original_domain",
+          "feature_index": 11,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": "<=",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 3.276839067450888,
+      "direction": "phishing",
+      "support": 0.34605771415587366,
+      "importance": 0.7794156019277652
+    },
+    {
+      "id": "R139",
+      "expression": "X0 <= 5766.5 and X12 <= 8.5 and X22 > 15.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 5766.5
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 8.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 15.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": -0.8375201447279065,
+      "direction": "legitimate",
+      "support": 0.08884344467166554,
+      "importance": 0.11914462717623692
+    },
+    {
+      "id": "R140",
+      "expression": "X22 <= 19.5 and X3 <= 0.217949 and X40 <= 85.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 19.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": "<=",
+          "threshold": 0.217949
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": "<=",
+          "threshold": 85.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 2.5807510974004506,
+      "direction": "phishing",
+      "support": 0.005907748239036582,
+      "importance": 0.09888728632996072
+    },
+    {
+      "id": "R141",
+      "expression": "X1 > 3044.0 and X58 > 1.5 and X7 <= 14.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 3044.0
+        },
+        {
+          "feature": "sensitive_word_count",
+          "feature_index": 58,
+          "operator": ">",
+          "threshold": 1.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 14.5
+        }
+      ],
+      "coefficient": 2.3014606902687804,
+      "direction": "phishing",
+      "support": 0.04021813224267212,
+      "importance": 0.22608449807269912
+    },
+    {
+      "id": "R142",
+      "expression": "X22 <= 19.5 and X3 > 0.217949 and X38 <= 0.366667 and X40 <= 85.0 and X5 > 0.5 and X54 > 0.5 and X7 <= 10.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 19.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": ">",
+          "threshold": 0.217949
+        },
+        {
+          "feature": "external_resource_ratio",
+          "feature_index": 38,
+          "operator": "<=",
+          "threshold": 0.366667
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": "<=",
+          "threshold": 85.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "password_input_count",
+          "feature_index": 54,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": "<=",
+          "threshold": 10.5
+        }
+      ],
+      "coefficient": 2.689710072428332,
+      "direction": "phishing",
+      "support": 0.012837991365598728,
+      "importance": 0.15139733475700468
+    },
+    {
+      "id": "R143",
+      "expression": "X1 <= 10683.5 and X22 > 11.5 and X26 > 6.5 and X3 <= 0.635292 and X8 <= 36.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 10683.5
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 11.5
+        },
+        {
+          "feature": "original_query_length",
+          "feature_index": 26,
+          "operator": ">",
+          "threshold": 6.5
+        },
+        {
+          "feature": "brand_top_candidate_quality_score",
+          "feature_index": 3,
+          "operator": "<=",
+          "threshold": 0.635292
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": "<=",
+          "threshold": 36.5
+        }
+      ],
+      "coefficient": 2.8444122127589333,
+      "direction": "phishing",
+      "support": 0.010111338332197227,
+      "importance": 0.14228530039662984
+    },
+    {
+      "id": "R144",
+      "expression": "X1 <= 3857.0 and X2 > 20.95503 and X22 > 20.5 and X28 <= 0.5 and X5 > 0.5 and X7 > 0.5 and X9 <= 123.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": "<=",
+          "threshold": 3857.0
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 20.95503
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 20.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "script_count",
+          "feature_index": 9,
+          "operator": "<=",
+          "threshold": 123.5
+        }
+      ],
+      "coefficient": 0.2728556109811957,
+      "direction": "phishing",
+      "support": 0.01113383321972279,
+      "importance": 0.014315087538878224
+    },
+    {
+      "id": "R145",
+      "expression": "X0 > 5929.0 and X12 <= 56.5 and X28 <= 0.5 and X30 <= 3.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": ">",
+          "threshold": 5929.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 56.5
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "dom_node_count",
+          "feature_index": 30,
+          "operator": "<=",
+          "threshold": 3.5
+        }
+      ],
+      "coefficient": 3.4890369790168396,
+      "direction": "phishing",
+      "support": 0.0035219268348102703,
+      "importance": 0.10334741421884482
+    },
+    {
+      "id": "R146",
+      "expression": "X1 > 1043.0 and X12 <= 1.5 and X8 > 36.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 1043.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": "<=",
+          "threshold": 1.5
+        },
+        {
+          "feature": "anchor_count",
+          "feature_index": 8,
+          "operator": ">",
+          "threshold": 36.5
+        }
+      ],
+      "coefficient": 1.4761319718727837,
+      "direction": "phishing",
+      "support": 0.004317200636219041,
+      "importance": 0.048390132321958906
+    },
+    {
+      "id": "R147",
+      "expression": "X1 > 4436.0 and X12 > 6.5 and X15 > 0.207143 and X22 > 19.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "final_domain_age_days",
+          "feature_index": 1,
+          "operator": ">",
+          "threshold": 4436.0
+        },
+        {
+          "feature": "internal_anchor_count",
+          "feature_index": 12,
+          "operator": ">",
+          "threshold": 6.5
+        },
+        {
+          "feature": "original_special_char_ratio",
+          "feature_index": 15,
+          "operator": ">",
+          "threshold": 0.207143
+        },
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": ">",
+          "threshold": 19.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 2.053586385587449,
+      "direction": "phishing",
+      "support": 0.002953874119518291,
+      "importance": 0.05572327047806583
+    },
+    {
+      "id": "R148",
+      "expression": "X0 <= 137.0 and X13 > 0.5 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_domain_age_days",
+          "feature_index": 0,
+          "operator": "<=",
+          "threshold": 137.0
+        },
+        {
+          "feature": "external_anchor_count",
+          "feature_index": 13,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 0.0646362011372953,
+      "direction": "phishing",
+      "support": 0.010111338332197227,
+      "importance": 0.003233280061892522
+    },
+    {
+      "id": "R149",
+      "expression": "X22 <= 19.5 and X40 > 85.0 and X5 > 0.5",
+      "conditions": [
+        {
+          "feature": "original_hostname_length",
+          "feature_index": 22,
+          "operator": "<=",
+          "threshold": 19.5
+        },
+        {
+          "feature": "external_script_count",
+          "feature_index": 40,
+          "operator": ">",
+          "threshold": 85.0
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        }
+      ],
+      "coefficient": 1.624058175705269,
+      "direction": "phishing",
+      "support": 0.008066348557146103,
+      "importance": 0.07263591148263972
+    },
+    {
+      "id": "R150",
+      "expression": "X17 > 0.0721195 and X2 > 20.95503 and X28 <= 0.5 and X5 > 0.5 and X7 > 0.5 and X9 > 123.5",
+      "conditions": [
+        {
+          "feature": "external_anchor_ratio",
+          "feature_index": 17,
+          "operator": ">",
+          "threshold": 0.0721195
+        },
+        {
+          "feature": "brand_top_candidate_search_score",
+          "feature_index": 2,
+          "operator": ">",
+          "threshold": 20.95503
+        },
+        {
+          "feature": "original_uses_shared_hosting_domain",
+          "feature_index": 28,
+          "operator": "<=",
+          "threshold": 0.5
+        },
+        {
+          "feature": "original_path_length",
+          "feature_index": 5,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "resource_count",
+          "feature_index": 7,
+          "operator": ">",
+          "threshold": 0.5
+        },
+        {
+          "feature": "script_count",
+          "feature_index": 9,
+          "operator": ">",
+          "threshold": 123.5
+        }
+      ],
+      "coefficient": 2.430953421614121,
+      "direction": "phishing",
+      "support": 0.00977050670302204,
+      "importance": 0.11955647838452677
+    }
+  ],
+  "source": "ml_models_rulefit_60_live_retrain_v1\\models\\RuleFit60.joblib",
+  "notes": "RuleFit 60 v2 trained with 90/10 stratified split from DATA_TRAIN_RULEFIT_118_READY.csv. Coefficients converted from imodels softmax score scale to browser sigmoid logit scale."
+}

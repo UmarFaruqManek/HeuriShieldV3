@@ -1,0 +1,72 @@
+{
+  "manifest_version": 3,
+  "minimum_chrome_version": "106",
+  "name": "HeuriShield RuleFit60 T080 Clearbit First",
+  "version": "5.0.5",
+  "description": "RuleFit60 T080: Clearbit primary brand lookup, Brandfetch secondary scores and fallback.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation",
+    "scripting",
+    "webRequest"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "src/content/page-dom-snapshot.js",
+        "src/content/score-overlay.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_ui": {
+    "page": "src/options/options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "HeuriShield V5",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/analyzer/*.js",
+        "src/analyzer/brand/*.js",
+        "src/analyzer/domain/*.js",
+        "src/analyzer/dom/*.js",
+        "src/analyzer/url/*.js",
+        "src/rule/*.js",
+        "src/shared/*.js",
+        "src/utils/*.js"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
+    }
+  ]
+}

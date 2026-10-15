@@ -1,0 +1,208 @@
+/* Gaya pengaturan: proteksi serta daftar domain diizinkan/diblokir. Aturan tampilan tidak mengubah keputusan klasifikasi. */
+.shell {
+  min-height: 100vh;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-head,
+.add-panel,
+.tabs,
+.list-panel {
+  border: 1px solid var(--hs-line);
+  border-radius: var(--hs-r-lg);
+  background: var(--hs-surface);
+  box-shadow: var(--hs-shadow);
+}
+
+.page-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 18px;
+}
+
+.product-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #bad2dc;
+  border-radius: var(--hs-r-lg);
+  background: var(--hs-primary-soft);
+  color: var(--hs-primary);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.page-head h1 {
+  margin-top: 3px;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.page-head p {
+  margin-top: 6px;
+  max-width: 680px;
+  color: var(--hs-ink-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.add-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 16px;
+}
+
+.add-copy h2 {
+  margin-top: 3px;
+  font-size: 16px;
+}
+
+.add-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 180px auto;
+  gap: 10px;
+}
+
+.add-hint {
+  color: var(--hs-ink-muted);
+  font-size: 12px;
+}
+
+.tabs {
+  display: inline-flex;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 4px;
+  box-shadow: none;
+}
+
+.tab-btn {
+  min-width: 104px;
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-radius: var(--hs-r-md);
+  background: transparent;
+  color: var(--hs-ink-muted);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.tab-btn:hover {
+  background: var(--hs-surface-soft);
+  color: var(--hs-ink);
+}
+
+.tab-btn.active {
+  border-color: var(--hs-line);
+  background: var(--hs-primary-soft);
+  color: var(--hs-primary);
+}
+
+.list-panel {
+  margin-top: 14px;
+  padding: 12px;
+}
+
+.list-container {
+  display: grid;
+  gap: 8px;
+}
+
+.item-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--hs-line);
+  border-radius: var(--hs-r-lg);
+  background: var(--hs-surface-soft);
+}
+
+.item-info {
+  display: flex;
+  min-width: 0;
+  gap: 10px;
+  align-items: center;
+}
+
+.badge {
+  flex: none;
+  min-width: 76px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.badge.allow {
+  background: var(--hs-safe-bg);
+  color: var(--hs-safe);
+}
+
+.badge.block {
+  background: var(--hs-dangerous-bg);
+  color: var(--hs-dangerous);
+}
+
+.domain-name {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.delete-btn {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--hs-line);
+  border-radius: var(--hs-r-md);
+  background: var(--hs-surface);
+  color: var(--hs-ink-muted);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.delete-btn:hover {
+  border-color: var(--hs-dangerous);
+  color: var(--hs-dangerous);
+}
+
+.empty-state {
+  padding: 28px 16px;
+  color: var(--hs-ink-faint);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .shell {
+    padding: 14px;
+  }
+
+  .add-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .tab-btn {
+    width: 100%;
+  }
+
+  .item-card,
+  .item-info {
+    display: grid;
+  }
+}

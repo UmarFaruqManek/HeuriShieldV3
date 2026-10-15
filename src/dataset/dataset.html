@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HeuriShield - Dataset Evaluasi</title>
+  <link rel="stylesheet" href="../styles/tokens.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="dataset.css">
+</head>
+<body>
+  <main>
+    <header><span>HEURISHIELD</span><h1>Dataset evaluasi</h1></header>
+    <p>Catatan terpisah dari riwayat kunjungan: URL tanpa query/fragment, 60 fitur, dan label prediksi. Label belum diverifikasi. Path URL masih dapat memuat informasi pribadi; periksa sebelum membagikan file.</p>
+    <section aria-label="Pencatatan">
+      <button id="choose" type="button">Pilih file JSON dan mulai</button>
+      <button id="stop" type="button" disabled>Hentikan pencatatan</button>
+      <dl><div><dt>File</dt><dd id="filename">Belum dipilih</dd></div><div><dt>Tersimpan di file</dt><dd id="count">0</dd></div><div><dt>Menunggu penulisan</dt><dd id="pending">0</dd></div></dl>
+      <p id="status" role="status" aria-live="polite">Pencatatan belum diaktifkan.</p>
+      <p id="error" role="alert" hidden></p>
+    </section>
+    <p>Biarkan tab ini terbuka. Hasil ditulis otomatis ke file pilihan Anda, bukan diunduh berulang kali. Jika tab ditutup, catatan berikutnya menunggu di penyimpanan extension; buka kembali halaman ini dan pilih file yang sama. Izin menulis mungkin perlu diberikan kembali.</p>
+    <a href="../options/options.html">Kembali ke pengaturan</a>
+  </main>
+  <script type="module" src="dataset.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!-- Struktur pengaturan: proteksi serta daftar domain diizinkan/diblokir. Logika interaksi ada pada file JavaScript halaman. -->
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HeuriShield - Daftar Situs</title>
+    <link rel="stylesheet" href="../styles/tokens.css">
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="./options.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="page-head">
+        <div class="product-mark" aria-hidden="true">HS</div>
+        <div>
+          <span class="hs-label">HeuriShield V5</span>
+          <h1>Daftar situs manual</h1>
+          <p>Domain di sini melewati keputusan otomatis. Pakai hanya untuk pengecualian yang benar-benar jelas.</p>
+        </div>
+      </header>
+
+      <section class="add-panel" aria-label="Tambah situs">
+        <a href="../dataset/dataset.html" target="_blank" rel="noopener">Pencatatan dataset JSON</a>
+        <div class="add-copy">
+          <span class="hs-label">Tambah domain</span>
+          <h2>Allowlist atau blocklist</h2>
+        </div>
+        <div class="add-row">
+          <input
+            id="domainInput"
+            type="text"
+            class="hs-input add-input"
+            placeholder="contoh: tokopedia.com"
+            autocomplete="off"
+          >
+          <select id="typeSelect" class="hs-select">
+            <option value="allow">Selalu izinkan</option>
+            <option value="block">Selalu blokir</option>
+          </select>
+          <button id="addButton" type="button" class="hs-btn hs-btn--primary">Tambah</button>
+        </div>
+        <p class="add-hint">Protokol, www, dan path akan dibersihkan otomatis.</p>
+      </section>
+
+      <nav class="tabs" aria-label="Saring daftar">
+        <button class="tab-btn active" type="button" data-tab="all">Semua</button>
+        <button class="tab-btn" type="button" data-tab="allow">Diizinkan</button>
+        <button class="tab-btn" type="button" data-tab="block">Diblokir</button>
+      </nav>
+
+      <section class="list-panel" aria-label="Daftar situs tersimpan">
+        <div id="listContainer" class="list-container"></div>
+      </section>
+    </main>
+
+    <script type="module" src="./options.js"></script>
+  </body>
+</html>

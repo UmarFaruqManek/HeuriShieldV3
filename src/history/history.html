@@ -1,0 +1,68 @@
+<!-- Struktur riwayat analisis: filter, daftar URL, dan status keputusan. Logika interaksi ada pada file JavaScript halaman. -->
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HeuriShield - Riwayat URL</title>
+    <link rel="stylesheet" href="../styles/tokens.css">
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="./history.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="page-head">
+        <div class="title-block">
+          <div class="product-mark" aria-hidden="true">HS</div>
+          <div>
+            <span class="hs-label">HeuriShield V5</span>
+            <h1>Riwayat analisis</h1>
+            <p>Audit situs yang pernah diperiksa, dengan filter untuk status dan alasan.</p>
+          </div>
+        </div>
+
+        <div class="head-actions">
+          <button id="refreshButton" type="button" class="hs-btn hs-btn--ghost">Muat ulang</button>
+          <button id="clearButton" type="button" class="hs-btn hs-btn--danger">Hapus riwayat</button>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="Filter riwayat">
+        <input id="searchInput" type="search" class="hs-input search" placeholder="Cari URL, domain, atau alasan">
+        <select id="verdictFilter" class="hs-select" aria-label="Filter status">
+          <option value="all">Semua status</option>
+          <option value="SAFE">Aman</option>
+          <option value="WARNING">Peringatan</option>
+          <option value="SUSPICIOUS">Mencurigakan</option>
+          <option value="DANGEROUS">Berbahaya</option>
+          <option value="LIMITED">Analisis terbatas</option>
+        </select>
+      </section>
+
+      <section class="table-panel">
+        <div class="hs-table-wrap table-scroll">
+          <table class="hs-table history-table">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">URL</th>
+                <th scope="col">Domain</th>
+                <th scope="col">Keputusan</th>
+                <th scope="col">Status</th>
+                <th scope="col">Alasan</th>
+                <th scope="col">Waktu</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody"></tbody>
+          </table>
+        </div>
+
+        <p id="emptyState" class="hs-empty" hidden>
+          Belum ada riwayat URL yang tersimpan.
+        </p>
+      </section>
+    </main>
+
+    <script type="module" src="./history.js"></script>
+  </body>
+</html>

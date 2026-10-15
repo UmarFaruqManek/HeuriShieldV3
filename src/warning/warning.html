@@ -1,0 +1,70 @@
+<!-- Struktur halaman blokir: status, alasan, dan tindakan kembali/lanjut. Logika interaksi ada pada file JavaScript halaman. -->
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HeuriShield memblokir URL berisiko</title>
+    <link rel="stylesheet" href="../styles/tokens.css">
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="./warning.css">
+  </head>
+  <body>
+    <main class="shell" data-verdict="DANGEROUS">
+      <section class="block-layout">
+        <aside class="status-rail" aria-label="Status proteksi">
+          <div class="product-mark">HS</div>
+          <span class="rail-label">Blocked</span>
+        </aside>
+
+        <article class="panel">
+          <header class="panel-head">
+            <span class="hs-label">HeuriShield V5</span>
+            <h1>URL ini dihentikan sebelum Anda berinteraksi</h1>
+            <p class="lead">
+              Sinyal risiko pada halaman ini cukup kuat. Jangan memasukkan kata sandi, OTP,
+              data kartu, atau informasi pribadi sebelum Anda yakin domainnya benar.
+            </p>
+          </header>
+
+          <dl class="summary">
+            <div class="summary-item">
+              <dt>Domain</dt>
+              <dd id="domain">Tidak tersedia</dd>
+            </div>
+            <div class="summary-item">
+              <dt>Keputusan</dt>
+              <dd id="score" class="hs-pill">Phishing</dd>
+            </div>
+          </dl>
+
+          <section class="reasons" aria-labelledby="reasonsHeading">
+            <div class="section-head">
+              <span class="hs-label">Alasan utama</span>
+              <h2 id="reasonsHeading">Mengapa diblokir</h2>
+            </div>
+            <ul id="reasonList" class="reason-list"></ul>
+            <p id="reasonNote" class="reason-note" hidden></p>
+            <p id="reasonAdvice">Jangan masukkan kata sandi, OTP, atau data kartu sebelum memastikan identitas situs.</p>
+          </section>
+
+          <section id="redirectSourceSection" class="redirect-source" hidden>
+            <span class="hs-label">Asal redirect</span>
+            <p id="redirectSourceText"></p>
+          </section>
+
+          <div class="actions">
+            <button id="backButton" type="button" class="hs-btn hs-btn--primary">
+              Kembali ke halaman sebelumnya
+            </button>
+            <button id="continueButton" type="button" class="hs-btn hs-btn--quiet">
+              Tetap lanjutkan dengan risiko sendiri
+            </button>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="./warning.js"></script>
+  </body>
+</html>

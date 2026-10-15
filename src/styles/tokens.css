@@ -1,0 +1,90 @@
+/* Gaya token warna dan ukuran bersama antarmuka. Aturan tampilan tidak mengubah keputusan klasifikasi. */
+:root {
+  color-scheme: light;
+
+  --hs-ground: #eef2f6;
+  --hs-surface: #ffffff;
+  --hs-surface-soft: #f7f9fb;
+  --hs-surface-strong: #edf3f8;
+  --hs-line: #d9e1ea;
+  --hs-line-soft: #e8eef4;
+
+  --hs-ink: #111827;
+  --hs-ink-muted: #526071;
+  --hs-ink-faint: #7b8797;
+
+  --hs-primary: #174c66;
+  --hs-primary-hover: #0f3a50;
+  --hs-primary-soft: #e3f0f5;
+  --hs-focus: #2563eb;
+
+  --hs-safe: #16704a;
+  --hs-safe-bg: #e7f5ee;
+  --hs-warning: #936315;
+  --hs-warning-bg: #fff2d6;
+  --hs-suspicious: #a24d17;
+  --hs-suspicious-bg: #fde8d5;
+  --hs-dangerous: #b4232b;
+  --hs-dangerous-bg: #fde3e3;
+  --hs-limited: #5c6673;
+  --hs-limited-bg: #edf0f4;
+
+  --hs-sev-critical: #b4232b;
+  --hs-sev-high: #a24d17;
+  --hs-sev-medium: #936315;
+  --hs-sev-low: #16704a;
+  --hs-sev-info: #64748b;
+
+  --hs-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --hs-font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
+
+  --hs-r-sm: 4px;
+  --hs-r-md: 6px;
+  --hs-r-lg: 8px;
+  --hs-shadow: 0 10px 28px -20px rgb(15 23 42 / 38%), 0 1px 2px rgb(15 23 42 / 8%);
+}
+
+[data-verdict] {
+  --v-fg: var(--hs-limited);
+  --v-bg: var(--hs-limited-bg);
+}
+
+[data-verdict="SAFE"] {
+  --v-fg: var(--hs-safe);
+  --v-bg: var(--hs-safe-bg);
+}
+
+[data-verdict="WARNING"] {
+  --v-fg: var(--hs-warning);
+  --v-bg: var(--hs-warning-bg);
+}
+
+[data-verdict="SUSPICIOUS"] {
+  --v-fg: var(--hs-suspicious);
+  --v-bg: var(--hs-suspicious-bg);
+}
+
+[data-verdict="DANGEROUS"] {
+  --v-fg: var(--hs-dangerous);
+  --v-bg: var(--hs-dangerous-bg);
+}
+
+[data-severity] {
+  --s-fg: var(--hs-sev-info);
+}
+
+[data-severity="critical"] {
+  --s-fg: var(--hs-sev-critical);
+}
+
+[data-severity="high"] {
+  --s-fg: var(--hs-sev-high);
+}
+
+[data-severity="medium"] {
+  --s-fg: var(--hs-sev-medium);
+}
+
+[data-severity="low"] {
+  --s-fg: var(--hs-sev-low);
+}
