@@ -32,6 +32,12 @@ export function buildAnalysisExplanation(analysis = {}) {
     if (url.final_domain_changed === true || url.final_domain_changed === 1 || Number(url.cross_domain_redirect_count) > 0) {
       add("Alamat yang dibuka berpindah ke domain lain. Pastikan tujuan akhirnya sesuai dengan situs yang Anda cari.");
     }
+    if (/^https?[-_]|(?:^|[.-])www[-_]/i.test(domain)) {
+      add(`Nama domain "${domain}" memuat teks seperti penulisan alamat web. Teks tersebut bagian nama domain, bukan tanda bahwa alamatnya resmi.`);
+    }
+    // Jelaskan nilai yang benar-benar terbaca pada rule positif. Bukan semua
+    // fitur halaman, bukan nilai median, dan bukan klaim penyebab tunggal.
+    for (const reason of observedRuleReasons(model)) add(reason);
     if (!reasons.length) {
       add(model.post_model_guard
         ? "Pemeriksaan tambahan menemukan kombinasi tanda risiko pada halaman ini. Pastikan identitas situs sebelum melanjutkan."
@@ -64,6 +70,54 @@ export function buildAnalysisExplanation(analysis = {}) {
     action: dangerous ? "Jangan masukkan kata sandi, OTP, atau data kartu sebelum memastikan identitas situs." : "Tetap periksa alamat situs sebelum memasukkan data pribadi.",
     limitation: limitations.join(" ")
   };
+}
+
+function observedRuleReasons(model) {
+  const labels = {
+    domain_age_days: ["Pendaftaran domain", "umur domain", "hari"],
+    registration_lifetime_days: ["Pendaftaran domain", "masa pendaftaran", "hari"],
+    nameserver_count: ["Pendaftaran domain", "nameserver", ""],
+    hostname_length: ["Struktur alamat", "panjang nama host", "karakter"],
+    path_length: ["Struktur alamat", "panjang path", "karakter"],
+    url_length: ["Struktur alamat", "panjang URL", "karakter"],
+    query_length: ["Struktur alamat", "panjang query", "karakter"],
+    subdomain_count: ["Struktur alamat", "jumlah subdomain", ""],
+    dot_count: ["Struktur alamat", "jumlah titik pada host", ""],
+    url_token_count: ["Struktur alamat", "jumlah potongan kata/angka URL", ""],
+    special_char_ratio: ["Struktur alamat", "rasio karakter khusus", "ratio"],
+    url_entropy: ["Struktur alamat", "entropi karakter URL", ""],
+    anchor_count: ["Struktur halaman", "tautan", ""],
+    internal_anchor_count: ["Struktur halaman", "tautan internal", ""],
+    external_anchor_count: ["Struktur halaman", "tautan eksternal", ""],
+    external_anchor_ratio: ["Struktur halaman", "rasio tautan eksternal", "ratio"],
+    resource_count: ["Struktur halaman", "jumlah aset halaman", ""],
+    script_count: ["Struktur halaman", "script", ""],
+    visible_text_length: ["Struktur halaman", "panjang teks terlihat", "karakter"],
+    html_length: ["Struktur halaman", "panjang HTML", "karakter"],
+    form_count: ["Struktur halaman", "form", ""],
+    credential_form_count: ["Struktur halaman", "form data akun", ""],
+    password_input_count: ["Struktur halaman", "kolom password", ""]
+  };
+  const groups = new Map();
+  const seen = new Set();
+  const rules = [...(model.fired_rules || [])].filter(rule => Number(rule.coefficient) > 0)
+    .sort((a, b) => Number(b.coefficient) - Number(a.coefficient));
+  for (const rule of rules) {
+    for (const condition of rule.conditions || []) {
+      if (condition.passed !== true || typeof condition.value !== "number" || !Number.isFinite(condition.value)) continue;
+      const name = condition.feature || "";
+      const base = name.replace(/^(original_|final_)/, "");
+      const descriptor = labels[base];
+      if (!descriptor || seen.has(base)) continue;
+      seen.add(base);
+      const [group, label, unit] = descriptor;
+      const side = name.startsWith("original_") ? " pada alamat awal" : name.startsWith("final_") ? " pada alamat akhir" : "";
+      const value = unit === "ratio" ? `${(condition.value * 100).toFixed(1)}%` : `${Number(condition.value.toFixed(2))}${unit ? ` ${unit}` : ""}`;
+      if (!groups.has(group)) groups.set(group, []);
+      if (groups.get(group).length < 2) groups.get(group).push(`${label}${side}: ${value}`);
+    }
+  }
+  return [...groups].map(([group, observations]) => `${group} yang ikut menaikkan risiko dalam kombinasi aturan model: ${observations.join("; ")}.`);
 }
 
 function hostname(value) {

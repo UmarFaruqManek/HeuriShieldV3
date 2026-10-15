@@ -2,7 +2,7 @@
  * Membaca konteks hasil sebelum redirect dan menampilkan alasan ringkas halaman blokir.
  * Tombol lanjut mengirim permintaan bypass sementara sebelum kembali ke URL tujuan.
  */
-import { getWarningContext } from "../storage/settings.js";
+import { getWarningContext, getAnalysisByTab } from "../storage/settings.js";
 import { buildAnalysisExplanation } from "../shared/analysis-explanation.js";
 
 const params = new URLSearchParams(location.search);
@@ -24,15 +24,30 @@ document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
   currentTabId = await getCurrentTabId();
-  const context = contextId ? await getWarningContext(contextId) : null;
+  let context = contextId ? await getWarningContext(contextId) : null;
+  if (context && !context.analysis && currentTabId !== null) {
+    const previous = await getAnalysisByTab(currentTabId);
+    if (previous && (previous.final_url || previous.url) === context.originalUrl) context.analysis = previous;
+  }
+  // Cadangan per tab mempertahankan identitas saat daftar konteks lokal dipangkas.
+  const cacheKey = `heurishield-warning:${contextId}`;
+  if (context) { try { sessionStorage.setItem(cacheKey, JSON.stringify(context)); } catch { /* Storage utama tetap menjadi sumber. */ } }
+  else if (contextId) {
+    try { context = JSON.parse(sessionStorage.getItem(cacheKey) || "null"); } catch { /* Cache invalid tidak dipakai. */ }
+  }
 
   if (!context) {
     renderFallback();
   } else {
-    originalUrl = context.originalUrl;
-    elements.domain.textContent = context.domain || "Tidak tersedia";
+    try {
+      const parsed = new URL(context.originalUrl);
+      if (!["http:", "https:"].includes(parsed.protocol)) throw new Error("Bukan situs web.");
+      originalUrl = parsed.href;
+      elements.domain.textContent = parsed.hostname;
+      document.title = `HeuriShield - ${parsed.hostname} diblokir`;
+    } catch { renderFallback(); return; }
     elements.score.textContent = getDecisionClassLabel(context.verdict);
-    const explanation = context.explanation || buildAnalysisExplanation(context);
+    const explanation = context.analysis ? buildAnalysisExplanation(context.analysis) : context.explanation || buildAnalysisExplanation(context);
     document.querySelector("h1").textContent = explanation.title;
     document.querySelector(".lead").textContent = explanation.summary;
     document.querySelector("#reasonAdvice").textContent = explanation.action;

@@ -131,12 +131,12 @@
       render();
     });
     wrap.querySelector(".hs-allow-list").addEventListener("click", () => {
-      chrome.runtime.sendMessage({ type: "HEURISHIELD_TOGGLE_ALLOWLIST", url: location.href })
+      chrome.runtime.sendMessage({ type: "HEURISHIELD_TOGGLE_ALLOWLIST", url: STATE.analysis?.final_url || location.href })
         .then(() => requestAnalysis())
         .catch(() => null);
     });
     wrap.querySelector(".hs-block-list").addEventListener("click", () => {
-      chrome.runtime.sendMessage({ type: "HEURISHIELD_TOGGLE_BLOCKLIST", url: location.href })
+      chrome.runtime.sendMessage({ type: "HEURISHIELD_TOGGLE_BLOCKLIST", url: STATE.analysis?.final_url || location.href })
         .then(() => requestAnalysis())
         .catch(() => null);
     });
@@ -166,6 +166,7 @@
     setText(".hs-brand-label", brand.label);
     setText(".hs-brand", brand.value);
     setText(".hs-age", domainAgeText(analysis));
+    setText(".hs-refresh", analysis?.is_warning_snapshot ? "Muat hasil" : "Ulang");
     setText(".hs-rules", STATE.loading ? "Berjalan" : analysis?.model_result?.ready ? "Selesai" : "Terbatas");
     const explanation = analysis?.explanation;
     const reasons = STATE.loading ? ["Analisis sedang berjalan."] : STATE.error ? [STATE.error] : explanation?.reasons || ["Detail pemeriksaan belum tersedia. Coba ulang pemeriksaan."];
@@ -462,13 +463,14 @@
 
   function domainAgeText(analysis) {
     const days = analysis?.rdap_features?.final_domain_age_days ?? analysis?.rdap_features?.original_domain_age_days;
-    if (!Number.isFinite(Number(days))) return "Tidak tersedia";
+    if (days === null || days === undefined || days === "" || !Number.isFinite(Number(days))) return "Tidak tersedia";
     if (Number(days) < 365) return `${Math.round(Number(days))} hari`;
     return `${(Number(days) / 365).toFixed(1)} tahun`;
   }
 
   function getHost() {
     try {
+      if (!/^https?:$/.test(location.protocol)) return "Tidak tersedia";
       return location.hostname || "-";
     } catch {
       return "-";

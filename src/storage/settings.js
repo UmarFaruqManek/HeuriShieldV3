@@ -168,7 +168,15 @@ export async function saveDomainCache(domain, metadata) {
   await chrome.storage.local.set({ [STORAGE_KEYS.DOMAIN_METADATA_CACHE]: cache });
 }
 
-export async function saveWarningContext(id, context) {
+let warningContextWrites = Promise.resolve();
+export function saveWarningContext(id, context) {
+  // Dua tab diblokir bersamaan tidak boleh saling menghapus konteks.
+  const operation = warningContextWrites.then(() => writeWarningContext(id, context));
+  warningContextWrites = operation.catch(() => {});
+  return operation;
+}
+
+async function writeWarningContext(id, context) {
   // Halaman blokir mengambil temuan lama memakai ID ini, tanpa menganalisis dirinya.
   const result = await chrome.storage.local.get({ [STORAGE_KEYS.WARNING_CONTEXTS]: {} });
   const contexts = result[STORAGE_KEYS.WARNING_CONTEXTS];

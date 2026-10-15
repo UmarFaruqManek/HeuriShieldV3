@@ -18,11 +18,13 @@ import {
   isProtectionEnabled,
   saveAnalysisForTab,
   saveUrlHistoryEntry,
-  saveWarningContext
+  saveWarningContext,
+  getWarningContext
 } from "../storage/settings.js";
 import { STORAGE_KEYS } from "../utils/constants.js";
 import { buildAnalysisExplanation } from "../shared/analysis-explanation.js";
 import { createDatasetCollector } from "../storage/dataset-collector.js";
+import { saveDatasetDownload } from "../storage/dataset-download.js";
 
 const ANALYSIS_VERSION = "v5-rulefit60-explanation-v6";
 const METADATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
@@ -30,7 +32,9 @@ const METADATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 let runtimeResourcesPromise = null;
 const datasetCollectorPromise = fetch(chrome.runtime.getURL("src/rule/feature-contract-60.json"))
   .then(response => response.json())
-  .then(contract => createDatasetCollector(chrome.storage.local, contract.features));
+  .then(contract => createDatasetCollector(chrome.storage.local, contract.features, undefined, saveDatasetDownload));
+// Pulihkan penulisan tertunda ketika service worker hidup lagi, tanpa tab khusus.
+datasetCollectorPromise.then(collector => collector.sync()).catch(error => console.warn("Dataset:", error.message));
 let metadataCacheWrites = Promise.resolve();
 const cachedBrandLookup = createBrandLookupCache({
   lookup: searchBrand,
@@ -84,7 +88,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     }
     datasetCollectorPromise.then(collector => {
       if (message.action === "enable") return collector.enable(message.enabled);
-      if (message.action === "acknowledge" && Array.isArray(message.ids)) return collector.acknowledge(message.ids);
+      if (message.action === "sync") return collector.sync(true);
       throw new Error("Perintah dataset tidak dikenal.");
     }).then(() => sendResponse({ ok: true })).catch(error => sendResponse({ ok: false, error: error.message }));
     return true;
@@ -200,6 +204,9 @@ if (chrome.webNavigation?.onCompleted) {
 async function analyzeActiveTab(message) {
   const tabId = Number(message.tabId);
   const url = String(message.url || "");
+  // Refresh/panel pada block page mengembalikan snapshot situs, bukan DOM extension.
+  const blocked = await warningAnalysisForTab(tabId);
+  if (blocked) return blocked;
   const base = buildBaseAnalysis(url, tabId);
 
   if (!tabId || !isHttpUrl(url)) {
@@ -212,6 +219,11 @@ async function analyzeActiveTab(message) {
 
   // Ambil fitur halaman sebelum keputusan dapat mengalihkan tab ke halaman blokir.
   const domSnapshot = await collectDomSnapshot(tabId, url);
+  if (domSnapshot.url && !isHttpUrl(domSnapshot.url)) {
+    const previous = await warningAnalysisForTab(tabId);
+    if (previous) return previous;
+    throw new Error("Halaman sudah berpindah; snapshot bukan situs HTTP/HTTPS.");
+  }
   const finalUrl = domSnapshot.url || url;
   const resources = await getRuntimeResources();
   const runtime = await buildRuntimeFeatureAnalysis({
@@ -266,12 +278,14 @@ async function analyzeActiveTab(message) {
   };
 
   // Penjelasan ringkas untuk UI; fitur dan rule lengkap tetap tersimpan untuk audit.
+  const blockedDuringAnalysis = await warningAnalysisForTab(tabId);
+  if (blockedDuringAnalysis) return blockedDuringAnalysis;
   analysis.explanation = buildAnalysisExplanation(analysis);
   await saveAnalysisForTab(tabId, analysis);
   await saveUrlHistoryEntry(tabId, analysis);
   await saveFeatureJsonArchive(analysis);
   // Kegagalan pencatatan tidak boleh membatalkan keputusan proteksi halaman.
-  await datasetCollectorPromise.then(collector => collector.record(analysis)).catch(error => {
+  datasetCollectorPromise.then(collector => collector.record(analysis)).catch(error => {
     console.warn("Pencatatan dataset gagal:", error.message);
   });
   return analysis;
@@ -359,12 +373,16 @@ async function redirectToWarningPage(tabId, analysis) {
   // Simpan konteks sebelum redirect supaya alasan berasal dari situs, bukan halaman blokir.
   if (!analysis || consumeTemporaryBypass(tabId, analysis.final_url || analysis.url)) return;
   const targetUrl = analysis.final_url || analysis.normalized_url || analysis.url;
+  if (!isHttpUrl(targetUrl)) return;
+  // Hindari redirect kedua dari permintaan analisis paralel pada tab yang sama.
+  if (await warningAnalysisForTab(tabId)) return;
   const contextId = `warn-${Date.now()}-${Math.random().toString(16).slice(2)}`;
   await saveWarningContext(contextId, {
+    analysis: { ...analysis, explanation: buildAnalysisExplanation(analysis) },
     explanation: buildAnalysisExplanation(analysis),
     originalUrl: targetUrl,
     sourceUrl: analysis.url || targetUrl,
-    domain: analysis.hostname || safeUrl(targetUrl)?.hostname || "",
+    domain: safeUrl(targetUrl)?.hostname || "",
     registrable_domain: analysis.registrable_domain || "",
     verdict: analysis.verdict || "DANGEROUS",
     score: analysis.score ?? null,
@@ -376,6 +394,31 @@ async function redirectToWarningPage(tabId, analysis) {
 
   const warningUrl = chrome.runtime.getURL(`src/warning/warning.html?id=${encodeURIComponent(contextId)}`);
   await chrome.tabs.update(tabId, { url: warningUrl });
+}
+
+async function warningAnalysisForTab(tabId) {
+  if (!Number.isInteger(tabId) || tabId < 0) return null;
+  let tab;
+  try { tab = await chrome.tabs.get(tabId); } catch { return null; }
+  const internal = chrome.runtime.getURL("src/warning/warning.html");
+  if (!tab.url?.startsWith(internal)) return null;
+  const id = new URL(tab.url).searchParams.get("id");
+  const context = id ? await getWarningContext(id) : null;
+  let prior = context?.analysis || await getAnalysisByTab(tabId);
+  const target = context?.originalUrl || prior?.final_url || prior?.url;
+  if (!isHttpUrl(target)) throw new Error("Hasil situs asal tidak tersedia. Block page tidak dianalisis ulang.");
+  if (prior && normalizeComparableUrl(prior.final_url || prior.url) !== normalizeComparableUrl(target)) prior = null;
+  return {
+    ...(prior || {}),
+    url: context?.sourceUrl || prior?.url || target,
+    final_url: target,
+    normalized_url: target,
+    registrable_domain: prior?.url_features?.final_registrable_domain || safeUrl(target).hostname,
+    hostname: safeUrl(target).hostname,
+    verdict: context?.verdict || prior?.verdict || "LIMITED",
+    explanation: prior ? buildAnalysisExplanation(prior) : context?.explanation,
+    is_warning_snapshot: true
+  };
 }
 
 function consumeTemporaryBypass(tabId, url) {

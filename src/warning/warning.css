@@ -10,7 +10,7 @@ body {
   display: grid;
   min-height: 100vh;
   place-items: center;
-  padding: 28px;
+  padding: 28px 28px 110px;
 }
 
 .block-layout {
@@ -196,7 +196,7 @@ body {
 
 @media (max-width: 720px) {
   .shell {
-    padding: 16px;
+    padding: 16px 16px 110px;
   }
 
   .block-layout {

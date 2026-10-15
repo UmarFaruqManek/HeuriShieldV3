@@ -43,23 +43,25 @@ endpoint lokal opsional lalu layanan publik; endpoint lokal tidak wajib tersedia
 API dapat gagal, dibatasi, atau berubah; fitur yang tidak tersedia dapat diimputasi
 dengan median model. Keluaran di perangkat berbeda dapat bervariasi.
 
-## Dataset JSON Otomatis (Opsional)
+## History Extract Otomatis
 
-1. Buka Pengaturan dari panel extension.
-2. Pilih **Pencatatan dataset JSON**.
-3. Klik **Pilih file JSON dan mulai**, pilih lokasi, lalu izinkan penulisan file.
-4. Biarkan tab pencatatan terbuka saat menguji situs lain.
-5. Klik **Hentikan pencatatan** setelah selesai sebelum membagikan file.
+Setiap analisis selesai otomatis dicatat ke
+`Downloads/history-extract/hasil-ekstraksi.json`, mengikuti lokasi Downloads browser.
+Tidak perlu memilih file atau membiarkan tab khusus terbuka. Aktif secara default
+pada instalasi baru. Pengaturan -> Pencatatan dataset JSON menyediakan toggle
+**Simpan ekstraksi otomatis** untuk menghentikannya dan **Simpan ulang** untuk retry.
+Pengaturan nonaktif dari versi lama tetap dihormati; aktifkan toggle bila perlu.
 
 File adalah array objek: URL tanpa query/fragment/userinfo, seluruh 60 fitur,
 dan `label` prediksi. Missing tetap null. Label bukan ground truth yang telah
 diverifikasi; periksa sebelum dipakai untuk evaluasi/retraining.
-Path dapat memuat informasi pribadi. File lama dengan skema sama diteruskan.
-Jika tab ditutup, antrean lokal maksimal 2000 catatan dapat disimpan dengan
-membuka kembali halaman dan memilih file. Izin mungkin perlu diberikan kembali.
-Crash antara penulisan file dan konfirmasi antrean dapat menyebabkan duplikasi.
-Jangan menulis file yang sama dari beberapa profil/browser secara bersamaan.
-Pencatatan file menargetkan Chrome/Edge desktop yang mendukung File System Access.
+Path dapat memuat informasi pribadi. Arsip utama disimpan lokal; file JSON adalah
+snapshot yang diganti otomatis, bukan dibaca balik saat diedit. Jangan edit file aktif.
+Batas 2000 catatan; pengumpulan berhenti saat penuh tanpa menghapus catatan lama.
+Salin file sebelum menghapus data extension/uninstall. Instalasi baru tidak mengimpor
+file lama dan dapat mengganti file pada path yang sama. Profil/browser berbeda
+perlu Downloads terpisah agar file tidak saling menimpa. Pembaruan muncul sebagai
+aktivitas unduhan browser; kebijakan organisasi/extension lain dapat memblokirnya.
 
 ## Struktur
 
@@ -70,7 +72,7 @@ Pencatatan file menargetkan Chrome/Edge desktop yang mendukung File System Acces
 - `src/rule/rulefit-engine-60.json`: artefak model aktif.
 - `src/rule/rulefit-engine.js`: evaluator rule, logit, sigmoid, threshold.
 - `src/content/`, `src/warning/`: panel dan halaman blokir.
-- `src/dataset/`: pencatatan file JSON dengan izin pengguna.
+- `src/dataset/`: kontrol pencatatan otomatis tanpa pemilih file.
 - `src/storage/`: pengaturan, riwayat lokal, dan antrean dataset.
 - `assets/`: ikon extension.
 

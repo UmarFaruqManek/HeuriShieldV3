@@ -16,15 +16,28 @@ export function datasetRow(analysis, featureNames) {
   return row;
 }
 
-export function createDatasetCollector(storage, featureNames, makeId = () => crypto.randomUUID()) {
+export const DATASET_FILENAME = "history-extract/hasil-ekstraksi.json";
+
+export function createDatasetCollector(storage, featureNames, makeId = () => crypto.randomUUID(), saveSnapshot = null) {
   let writes = Promise.resolve();
   // Semua perubahan antrean diserialkan, termasuk ACK saat tab lain selesai dianalisis.
   const mutate = fn => {
     const operation = writes.then(async () => {
       const saved = await storage.get(DATASET_KEY);
-      const state = saved[DATASET_KEY] || { enabled: false, pending: [], error: "" };
+      const state = saved[DATASET_KEY] || { enabled: true, records: [], savedCount: 0, error: "" };
+      // Migrasi antrean lama tanpa menghapus catatan yang belum sempat ditulis.
+      if (!state.records) { state.records = state.pending || []; state.savedCount = 0; delete state.pending; }
       const result = await fn(state);
       await storage.set({ [DATASET_KEY]: state });
+      if (saveSnapshot && state.records.length !== state.savedCount) {
+        try {
+          await saveSnapshot(state.records.map(item => item.row));
+          state.savedCount = state.records.length;
+          state.error = "";
+          state.savedAt = new Date().toISOString();
+        } catch (error) { state.error = `File belum diperbarui: ${error.message}`; }
+        await storage.set({ [DATASET_KEY]: state });
+      }
       return result;
     });
     writes = operation.catch(() => {});
@@ -32,17 +45,17 @@ export function createDatasetCollector(storage, featureNames, makeId = () => cry
   };
   return {
     enable: enabled => mutate(state => { state.enabled = Boolean(enabled); state.error = ""; }),
-    acknowledge: ids => mutate(state => { const done = new Set(ids); state.pending = state.pending.filter(item => !done.has(item.id)); }),
+    sync: (force = false) => mutate(state => { if (force) state.savedCount = -1; }),
     record: analysis => mutate(state => {
       if (!state.enabled) return;
       const row = datasetRow(analysis, featureNames);
       if (!row) return;
-      if (state.pending.length >= 2000) {
+      if (state.records.length >= 2000) {
         state.enabled = false;
-        state.error = "Antrean mencapai 2000 catatan. Buka halaman pencatatan untuk menyimpan sebelum melanjutkan.";
+        state.error = "Batas 2000 catatan tercapai. Pencatatan dihentikan; file dan data lokal tetap dipertahankan.";
         return;
       }
-      state.pending.push({ id: makeId(), row });
+      state.records.push({ id: makeId(), row });
     })
   };
 }
