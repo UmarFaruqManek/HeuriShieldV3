@@ -6,8 +6,6 @@
 !/manifest.json
 !/src/
 !/assets/
-!/tools/
-!/Jalankan_Pencatatan.ps1
 /history-extract/
 
 # Jangan commit data pengujian, file hasil pencatatan, secret, atau cache.

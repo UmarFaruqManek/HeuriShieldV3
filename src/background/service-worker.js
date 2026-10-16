@@ -24,7 +24,6 @@ import {
 import { STORAGE_KEYS } from "../utils/constants.js";
 import { buildAnalysisExplanation } from "../shared/analysis-explanation.js";
 import { createDatasetCollector } from "../storage/dataset-collector.js";
-import { saveDatasetCapture } from "../storage/dataset-capture.js";
 
 const ANALYSIS_VERSION = "v5-rulefit60-explanation-v6";
 const METADATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
@@ -32,8 +31,8 @@ const METADATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 let runtimeResourcesPromise = null;
 const datasetCollectorPromise = fetch(chrome.runtime.getURL("src/rule/feature-contract-60.json"))
   .then(response => response.json())
-  .then(contract => createDatasetCollector(chrome.storage.local, contract.features, undefined, saveDatasetCapture));
-// Pulihkan penulisan tertunda ketika service worker hidup lagi, tanpa tab khusus.
+  .then(contract => createDatasetCollector(chrome.storage.local, contract.features));
+// Migrasi catatan lokal tanpa server, unduhan otomatis, atau tab khusus.
 datasetCollectorPromise.then(collector => collector.sync()).catch(error => console.warn("Dataset:", error.message));
 let metadataCacheWrites = Promise.resolve();
 const cachedBrandLookup = createBrandLookupCache({

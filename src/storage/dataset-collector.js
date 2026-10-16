@@ -18,7 +18,7 @@ export function datasetRow(analysis, featureNames) {
 
 export const DATASET_FILENAME = "history-extract/hasil-ekstraksi.json";
 
-export function createDatasetCollector(storage, featureNames, makeId = () => crypto.randomUUID(), saveSnapshot = null) {
+export function createDatasetCollector(storage, featureNames, makeId = () => crypto.randomUUID()) {
   let writes = Promise.resolve();
   // Serialisasi menjaga beberapa tab tidak saling menimpa catatan.
   const mutate = fn => {
@@ -27,25 +27,17 @@ export function createDatasetCollector(storage, featureNames, makeId = () => cry
       const state = saved[DATASET_KEY] || { enabled: true, records: [], savedCount: 0, error: "" };
       // Migrasi antrean lama tanpa menghapus catatan yang belum sempat ditulis.
       if (!state.records) { state.records = state.pending || []; state.savedCount = 0; delete state.pending; }
-      // Migrasi mempertahankan catatan lama; server menggabungkan, bukan menimpa file.
-      if (state.writerVersion !== "local-capture-v1") {
-        state.savedCount = -1;
-        state.writerVersion = "local-capture-v1";
+      // Hapus status penulis file lama, bukan hasil ekstraksi yang sudah terkumpul.
+      if (state.writerVersion !== "browser-local-v1") {
+        state.writerVersion = "browser-local-v1";
+        state.error = "";
         delete state.filePath;
+        delete state.fileCount;
+        delete state.savedCount;
+        delete state.savedAt;
       }
       const result = await fn(state);
       await storage.set({ [DATASET_KEY]: state });
-      if (saveSnapshot && state.records.length !== state.savedCount) {
-        try {
-          const savedFile = await saveSnapshot(state.records.map(item => item.row));
-          if (savedFile?.path) state.filePath = savedFile.path;
-          if (Number.isInteger(savedFile?.totalRows)) state.fileCount = savedFile.totalRows;
-          state.savedCount = state.records.length;
-          state.error = "";
-          state.savedAt = new Date().toISOString();
-        } catch (error) { state.error = `File belum diperbarui: ${error.message}`; }
-        await storage.set({ [DATASET_KEY]: state });
-      }
       return result;
     });
     writes = operation.catch(() => {});
@@ -53,14 +45,14 @@ export function createDatasetCollector(storage, featureNames, makeId = () => cry
   };
   return {
     enable: enabled => mutate(state => { state.enabled = Boolean(enabled); state.error = ""; }),
-    sync: (force = false) => mutate(state => { if (force) state.savedCount = -1; }),
+    sync: () => mutate(() => {}),
     record: analysis => mutate(state => {
       if (!state.enabled) return;
       const row = datasetRow(analysis, featureNames);
       if (!row) return;
       if (state.records.length >= 2000) {
         state.enabled = false;
-        state.error = "Batas 2000 catatan tercapai. Pencatatan dihentikan; file dan data lokal tetap dipertahankan.";
+        state.error = "Batas 2000 catatan tercapai. Pencatatan dihentikan; data lokal tetap dipertahankan.";
         return;
       }
       state.records.push({ id: makeId(), row });

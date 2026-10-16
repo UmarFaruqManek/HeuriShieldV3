@@ -59,32 +59,26 @@ Guard kecocokan brand, redirect dan impersonasi dapat mengubah keputusan. Guard 
 | Domain 3 | `https://whois-api-dun.vercel.app/api/whois?domain={domain}` |
 | Domain 4 | `https://who-dat.as93.net/{domain}` |
 
-Clearbit menyediakan kandidat utama. Brandfetch melengkapi skor hanya untuk domain kandidat yang sama atau menjadi fallback. Lookup domain beralih berurutan saat sumber gagal/tidak memadai. API membutuhkan internet dan dapat terkena timeout/rate limit. RuleFit tidak memakai API klasifikasi eksternal. Localhost:3000 di atas berbeda dari server pencatatan berikut.
+Clearbit menyediakan kandidat utama. Brandfetch melengkapi skor hanya untuk domain kandidat yang sama atau menjadi fallback. Lookup domain beralih berurutan saat sumber gagal/tidak memadai. API membutuhkan internet dan dapat terkena timeout/rate limit. RuleFit tidak memakai API klasifikasi eksternal. Localhost:3000 opsional hanya untuk lookup domain, bukan pencatatan.
 
-## History Extract: Pola V4
+## History Extract Tanpa Server
 
-Untuk mencatat langsung ke folder extension, jalankan **Node.js 18+**, tanpa npm install:
-
-```powershell
-# Dari folder extension; biarkan terminal berjalan selama pencatatan.
-.\Jalankan_Pencatatan.ps1
-# Alternatif lintas platform:
-node tools/extension-capture-server.mjs
-```
+Pencatatan berjalan otomatis di penyimpanan lokal browser. Tidak perlu Node.js, terminal, Native Messaging atau server pencatatan.
 
 ```mermaid
 flowchart LR
-  A[60 fitur dan label selesai] --> B[Antrean lokal]
-  B --> C[POST 127.0.0.1:3217/capture]
-  C --> D[Validasi dan gabungkan baris]
-  D --> E[history-extract/hasil-ekstraksi.json]
+  A[60 fitur dan label selesai] --> B[Simpan otomatis di browser]
+  B --> C[Pengaturan: History extract]
+  C --> D[Klik Unduh JSON saat diperlukan]
+  D --> E[Downloads/history-extract/hasil-ekstraksi.json]
 ```
 
-- **Server harus berjalan**, tetapi tab pengaturan boleh ditutup. Tidak memakai Downloads, pemilih file, Native Messaging atau registrasi Windows. `Ctrl+C` menghentikan server.
-- File adalah **array JSON: URL + 60 fitur + label prediksi**. Missing tetap `null`; label bukan ground truth. Data lama digabungkan dan baris identik tidak ditambahkan ulang, termasuk setelah restart server.
+- Catatan tetap ada setelah browser ditutup, terpisah dari riwayat kunjungan. Menghapus data extension atau uninstall dapat menghapus catatan; ambil JSON sebelum itu.
+- File adalah **array JSON: URL + 60 fitur + label prediksi**. Missing tetap `null`; label bukan ground truth. File hanya diunduh saat tombol **Unduh JSON** ditekan, bukan setiap analisis.
 - Query/fragment/userinfo disamarkan; path masih dapat memuat informasi pribadi. Isi form, password/OTP dan HTML lengkap tidak dicatat dalam dataset ini.
-- Pencatatan aktif secara default pada instalasi baru; toggle di **Pengaturan -> Pencatatan dataset JSON**. Jika server mati, data menunggu lokal. Setelah server hidup klik **Simpan ulang** atau buka situs berikutnya. Penampungan lokal maksimal 2.000 catatan; saat penuh pengumpulan dihentikan tanpa menghapus data.
-- Jangan edit file saat server berjalan. Salin file JSON untuk dibagikan; masing-masing teman menjalankan server dari salinan extension sendiri. Hanya satu server pada port 3217. Status: `http://127.0.0.1:3217/health`.
+- Pencatatan aktif secara default pada instalasi baru; toggle di **Pengaturan -> Pencatatan dataset JSON**. Batas 2.000 catatan; saat penuh pengumpulan dihentikan tanpa menghapus data. Batas kuota browser juga berlaku.
+- Browser tidak mengizinkan menulis langsung ke folder instalasi extension. File fisik masuk ke `history-extract` dalam direktori unduhan browser (biasanya Downloads), bukan folder project. Unduhan berulang diberi nama unik agar tidak menimpa file lama; pengaturan browser dapat menampilkan dialog lokasi.
+- Setiap teman memiliki catatan lokal sendiri dan dapat mengirim satu JSON untuk ditinjau. Jangan menjadikan label prediksi sebagai label pelatihan tanpa verifikasi.
 
 ## Peta Kode
 
@@ -96,7 +90,6 @@ flowchart LR
 | `src/shared/analysis-explanation.js` | Penjelasan temuan. |
 | `src/content/`, `src/warning/` | Snapshot, panel, halaman blokir dan konteks situs asal. |
 | `src/storage/`, `src/dataset/` | Arsip lokal, antrean dan pengaturan pencatatan. |
-| `tools/extension-capture-server.mjs` | Server loopback penulis JSON, seperti V4. |
 
 ## Batasan
 
