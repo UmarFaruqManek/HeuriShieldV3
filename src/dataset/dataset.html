@@ -7,10 +7,13 @@
   <p>URL, 60 nilai fitur, dan label prediksi. Terpisah dari riwayat kunjungan. Query/fragment disamarkan; path masih dapat mengandung informasi pribadi.</p>
   <section aria-label="Pencatatan otomatis">
     <label><input id="enabled" type="checkbox"> Simpan ekstraksi otomatis</label>
-    <dl><div><dt>Penyimpanan otomatis</dt><dd>Di browser ini, terpisah dari riwayat kunjungan</dd></div><div><dt>Total catatan</dt><dd id="count">0</dd></div><div><dt>Lokasi unduhan JSON</dt><dd>Downloads/history-extract/hasil-ekstraksi.json</dd></div></dl>
+    <dl><div><dt>File terhubung</dt><dd id="filename">Belum dipilih</dd></div><div><dt>Catatan di browser</dt><dd id="count">0</dd></div><div><dt>Baris di file JSON</dt><dd id="filecount">-</dd></div></dl>
     <p id="status" role="status" aria-live="polite"></p><p id="error" role="alert" hidden></p>
-    <button id="download" type="button">Unduh JSON</button>
+    <button id="choose" type="button">Pilih file JSON</button>
+    <button id="create" type="button">Buat file JSON</button>
+    <button id="resume" type="button" disabled>Izinkan kembali</button>
+    <button id="sync" type="button" disabled>Sinkronkan sekarang</button>
   </section>
-  <p>Batas lokal 2000 catatan. Label adalah prediksi, bukan label kebenaran. File JSON hanya dibuat ketika diminta. Periksa isinya sebelum dibagikan.</p>
+  <p>Pilih <code>history-extract/hasil-ekstraksi.json</code> di folder Heurisield dan izinkan penulisan. Biarkan tab ini terbuka selama memakai website di tab lain. Jika tab ditutup, catatan tetap masuk ke browser dan disinkronkan saat halaman ini dibuka kembali dengan izin aktif. Label adalah prediksi, bukan label kebenaran; batas catatan di browser 2000.</p>
   <a href="../options/options.html">Kembali ke pengaturan</a>
 </main><script type="module" src="dataset.js"></script></body></html>

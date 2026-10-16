@@ -11,7 +11,8 @@
     expanded: false,
     detailsExpanded: false,
     loading: true,
-    error: null
+    error: null,
+    contextInvalidated: false
   };
 
   const rootHost = document.createElement("div");
@@ -42,14 +43,32 @@
   requestAnalysis();
   render();
 
+  async function sendToBackground(message) {
+    // Reload extension membatalkan konteks tab lama; API dapat melempar sebelum membuat Promise.
+    try {
+      if (!chrome.runtime?.id) throw new Error("Extension context invalidated.");
+      return await chrome.runtime.sendMessage(message);
+    } catch (error) {
+      STATE.loading = false;
+      STATE.contextInvalidated = /context invalidated/i.test(error?.message || "");
+      STATE.error = STATE.contextInvalidated
+        ? "HeuriShield telah dimuat ulang atau dinonaktifkan. Muat ulang halaman ini untuk menghubungkan kembali extension."
+        : error?.message || "Tidak dapat menghubungi HeuriShield.";
+      STATE.expanded = true;
+      render();
+      return null;
+    }
+  }
+
   async function requestAnalysis(forceRefresh = false) {
     // Background adalah sumber keputusan; panel hanya menerima objek hasil analisis.
     try {
-      const response = await chrome.runtime.sendMessage({
+      const response = await sendToBackground({
         type: "HEURISHIELD_ANALYZE_PAGE",
         url: location.href,
         forceRefresh
       });
+      if (!response) return;
       STATE.loading = false;
       if (!response?.ok) {
         STATE.error = response?.error || "Analisis gagal.";
@@ -121,6 +140,11 @@
       render();
     });
     wrap.querySelector(".hs-refresh").addEventListener("click", () => {
+      // Konteks yang batal tidak bisa dipulihkan dengan mengirim pesan lagi.
+      if (STATE.contextInvalidated) {
+        location.reload();
+        return;
+      }
       STATE.loading = true;
       STATE.error = null;
       render();
@@ -130,21 +154,19 @@
       STATE.detailsExpanded = !STATE.detailsExpanded;
       render();
     });
-    wrap.querySelector(".hs-allow-list").addEventListener("click", () => {
-      chrome.runtime.sendMessage({ type: "HEURISHIELD_TOGGLE_ALLOWLIST", url: STATE.analysis?.final_url || location.href })
-        .then(() => requestAnalysis())
-        .catch(() => null);
+    wrap.querySelector(".hs-allow-list").addEventListener("click", async () => {
+      const response = await sendToBackground({ type: "HEURISHIELD_TOGGLE_ALLOWLIST", url: STATE.analysis?.final_url || location.href });
+      if (response) await requestAnalysis();
     });
-    wrap.querySelector(".hs-block-list").addEventListener("click", () => {
-      chrome.runtime.sendMessage({ type: "HEURISHIELD_TOGGLE_BLOCKLIST", url: STATE.analysis?.final_url || location.href })
-        .then(() => requestAnalysis())
-        .catch(() => null);
+    wrap.querySelector(".hs-block-list").addEventListener("click", async () => {
+      const response = await sendToBackground({ type: "HEURISHIELD_TOGGLE_BLOCKLIST", url: STATE.analysis?.final_url || location.href });
+      if (response) await requestAnalysis();
     });
     wrap.querySelector(".hs-history").addEventListener("click", () => {
-      chrome.runtime.sendMessage({ type: "HEURISHIELD_OPEN_HISTORY_PAGE" }).catch(() => null);
+      void sendToBackground({ type: "HEURISHIELD_OPEN_HISTORY_PAGE" });
     });
     wrap.querySelector(".hs-options").addEventListener("click", () => {
-      chrome.runtime.sendMessage({ type: "HEURISHIELD_OPEN_OPTIONS_PAGE" }).catch(() => null);
+      void sendToBackground({ type: "HEURISHIELD_OPEN_OPTIONS_PAGE" });
     });
     return wrap;
   }
@@ -166,7 +188,7 @@
     setText(".hs-brand-label", brand.label);
     setText(".hs-brand", brand.value);
     setText(".hs-age", domainAgeText(analysis));
-    setText(".hs-refresh", analysis?.is_warning_snapshot ? "Muat hasil" : "Ulang");
+    setText(".hs-refresh", STATE.contextInvalidated ? "Muat ulang halaman" : analysis?.is_warning_snapshot ? "Muat hasil" : "Ulang");
     setText(".hs-rules", STATE.loading ? "Berjalan" : analysis?.model_result?.ready ? "Selesai" : "Terbatas");
     const explanation = analysis?.explanation;
     const reasons = STATE.loading ? ["Analisis sedang berjalan."] : STATE.error ? [STATE.error] : explanation?.reasons || ["Detail pemeriksaan belum tersedia. Coba ulang pemeriksaan."];

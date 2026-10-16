@@ -1,18 +1,22 @@
-# HeuriShieldV3
+# HeuriShield
 
-Extension pendeteksi indikasi phishing melalui **URL, DOM, domain dan brand**. Engine lokal: **RuleFit 60 fitur, 150 rule, threshold 0,80**, dilengkapi guard heuristik manual. Nama repository V3 berbeda dari versi manifest.
+Extension pendeteksi indikasi phishing melalui **URL, DOM, domain dan brand**. **Engine Keputusan HeuriShield** menggunakan RuleFit dengan **60 fitur, 150 rule terlatih dan threshold 0,80**, dilengkapi aturan pemeriksaan tambahan dalam satu alur klasifikasi.
 
 ## Instalasi
+
+**Ambil paket:** klik **Code -> Download ZIP** di GitHub lalu ekstrak, atau jalankan:
 
 ```sh
 git clone https://github.com/UmarFaruqManek/HeuriShieldV3.git
 ```
 
 1. Buka `chrome://extensions`, aktifkan **Developer mode** dan **Load unpacked**.
-2. Pilih folder hasil clone yang berisi `manifest.json`, lalu buka situs HTTP/HTTPS.
-3. Pembaruan: `git pull`, kemudian **Reload** extension.
+2. Pilih folder hasil clone/ekstrak yang **langsung berisi `manifest.json`**. Untuk ZIP biasanya bernama `HeuriShieldV3-main`; jangan pilih folder induknya.
+3. Selesai. Buka situs HTTP/HTTPS; analisis dan panel hasil berjalan otomatis.
 
-Deteksi tidak perlu build, npm install, Python, atau server lokal. ZIP GitHub juga bisa dipakai setelah diekstrak. Chrome/Chromium desktop adalah target pengujian utama. Edge/browser Chromium lain perlu verifikasi; Firefox/Safari perlu porting; mobile belum didukung paket ini.
+**Tidak perlu build, npm install, Python, server, API key pribadi atau konfigurasi model.** Semua file runtime/model ada di repository. Koneksi internet diperlukan untuk situs dan lookup API. Pencatatan ke file JSON bersifat opsional, bukan syarat deteksi.
+
+Chrome/Chromium desktop adalah target pengujian utama. Edge dapat memakai **Extensions -> Developer mode -> Load unpacked**, tetapi belum diuji selengkap Chrome. Firefox/Safari perlu porting; mobile belum didukung. Pembaruan: `git pull` atau unduh ZIP baru, **Reload** extension, lalu refresh tab situs. Versi paket: **5.0.13**.
 
 ## Alur Keputusan
 
@@ -21,10 +25,8 @@ flowchart TD
   A[Situs dibuka] --> B[Ekstraksi URL dan snapshot DOM]
   B --> C[Lookup domain dan brand]
   C --> D[Susun 60 fitur]
-  D --> E[RuleFit: 150 rule]
-  E --> F[Sigmoid dan threshold 0.80]
-  F --> G[Guard heuristik manual]
-  G --> H{Keputusan akhir}
+  D --> E[Engine Keputusan HeuriShield]
+  E --> H{Keputusan akhir}
   H -->|Legitimate| I[Panel hasil]
   H -->|Phishing| J[Halaman blokir dan alasan]
   H --> K[Arsip ekstraksi lokal]
@@ -37,16 +39,9 @@ flowchart TD
 | Domain | Umur pendaftaran, ketersediaan metadata dan nameserver. |
 | Brand | Kandidat dari judul/alamat; kemiripan dan kecocokan domain. |
 
-**Heuristik** mendasari indikator dan aturan praktis. **RuleFit** mempelajari kondisi/bobot dari data; extension hanya menjalankan model terlatih. Fitur kosong memakai median engine saat evaluasi, bukan dianggap hasil pengamatan.
+**Heuristik** digunakan untuk membaca indikator situs menjadi fitur. Di dalam engine, RuleFit menjumlahkan bobot rule aktif bersama intercept, mengubah skor dengan sigmoid, lalu membandingkannya dengan threshold. Fitur kosong memakai median engine saat evaluasi.
 
-```text
-rule_aktif = 1 jika seluruh kondisi terpenuhi (AND), selain itu 0
-z = intercept + sum(koefisien_rule * rule_aktif)
-p_model = 1 / (1 + exp(-z))
-p_model >= 0,80 -> phishing; selain itu -> legitimate
-```
-
-Guard kecocokan brand, redirect dan impersonasi dapat mengubah keputusan. Guard adalah aturan manual di luar 150 rule pelatihan; skor setelah guard bukan probabilitas murni RuleFit. Detail alasan merangkum maksimal tiga temuan, bukan mengklasifikasi ulang.
+Engine juga memeriksa kecocokan brand, indikasi impersonasi dan redirect sebelum menetapkan hasil akhir. Pemeriksaan tambahan ini adalah aturan manual, **bukan bagian dari 150 rule hasil pelatihan**. Semuanya dijelaskan sebagai satu engine keputusan; detail alasan merangkum temuan yang relevan bagi pengguna.
 
 ## API dan Urutannya
 
@@ -63,21 +58,21 @@ Clearbit menyediakan kandidat utama. Brandfetch melengkapi skor hanya untuk doma
 
 ## History Extract Tanpa Server
 
-Pencatatan berjalan otomatis di penyimpanan lokal browser. Tidak perlu Node.js, terminal, Native Messaging atau server pencatatan.
+Deteksi langsung bekerja tanpa membuka halaman ini. Catatan fitur disimpan lokal di browser. **Opsional:** untuk menyinkronkan ke disk, buka **Pengaturan -> Pencatatan dataset JSON**. Klik **Buat file JSON** untuk membuat `hasil-ekstraksi.json` di lokasi pilihan, atau **Pilih file JSON** untuk menghubungkan file yang sudah ada, lalu izinkan penulisan. **Biarkan tab Pencatatan terbuka** dan gunakan website di tab lain. Tidak perlu server atau unduhan berulang.
 
 ```mermaid
 flowchart LR
   A[60 fitur dan label selesai] --> B[Simpan otomatis di browser]
-  B --> C[Pengaturan: History extract]
-  C --> D[Klik Unduh JSON saat diperlukan]
-  D --> E[Downloads/history-extract/hasil-ekstraksi.json]
+  B --> C[Tab Pencatatan dengan izin file aktif]
+  C --> D[Gabungkan catatan tanpa duplikat identik]
+  D --> E[Perbarui file JSON yang dipilih]
 ```
 
-- Catatan tetap ada setelah browser ditutup, terpisah dari riwayat kunjungan. Menghapus data extension atau uninstall dapat menghapus catatan; ambil JSON sebelum itu.
-- File adalah **array JSON: URL + 60 fitur + label prediksi**. Missing tetap `null`; label bukan ground truth. File hanya diunduh saat tombol **Unduh JSON** ditekan, bukan setiap analisis.
+- Catatan tetap ada setelah browser ditutup, terpisah dari riwayat kunjungan. Tab ditutup berarti penulisan file berhenti; catatan baru tetap ditampung di browser dan disinkronkan saat tab dibuka lagi dengan izin aktif.
+- File adalah **array JSON: URL + 60 fitur + label prediksi**. Missing tetap `null`; label bukan ground truth. Isi lama digabung, bukan dibuang. JSON yang rusak atau berbeda schema ditolak tanpa ditimpa.
 - Query/fragment/userinfo disamarkan; path masih dapat memuat informasi pribadi. Isi form, password/OTP dan HTML lengkap tidak dicatat dalam dataset ini.
 - Pencatatan aktif secara default pada instalasi baru; toggle di **Pengaturan -> Pencatatan dataset JSON**. Batas 2.000 catatan; saat penuh pengumpulan dihentikan tanpa menghapus data. Batas kuota browser juga berlaku.
-- Browser tidak mengizinkan menulis langsung ke folder instalasi extension. File fisik masuk ke `history-extract` dalam direktori unduhan browser (biasanya Downloads), bukan folder project. Unduhan berulang diberi nama unik agar tidak menimpa file lama; pengaturan browser dapat menampilkan dialog lokasi.
+- Browser hanya boleh menulis file yang dipilih dan diizinkan pengguna. Handle file diingat di IndexedDB, tetapi browser dapat meminta izin lagi: klik **Izinkan kembali**. Chrome/Edge desktop dengan File System Access diperlukan. Jangan mengedit file yang sama selama sinkronisasi.
 - Setiap teman memiliki catatan lokal sendiri dan dapat mengirim satu JSON untuk ditinjau. Jangan menjadikan label prediksi sebagai label pelatihan tanpa verifikasi.
 
 ## Peta Kode
