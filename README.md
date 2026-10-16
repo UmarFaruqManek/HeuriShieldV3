@@ -1,81 +1,103 @@
 # HeuriShieldV3
 
-Extension pendeteksi indikasi phishing melalui analisis URL, DOM, metadata domain,
-dan kandidat brand. Engine menggunakan RuleFit 60 fitur, 150 rule, threshold 0.80,
-serta pemeriksaan heuristik tambahan. Nama repository V3 bukan nomor versi manifest.
+Extension pendeteksi indikasi phishing melalui **URL, DOM, domain dan brand**. Engine lokal: **RuleFit 60 fitur, 150 rule, threshold 0,80**, dilengkapi guard heuristik manual. Nama repository V3 berbeda dari versi manifest.
 
-## Instalasi Langsung
+## Instalasi
 
 ```sh
 git clone https://github.com/UmarFaruqManek/HeuriShieldV3.git
 ```
 
-1. Buka `chrome://extensions` (Chrome) atau `edge://extensions` (Edge).
-2. Aktifkan **Developer mode**.
-3. Klik **Load unpacked** dan pilih folder `HeuriShieldV3` hasil clone,
-   yaitu folder yang langsung berisi `manifest.json`.
-4. Buka halaman HTTP/HTTPS. Panel HeuriShield menampilkan hasil pemeriksaan.
+1. Buka `chrome://extensions`, aktifkan **Developer mode** dan **Load unpacked**.
+2. Pilih folder hasil clone yang berisi `manifest.json`, lalu buka situs HTTP/HTTPS.
+3. Pembaruan: `git pull`, kemudian **Reload** extension.
 
-Tidak perlu npm install, Python, build, atau menjalankan server lokal.
-Alternatif: unduh Code -> Download ZIP dari GitHub, ekstrak, lalu pilih folder
-yang berisi `manifest.json`. Clone saja belum memasang extension ke browser.
-Untuk memperbarui: jalankan `git pull`, lalu klik Reload pada halaman extensions.
+Deteksi tidak perlu build, npm install, Python, atau server lokal. ZIP GitHub juga bisa dipakai setelah diekstrak. Chrome/Chromium desktop adalah target pengujian utama. Edge/browser Chromium lain perlu verifikasi; Firefox/Safari perlu porting; mobile belum didukung paket ini.
 
-## Browser
+## Alur Keputusan
 
-- Chrome/Chromium desktop: target pengujian utama.
-- Microsoft Edge desktop: kandidat kompatibel Chromium, perlu verifikasi di Edge.
-- Brave/Opera/Vivaldi desktop: mungkin kompatibel; belum diuji pada paket ini.
-- Firefox/Safari: bukan paket siap pasang; memerlukan porting dan pengujian API.
-- Browser mobile: tidak dinyatakan didukung oleh paket ini.
+```mermaid
+flowchart TD
+  A[Situs dibuka] --> B[Ekstraksi URL dan snapshot DOM]
+  B --> C[Lookup domain dan brand]
+  C --> D[Susun 60 fitur]
+  D --> E[RuleFit: 150 rule]
+  E --> F[Sigmoid dan threshold 0.80]
+  F --> G[Guard heuristik manual]
+  G --> H{Keputusan akhir}
+  H -->|Legitimate| I[Panel hasil]
+  H -->|Phishing| J[Halaman blokir dan alasan]
+  H --> K[Arsip ekstraksi lokal]
+```
 
-## Cara Kerja
+| Analyzer | Yang dibaca |
+|---|---|
+| URL | Panjang alamat/path, karakter, token, subdomain, alamat awal/akhir dan konteks redirect. |
+| DOM | Tautan, script, aset, teks, form kredensial dan tujuan pengirimannya. |
+| Domain | Umur pendaftaran, ketersediaan metadata dan nameserver. |
+| Brand | Kandidat dari judul/alamat; kemiripan dan kecocokan domain. |
 
-URL/DOM -> metadata RDAP dan pencarian brand -> 60 nilai fitur -> RuleFit ->
-guard manual -> keputusan, panel alasan, dan halaman blokir bila berisiko.
-Keputusan bukan jaminan keamanan atau pemindai semua malware/ransomware.
-Situs dibuka sebelum analisis selesai; jangan mengandalkan extension untuk
-membuka situs berbahaya dengan aman.
+**Heuristik** mendasari indikator dan aturan praktis. **RuleFit** mempelajari kondisi/bobot dari data; extension hanya menjalankan model terlatih. Fitur kosong memakai median engine saat evaluasi, bukan dianggap hasil pengamatan.
 
-Fitur memerlukan akses HTTP/HTTPS dan API pihak ketiga. Brand memakai Clearbit
-sebagai sumber utama dan Brandfetch sebagai pendukung/fallback. RDAP mencoba
-endpoint lokal opsional lalu layanan publik; endpoint lokal tidak wajib tersedia.
-API dapat gagal, dibatasi, atau berubah; fitur yang tidak tersedia dapat diimputasi
-dengan median model. Keluaran di perangkat berbeda dapat bervariasi.
+```text
+rule_aktif = 1 jika seluruh kondisi terpenuhi (AND), selain itu 0
+z = intercept + sum(koefisien_rule * rule_aktif)
+p_model = 1 / (1 + exp(-z))
+p_model >= 0,80 -> phishing; selain itu -> legitimate
+```
 
-## History Extract Otomatis
+Guard kecocokan brand, redirect dan impersonasi dapat mengubah keputusan. Guard adalah aturan manual di luar 150 rule pelatihan; skor setelah guard bukan probabilitas murni RuleFit. Detail alasan merangkum maksimal tiga temuan, bukan mengklasifikasi ulang.
 
-Setiap analisis selesai otomatis dicatat ke
-`Downloads/history-extract/hasil-ekstraksi.json`, mengikuti lokasi Downloads browser.
-Tidak perlu memilih file atau membiarkan tab khusus terbuka. Aktif secara default
-pada instalasi baru. Pengaturan -> Pencatatan dataset JSON menyediakan toggle
-**Simpan ekstraksi otomatis** untuk menghentikannya dan **Simpan ulang** untuk retry.
-Pengaturan nonaktif dari versi lama tetap dihormati; aktifkan toggle bila perlu.
+## API dan Urutannya
 
-File adalah array objek: URL tanpa query/fragment/userinfo, seluruh 60 fitur,
-dan `label` prediksi. Missing tetap null. Label bukan ground truth yang telah
-diverifikasi; periksa sebelum dipakai untuk evaluasi/retraining.
-Path dapat memuat informasi pribadi. Arsip utama disimpan lokal; file JSON adalah
-snapshot yang diganti otomatis, bukan dibaca balik saat diedit. Jangan edit file aktif.
-Batas 2000 catatan; pengumpulan berhenti saat penuh tanpa menghapus catatan lama.
-Salin file sebelum menghapus data extension/uninstall. Instalasi baru tidak mengimpor
-file lama dan dapat mengganti file pada path yang sama. Profil/browser berbeda
-perlu Downloads terpisah agar file tidak saling menimpa. Pembaruan muncul sebagai
-aktivitas unduhan browser; kebijakan organisasi/extension lain dapat memblokirnya.
+| Kelompok | Endpoint |
+|---|---|
+| Brand 1 | `https://autocomplete.clearbit.com/v1/companies/suggest?query={token}` |
+| Brand 2 | `https://api.brandfetch.io/v2/search/{query}` |
+| Domain 1 | `https://api-check-beryl-beta.vercel.app/api/whois?domain={domain}` |
+| Domain 2, opsional | `http://localhost:3000/api/whois?domain={domain}` |
+| Domain 3 | `https://whois-api-dun.vercel.app/api/whois?domain={domain}` |
+| Domain 4 | `https://who-dat.as93.net/{domain}` |
 
-## Struktur
+Clearbit menyediakan kandidat utama. Brandfetch melengkapi skor hanya untuk domain kandidat yang sama atau menjadi fallback. Lookup domain beralih berurutan saat sumber gagal/tidak memadai. API membutuhkan internet dan dapat terkena timeout/rate limit. RuleFit tidak memakai API klasifikasi eksternal. Localhost:3000 di atas berbeda dari server pencatatan berikut.
 
-- `manifest.json`: izin dan titik masuk browser.
-- `src/background/`: koordinasi analisis dan proteksi.
-- `src/analyzer/`: ekstraksi URL, DOM, RDAP dan brand.
-- `src/rule/feature-contract-60.json`: kontrak input, bukan rule.
-- `src/rule/rulefit-engine-60.json`: artefak model aktif.
-- `src/rule/rulefit-engine.js`: evaluator rule, logit, sigmoid, threshold.
-- `src/content/`, `src/warning/`: panel dan halaman blokir.
-- `src/dataset/`: kontrol pencatatan otomatis tanpa pemilih file.
-- `src/storage/`: pengaturan, riwayat lokal, dan antrean dataset.
-- `assets/`: ikon extension.
+## History Extract: Pola V4
 
-Repository ini tidak menyertakan data latih, notebook, hasil evaluasi,
-script pengujian lokal, atau riwayat penjelajahan pengguna.
-Lihat [PRIVACY.md](PRIVACY.md) sebelum menggunakan atau membagikan dataset.
+Untuk mencatat langsung ke folder extension, jalankan **Node.js 18+**, tanpa npm install:
+
+```powershell
+# Dari folder extension; biarkan terminal berjalan selama pencatatan.
+.\Jalankan_Pencatatan.ps1
+# Alternatif lintas platform:
+node tools/extension-capture-server.mjs
+```
+
+```mermaid
+flowchart LR
+  A[60 fitur dan label selesai] --> B[Antrean lokal]
+  B --> C[POST 127.0.0.1:3217/capture]
+  C --> D[Validasi dan gabungkan baris]
+  D --> E[history-extract/hasil-ekstraksi.json]
+```
+
+- **Server harus berjalan**, tetapi tab pengaturan boleh ditutup. Tidak memakai Downloads, pemilih file, Native Messaging atau registrasi Windows. `Ctrl+C` menghentikan server.
+- File adalah **array JSON: URL + 60 fitur + label prediksi**. Missing tetap `null`; label bukan ground truth. Data lama digabungkan dan baris identik tidak ditambahkan ulang, termasuk setelah restart server.
+- Query/fragment/userinfo disamarkan; path masih dapat memuat informasi pribadi. Isi form, password/OTP dan HTML lengkap tidak dicatat dalam dataset ini.
+- Pencatatan aktif secara default pada instalasi baru; toggle di **Pengaturan -> Pencatatan dataset JSON**. Jika server mati, data menunggu lokal. Setelah server hidup klik **Simpan ulang** atau buka situs berikutnya. Penampungan lokal maksimal 2.000 catatan; saat penuh pengumpulan dihentikan tanpa menghapus data.
+- Jangan edit file saat server berjalan. Salin file JSON untuk dibagikan; masing-masing teman menjalankan server dari salinan extension sendiri. Hanya satu server pada port 3217. Status: `http://127.0.0.1:3217/health`.
+
+## Peta Kode
+
+| Lokasi | Fungsi |
+|---|---|
+| `src/background/` | Koordinasi analisis, penyimpanan dan proteksi. |
+| `src/analyzer/` | Extractor URL/DOM/domain/brand; guard di `runtime-analysis.js`. |
+| `src/rule/` | Kontrak 60 fitur, engine 150 rule dan evaluator matematika. |
+| `src/shared/analysis-explanation.js` | Penjelasan temuan. |
+| `src/content/`, `src/warning/` | Snapshot, panel, halaman blokir dan konteks situs asal. |
+| `src/storage/`, `src/dataset/` | Arsip lokal, antrean dan pengaturan pencatatan. |
+| `tools/extension-capture-server.mjs` | Server loopback penulis JSON, seperti V4. |
+
+## Batasan
+
+HeuriShield bukan antivirus atau pendeteksi semua malware/ransomware. Legitimate tidak menjamin aman; situs dapat terbuka sebelum analisis selesai. Respons API, konten dinamis dan redirect dapat mengubah hasil. Repository tidak memuat dataset pengguna atau data latih. Baca [PRIVACY.md](PRIVACY.md) sebelum memakai atau membagikan hasil.

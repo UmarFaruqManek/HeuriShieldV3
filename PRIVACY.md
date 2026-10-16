@@ -1,27 +1,8 @@
-# Catatan Privasi HeuriShield
+# Privasi dan Pencatatan
 
-Extension membaca URL dan snapshot struktur halaman untuk mengekstrak fitur.
-Hasil analisis, metadata cache, riwayat dan arsip fitur disimpan lokal di profil
-browser. Riwayat/arsip internal dapat memuat URL lengkap beserta query, serta
-metadata seperti judul halaman, meskipun dataset JSON menggunakan URL tersamarkan.
-
-Lookup domain menghubungi API RDAP/whois dan lookup brand menghubungi Clearbit
-serta Brandfetch. Query brand diturunkan dari judul, hostname, dan path URL;
-ini berarti informasi turunan halaman dikirim ke pihak ketiga. Operator API
-memiliki kebijakan sendiri. Tidak ada backend pengumpulan dataset terpusat
-yang disertakan di repository ini.
-
-History-extract aktif secara default pada instalasi baru dan dapat dihentikan
-melalui Pengaturan -> Pencatatan dataset JSON. Arsip lokal otomatis ditulis ke
-`Downloads/history-extract/hasil-ekstraksi.json` melalui izin downloads.
-Dataset berisi URL tanpa userinfo/query/fragment, 60 nilai fitur,
-dan label prediksi. Path tetap dapat mengandung data pribadi. Jangan membagikan
-file tanpa memeriksa isinya dan mendapat persetujuan pemilik data.
-Dataset ini tidak menyimpan isi form, nilai password/OTP atau HTML lengkap.
-Hentikan pencatatan melalui toggle Simpan ekstraksi otomatis setelah selesai.
-
-Izin HTTP/HTTPS luas diperlukan untuk menganalisis situs yang dibuka; izin
-storage menyimpan data lokal, downloads menulis snapshot JSON otomatis,
-tabs/webNavigation menghubungkan hasil dengan tab,
-scripting membaca snapshot, dan webRequest mengamati status respons.
-Paket tidak dirancang sebagai pengganti antivirus atau perlindungan malware.
+- URL dan snapshot struktur halaman dibaca untuk analisis. Riwayat/arsip internal di browser dapat memuat URL lengkap dan judul; dataset history-extract adalah catatan terpisah.
+- Query brand dari judul/hostname/path dikirim ke Clearbit dan Brandfetch. Lookup domain memakai api-check-beryl-beta.vercel.app, localhost:3000 opsional, whois-api-dun.vercel.app, lalu who-dat.as93.net. Penyedia mempunyai kebijakan sendiri.
+- Ekstraksi aktif secara default pada instalasi baru dan dapat dihentikan melalui Pengaturan. Data dikirim hanya ke **server pencatatan lokal 127.0.0.1:3217** yang dijalankan pengguna, bukan server pengumpulan publik.
+- Server menyimpan URL tersamarkan, 60 nilai fitur dan label prediksi ke `history-extract/hasil-ekstraksi.json`. Tidak menyimpan isi form, password/OTP atau HTML lengkap. Path masih dapat mengandung data pribadi; periksa sebelum dibagikan.
+- Tanpa server, data menunggu di storage browser, maksimal 2.000 catatan. File lama dipertahankan dan baris identik dideduplikasi. Label prediksi harus diverifikasi sebelum dipakai sebagai ground truth.
+- Izin storage menyimpan data lokal; tabs/webNavigation menghubungkan hasil dengan tab; scripting membaca snapshot; webRequest mengamati status HTTP. Izin HTTP/HTTPS dipakai untuk analisis, API dan capture loopback. Tidak ada izin downloads atau nativeMessaging.

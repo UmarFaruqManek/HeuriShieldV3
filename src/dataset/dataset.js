@@ -10,7 +10,8 @@ async function render() {
   const state = (await chrome.storage.local.get(DATASET_KEY))[DATASET_KEY];
   $("enabled").checked = state?.enabled ?? true;
   $("count").textContent = (state?.records || state?.pending || []).length;
-  $("saved").textContent = state?.savedCount || 0;
+  $("saved").textContent = state?.fileCount ?? Math.max(0, state?.savedCount || 0);
+  $("filepath").textContent = state?.filePath || "Heurisield/history-extract/hasil-ekstraksi.json";
   $("status").textContent = $("enabled").checked ? "Pencatatan otomatis aktif. Tab ini boleh ditutup." : "Pencatatan dihentikan. Catatan yang ada tetap disimpan.";
   $("error").hidden = !state?.error;
   $("error").textContent = state?.error || "";
@@ -25,6 +26,5 @@ $("sync").addEventListener("click", async () => {
   catch (error) { showError(error); }
   finally { $("sync").disabled = false; }
 });
-$("folder").addEventListener("click", () => chrome.downloads.showDefaultFolder());
 chrome.storage.onChanged.addListener((changes, area) => { if (area === "local" && changes[DATASET_KEY]) render(); });
 await render();

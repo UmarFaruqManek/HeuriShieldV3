@@ -7,10 +7,11 @@
   <p>URL, 60 nilai fitur, dan label prediksi. Terpisah dari riwayat kunjungan. Query/fragment disamarkan; path masih dapat mengandung informasi pribadi.</p>
   <section aria-label="Pencatatan otomatis">
     <label><input id="enabled" type="checkbox"> Simpan ekstraksi otomatis</label>
-    <dl><div><dt>Lokasi di folder Downloads browser</dt><dd>history-extract/hasil-ekstraksi.json</dd></div><div><dt>Total catatan</dt><dd id="count">0</dd></div><div><dt>Tersimpan di file</dt><dd id="saved">0</dd></div></dl>
+    <dl><div><dt>File di folder extension</dt><dd id="filepath">Heurisield/history-extract/hasil-ekstraksi.json</dd></div><div><dt>Total catatan</dt><dd id="count">0</dd></div><div><dt>Tersimpan di file</dt><dd id="saved">0</dd></div></dl>
     <p id="status" role="status" aria-live="polite"></p><p id="error" role="alert" hidden></p>
-    <button id="sync" type="button">Simpan ulang</button><button id="folder" type="button">Buka folder Downloads</button>
+    <button id="sync" type="button">Simpan ulang</button>
+    <p>Server pencatatan: <code>http://127.0.0.1:3217</code></p>
   </section>
-  <p>Pencatatan bekerja di background; tab ini boleh ditutup. Batas 2000 catatan. Label adalah prediksi, bukan kebenaran yang telah diverifikasi. Periksa isi file sebelum dibagikan. Jangan mengedit file aktif: pembaruan berikutnya menggantinya dari data lokal extension.</p>
+  <p>Jalankan Jalankan_Pencatatan.ps1 dari folder extension dan biarkan terminal berjalan. Tab ini boleh ditutup. Jika server berhenti, data menunggu lokal; klik Simpan ulang setelah server hidup. Batas lokal 2000 catatan. Label adalah prediksi. Periksa file sebelum dibagikan.</p>
   <a href="../options/options.html">Kembali ke pengaturan</a>
 </main><script type="module" src="dataset.js"></script></body></html>

@@ -20,18 +20,26 @@ export const DATASET_FILENAME = "history-extract/hasil-ekstraksi.json";
 
 export function createDatasetCollector(storage, featureNames, makeId = () => crypto.randomUUID(), saveSnapshot = null) {
   let writes = Promise.resolve();
-  // Semua perubahan antrean diserialkan, termasuk ACK saat tab lain selesai dianalisis.
+  // Serialisasi menjaga beberapa tab tidak saling menimpa catatan.
   const mutate = fn => {
     const operation = writes.then(async () => {
       const saved = await storage.get(DATASET_KEY);
       const state = saved[DATASET_KEY] || { enabled: true, records: [], savedCount: 0, error: "" };
       // Migrasi antrean lama tanpa menghapus catatan yang belum sempat ditulis.
       if (!state.records) { state.records = state.pending || []; state.savedCount = 0; delete state.pending; }
+      // Migrasi mempertahankan catatan lama; server menggabungkan, bukan menimpa file.
+      if (state.writerVersion !== "local-capture-v1") {
+        state.savedCount = -1;
+        state.writerVersion = "local-capture-v1";
+        delete state.filePath;
+      }
       const result = await fn(state);
       await storage.set({ [DATASET_KEY]: state });
       if (saveSnapshot && state.records.length !== state.savedCount) {
         try {
-          await saveSnapshot(state.records.map(item => item.row));
+          const savedFile = await saveSnapshot(state.records.map(item => item.row));
+          if (savedFile?.path) state.filePath = savedFile.path;
+          if (Number.isInteger(savedFile?.totalRows)) state.fileCount = savedFile.totalRows;
           state.savedCount = state.records.length;
           state.error = "";
           state.savedAt = new Date().toISOString();

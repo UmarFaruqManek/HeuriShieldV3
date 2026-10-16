@@ -2,11 +2,13 @@
  * Mengambil metadata pendaftaran domain, menghitung umur dan menandai lookup gagal/dilewati.
  * Tidak menganggap metadata yang tidak tersedia sebagai domain baru.
  */
-export const RDAP_FEATURE_VERSION = "crawler-rdap-parity-v2-local-first";
+export const RDAP_FEATURE_VERSION = "crawler-rdap-parity-v3-beryl-first";
 
+const PRIMARY_RDAP_API = "https://api-check-beryl-beta.vercel.app/api/whois?domain={domain}";
 const LOCAL_RDAP_API = "http://localhost:3000/api/whois?domain={domain}";
 const DEFAULT_RDAP_API = "https://whois-api-dun.vercel.app/api/whois?domain={domain}";
 const FALLBACK_RDAP_APIS = [
+  PRIMARY_RDAP_API,
   LOCAL_RDAP_API,
   DEFAULT_RDAP_API,
   "https://who-dat.as93.net/{domain}"
@@ -56,14 +58,14 @@ export async function lookupRdapDomain(domain, options = {}) {
 
   for (const apiUrl of apiUrls) {
     const url = buildLookupUrl(apiUrl, cleanDomain);
+    const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+    // Timeout mencakup pembacaan body, bukan hanya kedatangan header HTTP.
+    const timeout = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
     try {
-      const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-      const timeout = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
       const response = await fetch(url, {
         headers: { accept: "application/json" },
         signal: controller?.signal
       });
-      if (timeout) clearTimeout(timeout);
       if (!response.ok) {
         errors.push(`http_${response.status}`);
         continue;
@@ -73,6 +75,8 @@ export async function lookupRdapDomain(domain, options = {}) {
       errors.push(normalized.rdap_error || "unusable_response");
     } catch (error) {
       errors.push(error?.name === "AbortError" ? "timeout" : "lookup_failed");
+    } finally {
+      if (timeout) clearTimeout(timeout);
     }
   }
 
