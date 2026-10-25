@@ -52,9 +52,9 @@ export function buildAnalysisExplanation(analysis = {}) {
     if (!reasons.length) {
       add(model.post_model_guard
         ? "Pemeriksaan tambahan menemukan kombinasi tanda risiko pada halaman ini. Pastikan identitas situs sebelum melanjutkan."
-        : model.ready
-          ? "Gabungan pola halaman melewati batas risiko model. Tidak ada satu tanda yang menjadi bukti tunggal phishing."
-          : "Halaman ditandai berisiko, tetapi rincian pemeriksaannya belum tersedia.");
+        : explainTopModelPattern(model, brand) || (model.ready
+          ? "Gabungan pola halaman melewati batas risiko model. Belum ada satu tanda yang cukup jelas untuk dijelaskan secara terpisah."
+          : "Halaman ditandai berisiko, tetapi rincian pemeriksaannya belum tersedia."));
     }
   } else if (safe) {
     if (brand.brand_found && (brand.brand_matches_page === true || brand.brand_matches_page === 1) && brandDomain) {
@@ -81,6 +81,29 @@ export function buildAnalysisExplanation(analysis = {}) {
     action: dangerous ? "Jangan masukkan kata sandi, OTP, atau data kartu sebelum memastikan identitas situs." : "Tetap periksa alamat situs sebelum memasukkan data pribadi.",
     limitation: limitations.join(" ")
   };
+}
+
+function explainTopModelPattern(model, brand) {
+  const riskRules = (model.fired_rules || []).filter(rule => Number(rule.coefficient) > 0);
+  const hasFeature = (rule, name) => rule.conditions?.some(condition =>
+    condition.feature === name && condition.passed === true &&
+    typeof condition.value === "number" && Number.isFinite(condition.value)
+  );
+
+  // Jelaskan pola yang memang dipakai rule, tanpa menganggap satu indikator
+  // seperti hosting bersama atau skor pencarian brand sebagai bukti tunggal.
+  const sharedHostingAndBrand = riskRules.some(rule =>
+    hasFeature(rule, "source_uses_shared_hosting_domain") &&
+    hasFeature(rule, "brand_search_score") &&
+    hasFeature(rule, "brand_quality_score")
+  );
+  if (sharedHostingAndBrand) {
+    const brandName = brand.brand_top_candidate_name;
+    const brandText = brandName ? ` untuk ${brandName}` : " pada pencocokan identitas brand";
+    return `Model menemukan sinyal pencocokan brand${brandText} pada alamat yang menggunakan subdomain layanan hosting bersama. Kombinasi ini menaikkan risiko, tetapi hosting bersama dan hasil pencocokan brand tetap perlu diverifikasi terhadap domain resmi.`;
+  }
+
+  return null;
 }
 
 function recentObservedDomainAge(model, rdap) {
