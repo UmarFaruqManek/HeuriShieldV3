@@ -5,7 +5,7 @@
 import { parse as parseDomain } from "../../shared/tldts.js";
 import { BRAND_TOKEN_BLOCKLIST, PUBLIC_HOSTING_PLATFORM_DOMAINS } from "../../utils/constants.js";
 
-export const BRAND_FEATURE_VERSION = "clearbit-first-brandfetch-second-v2";
+export const BRAND_FEATURE_VERSION = "clearbit-first-brandfetch-second-v3";
 
 const DEFAULT_BRANDFETCH_API = "https://api.brandfetch.io/v2/search/{query}";
 const DEFAULT_CLEARBIT_API = "https://autocomplete.clearbit.com/v1/companies/suggest?query={token}";
@@ -16,7 +16,9 @@ const GENERIC_TOKENS = new Set([
   "account", "auth", "billing", "checkout", "home", "index", "learning", "login",
   "page", "password", "payment", "progress", "secure", "security", "signin", "support",
   "update", "verify", "verification", "wallet", "www", "http", "https",
-  "academy", "app", "school", "university", "institute", "international"
+  "academy", "app", "school", "university", "institute", "international",
+  "register", "registration", "admission", "admissions", "apply", "applynow",
+  "privacy", "contact", "services", "permit", "permits"
 ]);
 
 for (const token of BRAND_TOKEN_BLOCKLIST || []) {
@@ -42,7 +44,7 @@ export async function extractBrandFeatureSet({
   const candidate = topBrandCandidate(lookupResults, originalUrl, finalUrl);
   return {
     ...candidate,
-    brand_lookup_status: lookupResults.some((item) => item.lookup_success),
+    brand_lookup_success: lookupResults.some((item) => item.lookup_success),
     brand_lookup_failed_queries: lookupResults.filter((item) => !item.lookup_success).length
   };
 }
@@ -210,15 +212,15 @@ export function topBrandCandidate(lookupResults, originalUrl, finalUrl) {
   const relationship = brandRelationshipFields(selected.domain, originalUrl, finalUrl);
 
   return {
-    brand_candidate_found: true,
+    brand_found: true,
     brand_top_candidate_name: selected.name || null,
     brand_top_candidate_domain: selected.domain || null,
     brand_top_candidate_source: selected.source || "brandfetch",
     brand_top_candidate_score_source: selected.score_source || (selected.source === "brandfetch" ? "brandfetch" : null),
     brand_top_candidate_query: selected.query || null,
     brand_top_candidate_query_priority: selected.query_priority || null,
-    brand_top_candidate_search_score: numberOrNull(selected._score ?? selected.score),
-    brand_top_candidate_quality_score: numberOrNull(selected.qualityScore),
+    brand_search_score: numberOrNull(selected._score ?? selected.score),
+    brand_quality_score: numberOrNull(selected.qualityScore),
     ...relationship
   };
 }
@@ -229,17 +231,17 @@ export function brandRelationshipFields(candidateDomain, originalUrl, finalUrl =
   const final = parsedUrlParts(finalUrl);
 
   return {
-    brand_candidate_matches_original_domain: Boolean(candidate && original.registrableDomain && candidate === original.registrableDomain),
-    brand_candidate_matches_final_domain: Boolean(candidate && final.registrableDomain && candidate === final.registrableDomain),
-    brand_candidate_original_domain_similarity: candidate && original.registrableDomain
+    brand_matches_source: Boolean(candidate && original.registrableDomain && candidate === original.registrableDomain),
+    brand_matches_page: Boolean(candidate && final.registrableDomain && candidate === final.registrableDomain),
+    brand_source_similarity: candidate && original.registrableDomain
       ? sequenceRatio(domainLabel(candidate), domainLabel(original.registrableDomain))
       : 0,
-    brand_candidate_final_domain_similarity: candidate && final.registrableDomain
+    brand_page_similarity: candidate && final.registrableDomain
       ? sequenceRatio(domainLabel(candidate), domainLabel(final.registrableDomain))
       : 0,
-    brand_candidate_in_original_subdomain: candidate ? includesToken(original.subdomain, domainLabel(candidate)) : false,
-    brand_candidate_in_original_path: candidate ? includesToken(original.path, domainLabel(candidate)) : false,
-    brand_candidate_in_original_query: candidate ? includesToken(original.query, domainLabel(candidate)) : false
+    brand_in_source_subdomain: candidate ? includesToken(original.subdomain, domainLabel(candidate)) : false,
+    brand_in_source_path: candidate ? includesToken(original.path, domainLabel(candidate)) : false,
+    brand_in_source_query: candidate ? includesToken(original.query, domainLabel(candidate)) : false
   };
 }
 
@@ -249,22 +251,22 @@ function lookupResult(query, candidates, lookupSuccess) {
 
 function emptyBrandCandidate(originalUrl, finalUrl) {
   return {
-    brand_candidate_found: false,
+    brand_found: false,
     brand_top_candidate_name: null,
     brand_top_candidate_domain: null,
     brand_top_candidate_source: null,
     brand_top_candidate_score_source: null,
     brand_top_candidate_query: null,
     brand_top_candidate_query_priority: null,
-    brand_top_candidate_search_score: null,
-    brand_top_candidate_quality_score: null,
+    brand_search_score: null,
+    brand_quality_score: null,
     ...brandRelationshipFields(null, originalUrl, finalUrl)
   };
 }
 
 function isCredibleBrandCandidate(candidate, originalUrl, finalUrl) {
   const relationship = brandRelationshipFields(candidate.domain, originalUrl, finalUrl);
-  if (relationship.brand_candidate_matches_original_domain || relationship.brand_candidate_matches_final_domain) return true;
+  if (relationship.brand_matches_source || relationship.brand_matches_page) return true;
 
   const candidateLabel = normalizeToken(domainLabel(candidate.domain));
   const candidateName = normalizeToken(candidate.name);
@@ -277,9 +279,9 @@ function isCredibleBrandCandidate(candidate, originalUrl, finalUrl) {
   if (
     ["brandfetch", "clearbit"].includes(candidate.source) &&
     query.length <= 3 &&
-    !relationship.brand_candidate_in_original_subdomain &&
-    !relationship.brand_candidate_in_original_path &&
-    !relationship.brand_candidate_in_original_query
+    !relationship.brand_in_source_subdomain &&
+    !relationship.brand_in_source_path &&
+    !relationship.brand_in_source_query
   ) {
     return false;
   }
@@ -293,21 +295,21 @@ function isCredibleBrandCandidate(candidate, originalUrl, finalUrl) {
   }
 
   if (
-    relationship.brand_candidate_in_original_subdomain ||
-    relationship.brand_candidate_in_original_path ||
-    relationship.brand_candidate_in_original_query
+    relationship.brand_in_source_subdomain ||
+    relationship.brand_in_source_path ||
+    relationship.brand_in_source_query
   ) {
     return true;
   }
   return Math.max(
-    relationship.brand_candidate_original_domain_similarity,
-    relationship.brand_candidate_final_domain_similarity
+    relationship.brand_source_similarity,
+    relationship.brand_page_similarity
   ) >= 0.86;
 }
 
 function isActiveDomainBrandCandidate(candidate, originalUrl, finalUrl) {
   const relationship = brandRelationshipFields(candidate.domain, originalUrl, finalUrl);
-  if (!relationship.brand_candidate_matches_original_domain && !relationship.brand_candidate_matches_final_domain) return false;
+  if (!relationship.brand_matches_source && !relationship.brand_matches_page) return false;
 
   const query = normalizeToken(candidate.query);
   const activeLabels = activeDomainLabels(originalUrl, finalUrl);
@@ -322,15 +324,15 @@ function shouldPreferActiveDomainBrand(selected, activeDomainCandidate, original
 
   const selectedRelationship = brandRelationshipFields(selected.domain, originalUrl, finalUrl);
   const selectedMatchesActiveDomain = Boolean(
-    selectedRelationship.brand_candidate_matches_original_domain ||
-    selectedRelationship.brand_candidate_matches_final_domain
+    selectedRelationship.brand_matches_source ||
+    selectedRelationship.brand_matches_page
   );
   if (selectedMatchesActiveDomain) return false;
 
   return Boolean(
-    selectedRelationship.brand_candidate_in_original_subdomain ||
-    selectedRelationship.brand_candidate_in_original_path ||
-    selectedRelationship.brand_candidate_in_original_query ||
+    selectedRelationship.brand_in_source_subdomain ||
+    selectedRelationship.brand_in_source_path ||
+    selectedRelationship.brand_in_source_query ||
     selected.query !== activeDomainCandidate.query
   );
 }

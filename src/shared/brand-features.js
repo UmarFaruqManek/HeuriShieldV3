@@ -43,7 +43,7 @@ export async function extractBrandFeatures(url, timeoutMs = 15000) {
   return {
     brand_candidate_tokens: candidates.map(item => item.token),
     brand_candidate_locations: candidates.map(item => item.location),
-    brand_lookup_status: status,
+    brand_lookup_success: status,
     brand_lookup_source: source,
     brand_name: name,
     brand_official_domain: official,

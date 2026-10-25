@@ -2,17 +2,20 @@
  * Menyatukan output analyzer sesuai kontrak 60 fitur dan menormalkan nilai numerik.
  * Nilai kosong tetap null; median diterapkan oleh evaluator, bukan dianggap nol.
  */
+import { canonicalFeatureName, normalizeFeatureRecord } from "../rule/feature-names.js";
+
 export const MISSING_NUMERIC_VALUE = null;
 
 export function buildFeatureVector(featureNames, sources = {}) {
   // Nama fitur adalah kontrak dengan model; jangan diganti tanpa memperbarui engine.
-  const merged = Object.assign({}, ...Object.values(sources).filter(Boolean));
+  const merged = Object.assign({}, ...Object.values(sources).filter(Boolean).map(normalizeFeatureRecord));
   const vector = {};
   const missing = [];
 
   for (const feature of featureNames) {
-    if (Object.prototype.hasOwnProperty.call(merged, feature)) {
-      vector[feature] = normalizeModelValue(merged[feature]);
+    const key = canonicalFeatureName(feature);
+    if (Object.prototype.hasOwnProperty.call(merged, key)) {
+      vector[feature] = normalizeModelValue(merged[key]);
     } else {
       vector[feature] = MISSING_NUMERIC_VALUE;
       missing.push(feature);

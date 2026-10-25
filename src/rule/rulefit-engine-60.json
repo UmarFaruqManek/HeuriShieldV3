@@ -1,46 +1,46 @@
 {
   "model_family": "RuleFit",
   "model_name": "RuleFitCompact60V2",
-  "runtime_schema": "heurishield_rulefit_60_v2",
+  "runtime_schema": "heurishield_rulefit_60_source_page_v1",
   "feature_count": 60,
   "features": [
-    "original_domain_age_days",
-    "final_domain_age_days",
-    "brand_top_candidate_search_score",
-    "brand_top_candidate_quality_score",
-    "brand_candidate_original_domain_similarity",
-    "original_path_length",
-    "brand_candidate_final_domain_similarity",
+    "source_domain_age_days",
+    "page_domain_age_days",
+    "brand_search_score",
+    "brand_quality_score",
+    "brand_source_similarity",
+    "source_path_length",
+    "brand_page_similarity",
     "resource_count",
     "anchor_count",
     "script_count",
-    "brand_candidate_matches_final_domain",
-    "brand_candidate_matches_original_domain",
+    "brand_matches_page",
+    "brand_matches_source",
     "internal_anchor_count",
     "external_anchor_count",
-    "original_url_token_count",
-    "original_special_char_ratio",
-    "final_subdomain_count",
+    "source_url_token_count",
+    "source_special_char_ratio",
+    "page_subdomain_count",
     "external_anchor_ratio",
-    "original_subdomain_count",
-    "final_dot_count",
+    "source_subdomain_count",
+    "page_dot_count",
     "dot_count",
     "hostname_length",
-    "original_hostname_length",
-    "final_hostname_length",
-    "final_url_entropy",
+    "source_hostname_length",
+    "page_hostname_length",
+    "page_url_entropy",
     "visible_text_length",
-    "original_query_length",
-    "brand_candidate_in_original_subdomain",
-    "original_uses_shared_hosting_domain",
-    "original_skip_domain_age_lookup",
+    "source_query_length",
+    "brand_in_source_subdomain",
+    "source_uses_shared_hosting_domain",
+    "source_skip_domain_age_lookup",
     "dom_node_count",
     "html_length",
-    "final_path_length",
-    "original_special_char_count",
-    "final_url_token_count",
+    "page_path_length",
+    "source_special_char_count",
+    "page_url_token_count",
     "external_script_ratio",
-    "original_url_entropy",
+    "source_url_entropy",
     "external_resource_count",
     "external_resource_ratio",
     "inline_script_count",
@@ -48,13 +48,13 @@
     "unique_external_domain_count",
     "image_count",
     "external_image_ratio",
-    "original_url_length",
-    "raw_redirect_count",
-    "final_url_length",
-    "brand_candidate_found",
-    "brand_lookup_status",
-    "brand_candidate_in_original_path",
-    "brand_candidate_in_original_query",
+    "source_url_length",
+    "redirect_count",
+    "page_url_length",
+    "brand_found",
+    "brand_lookup_success",
+    "brand_in_source_path",
+    "brand_in_source_query",
     "credential_form_count",
     "input_count",
     "email_input_count",
@@ -63,7 +63,7 @@
     "form_action_same_domain_count",
     "form_action_https_count",
     "sensitive_word_count",
-    "original_embedded_domain_count"
+    "source_embedded_domain_count"
   ],
   "threshold": 0.8,
   "threshold_metrics": {
@@ -87,43 +87,43 @@
   "intercept": -1.0,
   "imputer_strategy": "median",
   "imputer_median": {
-    "original_domain_age_days": 5368.0,
-    "final_domain_age_days": 5368.0,
-    "brand_top_candidate_search_score": 72.453835,
-    "brand_top_candidate_quality_score": 0.729692374730786,
-    "brand_candidate_original_domain_similarity": 0.375,
-    "original_path_length": 1.0,
-    "brand_candidate_final_domain_similarity": 0.375,
+    "source_domain_age_days": 5368.0,
+    "page_domain_age_days": 5368.0,
+    "brand_search_score": 72.453835,
+    "brand_quality_score": 0.729692374730786,
+    "brand_source_similarity": 0.375,
+    "source_path_length": 1.0,
+    "brand_page_similarity": 0.375,
     "resource_count": 22.5,
     "anchor_count": 29.0,
     "script_count": 10.0,
-    "brand_candidate_matches_final_domain": 0.0,
-    "brand_candidate_matches_original_domain": 0.0,
+    "brand_matches_page": 0.0,
+    "brand_matches_source": 0.0,
     "internal_anchor_count": 20.0,
     "external_anchor_count": 1.0,
-    "original_url_token_count": 5.0,
-    "original_special_char_ratio": 0.1851851851851852,
-    "final_subdomain_count": 1.0,
+    "source_url_token_count": 5.0,
+    "source_special_char_ratio": 0.1851851851851852,
+    "page_subdomain_count": 1.0,
     "external_anchor_ratio": 0.00615469116962665,
-    "original_subdomain_count": 0.0,
-    "final_dot_count": 2.0,
+    "source_subdomain_count": 0.0,
+    "page_dot_count": 2.0,
     "dot_count": 2.0,
     "hostname_length": 17.0,
-    "original_hostname_length": 16.0,
-    "final_hostname_length": 17.0,
-    "final_url_entropy": 4.039148671903071,
+    "source_hostname_length": 16.0,
+    "page_hostname_length": 17.0,
+    "page_url_entropy": 4.039148671903071,
     "visible_text_length": 2907.5,
-    "original_query_length": 0.0,
-    "brand_candidate_in_original_subdomain": 0.0,
-    "original_uses_shared_hosting_domain": 0.0,
-    "original_skip_domain_age_lookup": 0.0,
+    "source_query_length": 0.0,
+    "brand_in_source_subdomain": 0.0,
+    "source_uses_shared_hosting_domain": 0.0,
+    "source_skip_domain_age_lookup": 0.0,
     "dom_node_count": 319.0,
     "html_length": 76492.5,
-    "final_path_length": 1.0,
-    "original_special_char_count": 6.0,
-    "final_url_token_count": 5.0,
+    "page_path_length": 1.0,
+    "source_special_char_count": 6.0,
+    "page_url_token_count": 5.0,
     "external_script_ratio": 0.1428571428571428,
-    "original_url_entropy": 4.044782668929139,
+    "source_url_entropy": 4.044782668929139,
     "external_resource_count": 3.0,
     "external_resource_ratio": 0.1212121212121212,
     "inline_script_count": 5.0,
@@ -131,13 +131,13 @@
     "unique_external_domain_count": 2.0,
     "image_count": 3.0,
     "external_image_ratio": 0.0,
-    "original_url_length": 32.0,
-    "raw_redirect_count": 1.0,
-    "final_url_length": 33.0,
-    "brand_candidate_found": 1.0,
-    "brand_lookup_status": 1.0,
-    "brand_candidate_in_original_path": 0.0,
-    "brand_candidate_in_original_query": 0.0,
+    "source_url_length": 32.0,
+    "redirect_count": 1.0,
+    "page_url_length": 33.0,
+    "brand_found": 1.0,
+    "brand_lookup_success": 1.0,
+    "brand_in_source_path": 0.0,
+    "brand_in_source_query": 0.0,
     "credential_form_count": 0.0,
     "input_count": 1.0,
     "email_input_count": 0.0,
@@ -146,7 +146,7 @@
     "form_action_same_domain_count": 0.0,
     "form_action_https_count": 0.0,
     "sensitive_word_count": 0.0,
-    "original_embedded_domain_count": 0.0
+    "source_embedded_domain_count": 0.0
   },
   "rules": [
     {
@@ -154,7 +154,7 @@
       "expression": "X10 > 0.5 and X13 > 0.5 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "brand_candidate_matches_final_domain",
+          "feature": "brand_matches_page",
           "feature_index": 10,
           "operator": ">",
           "threshold": 0.5
@@ -166,7 +166,7 @@
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -182,7 +182,7 @@
       "expression": "X11 > 0.5 and X17 > 0.00138122 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "brand_candidate_matches_original_domain",
+          "feature": "brand_matches_source",
           "feature_index": 11,
           "operator": ">",
           "threshold": 0.5
@@ -194,7 +194,7 @@
           "threshold": 0.00138122
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -210,7 +210,7 @@
       "expression": "X0 <= 5430.5 and X25 <= 3.0 and X5 > 0.5 and X7 <= 17.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5430.5
@@ -222,7 +222,7 @@
           "threshold": 3.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -244,7 +244,7 @@
       "expression": "X0 > 10870.0 and X12 <= 10.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 10870.0
@@ -256,7 +256,7 @@
           "threshold": 10.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -272,13 +272,13 @@
       "expression": "X36 <= 3.76495 and X5 > 0.5 and X7 <= 9.5",
       "conditions": [
         {
-          "feature": "original_url_entropy",
+          "feature": "source_url_entropy",
           "feature_index": 36,
           "operator": "<=",
           "threshold": 3.76495
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -306,13 +306,13 @@
           "threshold": 1.5
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -328,19 +328,19 @@
       "expression": "X1 <= 10683.5 and X22 <= 11.5 and X3 > 0.739261 and X8 <= 36.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 10683.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 11.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.739261
@@ -362,7 +362,7 @@
       "expression": "X22 <= 19.5 and X25 > 1289.0 and X3 > 0.217949 and X38 > 0.366667 and X40 <= 85.0 and X5 > 0.5 and X7 <= 10.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 19.5
@@ -374,7 +374,7 @@
           "threshold": 1289.0
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.217949
@@ -392,7 +392,7 @@
           "threshold": 85.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -414,7 +414,7 @@
       "expression": "X5 > 0.5 and X8 > 35.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -436,7 +436,7 @@
       "expression": "X5 > 0.5 and X8 > 13.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -458,13 +458,13 @@
       "expression": "X27 <= 0.5 and X5 > 0.5 and X7 > 17.5",
       "conditions": [
         {
-          "feature": "brand_candidate_in_original_subdomain",
+          "feature": "brand_in_source_subdomain",
           "feature_index": 27,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -492,7 +492,7 @@
           "threshold": 8.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -514,19 +514,19 @@
           "threshold": 6.5
         },
         {
-          "feature": "final_hostname_length",
+          "feature": "page_hostname_length",
           "feature_index": 23,
           "operator": "<=",
           "threshold": 18.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "brand_candidate_final_domain_similarity",
+          "feature": "brand_page_similarity",
           "feature_index": 6,
           "operator": ">",
           "threshold": 0.177866
@@ -542,13 +542,13 @@
       "expression": "X1 > 9765.5 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 9765.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -564,19 +564,19 @@
       "expression": "X2 <= 20.95503 and X44 <= 24.0 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": "<=",
           "threshold": 20.95503
         },
         {
-          "feature": "original_url_length",
+          "feature": "source_url_length",
           "feature_index": 44,
           "operator": "<=",
           "threshold": 24.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -592,7 +592,7 @@
       "expression": "X5 > 0.5 and X8 > 7.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -614,7 +614,7 @@
       "expression": "X1 <= 4436.0 and X12 > 6.5 and X2 <= 63.78624 and X22 > 19.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 4436.0
@@ -626,19 +626,19 @@
           "threshold": 6.5
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": "<=",
           "threshold": 63.78624
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 19.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -654,7 +654,7 @@
       "expression": "X0 <= 5929.0 and X12 <= 56.5 and X15 <= 0.236695 and X33 > 16.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5929.0
@@ -666,13 +666,13 @@
           "threshold": 56.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.236695
         },
         {
-          "feature": "original_special_char_count",
+          "feature": "source_special_char_count",
           "feature_index": 33,
           "operator": ">",
           "threshold": 16.5
@@ -688,25 +688,25 @@
       "expression": "X10 > 0.5 and X28 <= 0.5 and X3 > 0.350563 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_candidate_matches_final_domain",
+          "feature": "brand_matches_page",
           "feature_index": 10,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.350563
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -722,7 +722,7 @@
       "expression": "X5 > 0.5 and X7 > 12.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -744,13 +744,13 @@
       "expression": "X11 > 0.5 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "brand_candidate_matches_original_domain",
+          "feature": "brand_matches_source",
           "feature_index": 11,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -772,7 +772,7 @@
           "threshold": 195.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -788,25 +788,25 @@
       "expression": "X0 > 7711.5 and X10 <= 0.5 and X28 <= 0.5 and X3 > 0.350563 and X39 <= 3.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 7711.5
         },
         {
-          "feature": "brand_candidate_matches_final_domain",
+          "feature": "brand_matches_page",
           "feature_index": 10,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.350563
@@ -818,7 +818,7 @@
           "threshold": 3.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -834,7 +834,7 @@
       "expression": "X0 > 10743.0 and X13 <= 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 10743.0
@@ -862,7 +862,7 @@
           "threshold": 10.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -878,31 +878,31 @@
       "expression": "X0 <= 1226.5 and X2 > 21.65985 and X28 <= 0.5 and X33 <= 5.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 1226.5
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 21.65985
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_special_char_count",
+          "feature": "source_special_char_count",
           "feature_index": 33,
           "operator": "<=",
           "threshold": 5.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -918,7 +918,7 @@
       "expression": "X1 > 4436.0 and X12 > 6.5 and X15 <= 0.207143 and X22 > 19.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 4436.0
@@ -930,19 +930,19 @@
           "threshold": 6.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.207143
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 19.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -964,7 +964,7 @@
           "threshold": 1491.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -980,19 +980,19 @@
       "expression": "X0 > 5464.5 and X2 > 58.17926 and X29 <= 0.5 and X7 <= 25.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5464.5
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 58.17926
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": "<=",
           "threshold": 0.5
@@ -1020,7 +1020,7 @@
           "threshold": 211.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1042,7 +1042,7 @@
           "threshold": 2.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1058,13 +1058,13 @@
       "expression": "X22 <= 19.5 and X3 > 0.217949 and X40 <= 85.0 and X5 > 0.5 and X7 > 10.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 19.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.217949
@@ -1076,7 +1076,7 @@
           "threshold": 85.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1098,13 +1098,13 @@
       "expression": "X22 <= 19.5 and X3 > 0.217949 and X38 <= 0.366667 and X40 <= 85.0 and X5 > 0.5 and X54 <= 0.5 and X7 <= 10.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 19.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.217949
@@ -1122,7 +1122,7 @@
           "threshold": 85.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1156,7 +1156,7 @@
           "threshold": 0.00138122
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1178,13 +1178,13 @@
           "threshold": 7.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 12.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1200,19 +1200,19 @@
       "expression": "X0 > 6227.0 and X29 <= 0.5 and X5 > 0.5 and X8 <= 7.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 6227.0
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1240,7 +1240,7 @@
           "threshold": 6.5
         },
         {
-          "feature": "final_hostname_length",
+          "feature": "page_hostname_length",
           "feature_index": 23,
           "operator": ">",
           "threshold": 18.5
@@ -1252,7 +1252,7 @@
           "threshold": 37.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1268,7 +1268,7 @@
       "expression": "X0 > 1142.0 and X12 > 55.0 and X2 > 28.41556",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 1142.0
@@ -1280,7 +1280,7 @@
           "threshold": 55.0
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 28.41556
@@ -1296,7 +1296,7 @@
       "expression": "X0 > 2956.5 and X7 > 9.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 2956.5
@@ -1318,7 +1318,7 @@
       "expression": "X1 > 1043.0 and X12 > 1.5 and X8 > 36.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 1043.0
@@ -1352,7 +1352,7 @@
           "threshold": 1560.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1368,13 +1368,13 @@
       "expression": "X0 > 5932.5 and X28 <= 0.5 and X8 <= 62.0",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5932.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
@@ -1396,25 +1396,25 @@
       "expression": "X1 <= 10683.5 and X22 > 11.5 and X26 > 6.5 and X3 > 0.635292 and X8 <= 36.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 10683.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 11.5
         },
         {
-          "feature": "original_query_length",
+          "feature": "source_query_length",
           "feature_index": 26,
           "operator": ">",
           "threshold": 6.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.635292
@@ -1436,19 +1436,19 @@
       "expression": "X0 > 5864.0 and X2 > 21.86567 and X28 <= 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5864.0
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 21.86567
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
@@ -1464,7 +1464,7 @@
       "expression": "X0 > 152.5 and X12 > 56.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 152.5
@@ -1486,13 +1486,13 @@
       "expression": "X1 > 5864.0 and X29 <= 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 5864.0
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": "<=",
           "threshold": 0.5
@@ -1508,19 +1508,19 @@
       "expression": "X1 > 5467.0 and X29 > 0.5 and X3 <= 0.960494",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 5467.0
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": "<=",
           "threshold": 0.960494
@@ -1536,13 +1536,13 @@
       "expression": "X0 > 1150.0 and X22 <= 15.5 and X8 <= 63.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 1150.0
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 15.5
@@ -1570,19 +1570,19 @@
           "threshold": 7.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 12.5
         },
         {
-          "feature": "original_query_length",
+          "feature": "source_query_length",
           "feature_index": 26,
           "operator": ">",
           "threshold": 11.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1598,13 +1598,13 @@
       "expression": "X0 <= 5400.5 and X15 > 0.236695",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5400.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": ">",
           "threshold": 0.236695
@@ -1620,13 +1620,13 @@
       "expression": "X46 <= 32.5 and X5 > 0.5 and X7 <= 12.5",
       "conditions": [
         {
-          "feature": "final_url_length",
+          "feature": "page_url_length",
           "feature_index": 46,
           "operator": "<=",
           "threshold": 32.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1648,7 +1648,7 @@
       "expression": "X5 > 0.5 and X7 > 11.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1670,13 +1670,13 @@
       "expression": "X1 > 5467.0 and X29 <= 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 5467.0
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": "<=",
           "threshold": 0.5
@@ -1692,7 +1692,7 @@
       "expression": "X0 > 5370.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5370.5
@@ -1708,7 +1708,7 @@
       "expression": "X5 > 0.5 and X7 > 25.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1730,7 +1730,7 @@
       "expression": "X1 > 6724.0",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 6724.0
@@ -1762,7 +1762,7 @@
       "expression": "X5 > 0.5 and X7 > 0.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1784,31 +1784,31 @@
       "expression": "X1 > 3857.0 and X2 > 20.95503 and X22 > 20.5 and X28 <= 0.5 and X5 > 0.5 and X7 > 0.5 and X9 <= 123.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 3857.0
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 20.95503
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 20.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1836,19 +1836,19 @@
       "expression": "X2 > 22.47024 and X28 <= 0.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 22.47024
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1880,13 +1880,13 @@
       "expression": "X1 <= 5368.5 and X15 > 0.236695 and X8 <= 57.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 5368.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": ">",
           "threshold": 0.236695
@@ -1908,7 +1908,7 @@
       "expression": "X22 <= 11.5 and X7 <= 25.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 11.5
@@ -1930,13 +1930,13 @@
       "expression": "X0 > 5430.5 and X5 > 0.5 and X7 <= 17.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5430.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1964,13 +1964,13 @@
           "threshold": 8.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 15.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -1986,7 +1986,7 @@
       "expression": "X1 <= 5538.5 and X13 > 3.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 5538.5
@@ -2030,7 +2030,7 @@
       "expression": "X1 > 5430.5 and X8 <= 58.0",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 5430.5
@@ -2052,7 +2052,7 @@
       "expression": "X0 > 6748.5 and X17 <= 0.000984252",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 6748.5
@@ -2074,7 +2074,7 @@
       "expression": "X1 > 2790.0",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 2790.0
@@ -2090,7 +2090,7 @@
       "expression": "X0 > 6008.5 and X8 <= 61.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 6008.5
@@ -2112,7 +2112,7 @@
       "expression": "X5 > 0.5 and X8 <= 35.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2134,13 +2134,13 @@
       "expression": "X2 > 22.47024 and X5 > 0.5 and X8 <= 13.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 22.47024
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2162,7 +2162,7 @@
       "expression": "X0 > 5766.5 and X12 <= 8.5 and X22 > 15.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5766.5
@@ -2174,13 +2174,13 @@
           "threshold": 8.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 15.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2202,7 +2202,7 @@
           "threshold": 16.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2218,13 +2218,13 @@
       "expression": "X22 > 22.5 and X5 > 0.5 and X7 > 9.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 22.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2246,7 +2246,7 @@
       "expression": "X5 > 0.5 and X8 <= 8.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2268,25 +2268,25 @@
       "expression": "X0 > 1226.5 and X2 > 21.65985 and X28 <= 0.5 and X5 > 0.5 and X9 <= 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 1226.5
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 21.65985
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2314,13 +2314,13 @@
           "threshold": 1.5
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2336,7 +2336,7 @@
       "expression": "X5 > 0.5 and X7 <= 11.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2358,25 +2358,25 @@
       "expression": "X0 <= 7711.5 and X10 <= 0.5 and X28 <= 0.5 and X3 > 0.350563 and X39 <= 3.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 7711.5
         },
         {
-          "feature": "brand_candidate_matches_final_domain",
+          "feature": "brand_matches_page",
           "feature_index": 10,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.350563
@@ -2388,7 +2388,7 @@
           "threshold": 3.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2410,19 +2410,19 @@
           "threshold": 6.5
         },
         {
-          "feature": "final_hostname_length",
+          "feature": "page_hostname_length",
           "feature_index": 23,
           "operator": "<=",
           "threshold": 18.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "brand_candidate_final_domain_similarity",
+          "feature": "brand_page_similarity",
           "feature_index": 6,
           "operator": "<=",
           "threshold": 0.177866
@@ -2438,7 +2438,7 @@
       "expression": "X1 <= 6724.0",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 6724.0
@@ -2454,7 +2454,7 @@
       "expression": "X5 > 0.5 and X7 <= 10.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2482,7 +2482,7 @@
           "threshold": 2.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2520,7 +2520,7 @@
           "threshold": 19.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2542,7 +2542,7 @@
           "threshold": 7.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2558,7 +2558,7 @@
       "expression": "X0 <= 5929.0 and X12 <= 56.5 and X14 > 3.5 and X15 > 0.236695",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5929.0
@@ -2570,13 +2570,13 @@
           "threshold": 56.5
         },
         {
-          "feature": "original_url_token_count",
+          "feature": "source_url_token_count",
           "feature_index": 14,
           "operator": ">",
           "threshold": 3.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": ">",
           "threshold": 0.236695
@@ -2592,7 +2592,7 @@
       "expression": "X0 <= 5370.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5370.5
@@ -2608,7 +2608,7 @@
       "expression": "X5 > 0.5 and X7 <= 12.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2630,7 +2630,7 @@
       "expression": "X5 <= 0.5 and X7 > 25.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -2652,13 +2652,13 @@
       "expression": "X0 <= 5864.0 and X15 <= 0.239048",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5864.0
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.239048
@@ -2696,13 +2696,13 @@
       "expression": "X1 > 5370.5 and X28 > 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 5370.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": ">",
           "threshold": 0.5
@@ -2718,13 +2718,13 @@
       "expression": "X1 <= 5370.5 and X15 <= 0.215251",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 5370.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.215251
@@ -2740,7 +2740,7 @@
       "expression": "X0 <= 10870.0 and X12 <= 10.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 10870.0
@@ -2752,7 +2752,7 @@
           "threshold": 10.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2768,7 +2768,7 @@
       "expression": "X0 <= 1142.0 and X12 > 55.0",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 1142.0
@@ -2790,13 +2790,13 @@
       "expression": "X44 > 25.5 and X5 > 0.5 and X7 <= 13.5",
       "conditions": [
         {
-          "feature": "original_url_length",
+          "feature": "source_url_length",
           "feature_index": 44,
           "operator": ">",
           "threshold": 25.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -2818,13 +2818,13 @@
       "expression": "X0 <= 10601.0 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 10601.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -2840,7 +2840,7 @@
       "expression": "X1 <= 1043.0 and X8 > 36.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 1043.0
@@ -2862,13 +2862,13 @@
       "expression": "X1 <= 5467.0 and X15 <= 0.237469 and X40 <= 2.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 5467.0
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.237469
@@ -2890,25 +2890,25 @@
       "expression": "X1 <= 10683.5 and X22 <= 11.5 and X3 <= 0.739261 and X6 <= 0.916667 and X8 <= 36.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 10683.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 11.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": "<=",
           "threshold": 0.739261
         },
         {
-          "feature": "brand_candidate_final_domain_similarity",
+          "feature": "brand_page_similarity",
           "feature_index": 6,
           "operator": "<=",
           "threshold": 0.916667
@@ -2930,7 +2930,7 @@
       "expression": "X22 > 15.5 and X8 <= 63.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 15.5
@@ -2952,7 +2952,7 @@
       "expression": "X1 <= 6287.5 and X12 <= 55.0 and X15 <= 0.236695",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 6287.5
@@ -2964,7 +2964,7 @@
           "threshold": 55.0
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.236695
@@ -2980,13 +2980,13 @@
       "expression": "X0 <= 5400.5 and X15 <= 0.236695 and X40 <= 3.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5400.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.236695
@@ -3008,7 +3008,7 @@
       "expression": "X0 <= 6011.0 and X13 <= 1.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 6011.0
@@ -3030,7 +3030,7 @@
       "expression": "X1 <= 2790.0",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 2790.0
@@ -3046,7 +3046,7 @@
       "expression": "X1 <= 5538.5 and X13 <= 3.5 and X15 <= 0.236695",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 5538.5
@@ -3058,7 +3058,7 @@
           "threshold": 3.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.236695
@@ -3080,19 +3080,19 @@
           "threshold": 7.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 12.5
         },
         {
-          "feature": "original_query_length",
+          "feature": "source_query_length",
           "feature_index": 26,
           "operator": "<=",
           "threshold": 11.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3108,7 +3108,7 @@
       "expression": "X1 <= 5430.5 and X8 <= 58.0",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 5430.5
@@ -3130,7 +3130,7 @@
       "expression": "X0 <= 2956.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 2956.5
@@ -3146,7 +3146,7 @@
       "expression": "X0 <= 177.0 and X7 > 25.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 177.0
@@ -3168,7 +3168,7 @@
       "expression": "X0 <= 5464.5 and X7 <= 25.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5464.5
@@ -3190,13 +3190,13 @@
       "expression": "X1 <= 5368.5 and X15 <= 0.236695 and X8 <= 57.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 5368.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.236695
@@ -3218,7 +3218,7 @@
       "expression": "X0 <= 10743.0 and X13 <= 0.5 and X15 <= 0.226418",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 10743.0
@@ -3230,7 +3230,7 @@
           "threshold": 0.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": "<=",
           "threshold": 0.226418
@@ -3246,13 +3246,13 @@
       "expression": "X1 <= 11404.0 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 11404.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -3268,7 +3268,7 @@
       "expression": "X1 <= 7627.0 and X12 <= 1.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 7627.0
@@ -3280,7 +3280,7 @@
           "threshold": 1.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3296,13 +3296,13 @@
       "expression": "X23 > 18.5 and X5 > 0.5 and X8 <= 7.5",
       "conditions": [
         {
-          "feature": "final_hostname_length",
+          "feature": "page_hostname_length",
           "feature_index": 23,
           "operator": ">",
           "threshold": 18.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3324,7 +3324,7 @@
       "expression": "X0 <= 5433.5 and X17 <= 0.00138122",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5433.5
@@ -3346,13 +3346,13 @@
       "expression": "X2 <= 22.47024 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": "<=",
           "threshold": 22.47024
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3374,13 +3374,13 @@
           "threshold": 6.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 19.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3396,19 +3396,19 @@
       "expression": "X1 > 5467.0 and X29 > 0.5 and X3 > 0.960494",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 5467.0
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.960494
@@ -3424,13 +3424,13 @@
       "expression": "X1 > 3044.0 and X5 <= 0.5 and X58 <= 1.5 and X7 <= 14.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 3044.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -3458,13 +3458,13 @@
       "expression": "X0 > 5932.5 and X28 > 0.5 and X8 <= 62.0",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5932.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": ">",
           "threshold": 0.5
@@ -3486,13 +3486,13 @@
       "expression": "X1 > 3044.0 and X2 <= 26.56412 and X7 > 14.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 3044.0
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": "<=",
           "threshold": 26.56412
@@ -3514,31 +3514,31 @@
       "expression": "X0 <= 1226.5 and X2 > 21.65985 and X28 <= 0.5 and X33 > 5.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 1226.5
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 21.65985
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_special_char_count",
+          "feature": "source_special_char_count",
           "feature_index": 33,
           "operator": ">",
           "threshold": 5.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3554,13 +3554,13 @@
       "expression": "X2 > 22.47024 and X28 > 0.5 and X30 <= 370.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 22.47024
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": ">",
           "threshold": 0.5
@@ -3572,7 +3572,7 @@
           "threshold": 370.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3588,13 +3588,13 @@
       "expression": "X3 <= 0.350563 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": "<=",
           "threshold": 0.350563
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3610,13 +3610,13 @@
       "expression": "X2 <= 21.65985 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": "<=",
           "threshold": 21.65985
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3632,7 +3632,7 @@
       "expression": "X5 > 0.5 and X7 <= 0.5",
       "conditions": [
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3654,13 +3654,13 @@
       "expression": "X1 <= 9765.5 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 9765.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -3682,19 +3682,19 @@
           "threshold": 24.0
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 21.65985
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3710,25 +3710,25 @@
       "expression": "X2 > 20.95503 and X28 > 0.5 and X3 > 0.718381 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 20.95503
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": ">",
           "threshold": 0.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.718381
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3744,13 +3744,13 @@
       "expression": "X2 <= 22.47024 and X5 > 0.5 and X8 <= 13.5",
       "conditions": [
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": "<=",
           "threshold": 22.47024
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3772,7 +3772,7 @@
       "expression": "X1 > 6287.5 and X12 <= 55.0 and X29 <= 0.5 and X31 <= 254.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 6287.5
@@ -3784,7 +3784,7 @@
           "threshold": 55.0
         },
         {
-          "feature": "original_skip_domain_age_lookup",
+          "feature": "source_skip_domain_age_lookup",
           "feature_index": 29,
           "operator": "<=",
           "threshold": 0.5
@@ -3806,7 +3806,7 @@
       "expression": "X0 > 1142.0 and X12 > 55.0 and X2 <= 28.41556",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 1142.0
@@ -3818,7 +3818,7 @@
           "threshold": 55.0
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": "<=",
           "threshold": 28.41556
@@ -3834,13 +3834,13 @@
       "expression": "X11 <= 0.5 and X5 <= 0.5",
       "conditions": [
         {
-          "feature": "brand_candidate_matches_original_domain",
+          "feature": "brand_matches_source",
           "feature_index": 11,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": "<=",
           "threshold": 0.5
@@ -3856,7 +3856,7 @@
       "expression": "X0 <= 5766.5 and X12 <= 8.5 and X22 > 15.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 5766.5
@@ -3868,13 +3868,13 @@
           "threshold": 8.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 15.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3890,13 +3890,13 @@
       "expression": "X22 <= 19.5 and X3 <= 0.217949 and X40 <= 85.0 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 19.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": "<=",
           "threshold": 0.217949
@@ -3908,7 +3908,7 @@
           "threshold": 85.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -3924,7 +3924,7 @@
       "expression": "X1 > 3044.0 and X58 > 1.5 and X7 <= 14.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 3044.0
@@ -3952,13 +3952,13 @@
       "expression": "X22 <= 19.5 and X3 > 0.217949 and X38 <= 0.366667 and X40 <= 85.0 and X5 > 0.5 and X54 > 0.5 and X7 <= 10.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 19.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": ">",
           "threshold": 0.217949
@@ -3976,7 +3976,7 @@
           "threshold": 85.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -4004,25 +4004,25 @@
       "expression": "X1 <= 10683.5 and X22 > 11.5 and X26 > 6.5 and X3 <= 0.635292 and X8 <= 36.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 10683.5
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 11.5
         },
         {
-          "feature": "original_query_length",
+          "feature": "source_query_length",
           "feature_index": 26,
           "operator": ">",
           "threshold": 6.5
         },
         {
-          "feature": "brand_top_candidate_quality_score",
+          "feature": "brand_quality_score",
           "feature_index": 3,
           "operator": "<=",
           "threshold": 0.635292
@@ -4044,31 +4044,31 @@
       "expression": "X1 <= 3857.0 and X2 > 20.95503 and X22 > 20.5 and X28 <= 0.5 and X5 > 0.5 and X7 > 0.5 and X9 <= 123.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": "<=",
           "threshold": 3857.0
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 20.95503
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 20.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -4096,7 +4096,7 @@
       "expression": "X0 > 5929.0 and X12 <= 56.5 and X28 <= 0.5 and X30 <= 3.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": ">",
           "threshold": 5929.0
@@ -4108,7 +4108,7 @@
           "threshold": 56.5
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
@@ -4130,7 +4130,7 @@
       "expression": "X1 > 1043.0 and X12 <= 1.5 and X8 > 36.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 1043.0
@@ -4158,7 +4158,7 @@
       "expression": "X1 > 4436.0 and X12 > 6.5 and X15 > 0.207143 and X22 > 19.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "final_domain_age_days",
+          "feature": "page_domain_age_days",
           "feature_index": 1,
           "operator": ">",
           "threshold": 4436.0
@@ -4170,19 +4170,19 @@
           "threshold": 6.5
         },
         {
-          "feature": "original_special_char_ratio",
+          "feature": "source_special_char_ratio",
           "feature_index": 15,
           "operator": ">",
           "threshold": 0.207143
         },
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": ">",
           "threshold": 19.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -4198,7 +4198,7 @@
       "expression": "X0 <= 137.0 and X13 > 0.5 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_domain_age_days",
+          "feature": "source_domain_age_days",
           "feature_index": 0,
           "operator": "<=",
           "threshold": 137.0
@@ -4210,7 +4210,7 @@
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -4226,7 +4226,7 @@
       "expression": "X22 <= 19.5 and X40 > 85.0 and X5 > 0.5",
       "conditions": [
         {
-          "feature": "original_hostname_length",
+          "feature": "source_hostname_length",
           "feature_index": 22,
           "operator": "<=",
           "threshold": 19.5
@@ -4238,7 +4238,7 @@
           "threshold": 85.0
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5
@@ -4260,19 +4260,19 @@
           "threshold": 0.0721195
         },
         {
-          "feature": "brand_top_candidate_search_score",
+          "feature": "brand_search_score",
           "feature_index": 2,
           "operator": ">",
           "threshold": 20.95503
         },
         {
-          "feature": "original_uses_shared_hosting_domain",
+          "feature": "source_uses_shared_hosting_domain",
           "feature_index": 28,
           "operator": "<=",
           "threshold": 0.5
         },
         {
-          "feature": "original_path_length",
+          "feature": "source_path_length",
           "feature_index": 5,
           "operator": ">",
           "threshold": 0.5

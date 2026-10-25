@@ -9,7 +9,7 @@ import { extractCrawlerUrlFeatureSet } from "./url/url-features.js";
 import { evaluateRuleFitEngine } from "../rule/rulefit-engine.js";
 import { PUBLIC_HOSTING_PLATFORM_DOMAINS, SHORTENER_DOMAINS } from "../utils/constants.js";
 
-export const RUNTIME_ANALYSIS_VERSION = "rulefit60-clearbit-self-brand-guard-v4";
+export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-evidence-v5";
 
 const EXTRA_SHORTENER_DOMAINS = new Set([
   "bitly.com",
@@ -79,7 +79,7 @@ export async function buildRuntimeFeatureAnalysis({
     extractRdapFeatureSet({
       originalDomain: urlFeatures.original_registrable_domain,
       finalDomain: urlFeatures.final_registrable_domain,
-      originalSkip: urlFeatures.original_skip_domain_age_lookup,
+      originalSkip: urlFeatures.source_skip_domain_age_lookup,
       finalSkip: urlFeatures.final_skip_domain_age_lookup,
       lookup: rdapLookup
     }),
@@ -127,6 +127,8 @@ function applyPostModelGuards(model, { brandFeatures, urlFeatures, rdapFeatures,
   // Aturan manual setelah model, bukan rule hasil pelatihan. Guard pertama menang.
   // Skor yang disesuaikan guard tidak lagi merupakan probabilitas murni RuleFit.
   if (!model?.ready) return model;
+  model = { ...model, raw_probability_phishing: model.probability_phishing,
+    raw_verdict: model.verdict, raw_predicted_label: model.predicted_label };
   const selfBrandGuard = detectSelfBrandLegitimateGuard(brandFeatures, urlFeatures, rdapFeatures, domFeatures, title, httpStatusCode);
   if (selfBrandGuard) {
     if (model.verdict !== "DANGEROUS") {
@@ -175,29 +177,29 @@ function applyPostModelGuards(model, { brandFeatures, urlFeatures, rdapFeatures,
 
 function detectSelfBrandLegitimateGuard(brandFeatures = {}, urlFeatures = {}, rdapFeatures = {}, domFeatures = {}, title = "", httpStatusCode = null) {
   // Kandidat direktori saja belum cukup: cocokkan identitas dan sinyal pendukung.
-  if (!brandFeatures?.brand_candidate_found) return null;
+  if (!brandFeatures?.brand_found) return null;
   const isBrandfetchCandidate = brandFeatures.brand_top_candidate_source === "brandfetch";
   const isClearbitCandidate = brandFeatures.brand_top_candidate_source === "clearbit";
   if (!isBrandfetchCandidate && !isClearbitCandidate) return null;
   if (isBrandfetchCandidate) {
-    if ((Number(brandFeatures.brand_top_candidate_quality_score) || 0) < 0.5) return null;
-    if ((Number(brandFeatures.brand_top_candidate_search_score) || 0) < 10) return null;
+    if ((Number(brandFeatures.brand_quality_score) || 0) < 0.5) return null;
+    if ((Number(brandFeatures.brand_search_score) || 0) < 10) return null;
   }
 
   const matchedOfficialDomain = Boolean(
-    brandFeatures.brand_candidate_matches_original_domain ||
-    brandFeatures.brand_candidate_matches_final_domain
+    brandFeatures.brand_matches_source ||
+    brandFeatures.brand_matches_page
   );
 
   const candidateLabel = domainLabel(brandFeatures.brand_top_candidate_domain) ||
     normalizeToken(brandFeatures.brand_top_candidate_name);
   if (isClearbitCandidate) {
     // Directory identity is not a quality score: require independent page evidence.
-    if (!brandFeatures.brand_candidate_matches_original_domain || !brandFeatures.brand_candidate_matches_final_domain) return null;
+    if (!brandFeatures.brand_matches_source || !brandFeatures.brand_matches_page) return null;
     if (normalizeToken(brandFeatures.brand_top_candidate_query) !== candidateLabel) return null;
     if (!candidateLabel || !normalizeToken(title).includes(candidateLabel)) return null;
     if (Number(httpStatusCode) !== 200) return null;
-    if (urlFeatures.original_uses_shared_hosting_domain || urlFeatures.final_uses_shared_hosting_domain) return null;
+    if (urlFeatures.source_uses_shared_hosting_domain || urlFeatures.final_uses_shared_hosting_domain) return null;
     if (!Number.isFinite(domFeatures?.external_credential_form_count) || !Number.isFinite(domFeatures?.ip_credential_form_count)) return null;
   }
   const activeLabels = [
@@ -209,8 +211,8 @@ function detectSelfBrandLegitimateGuard(brandFeatures = {}, urlFeatures = {}, rd
   if (!matchedOfficialDomain && !sameBrandLabelDifferentSuffix) return null;
 
   const age = Math.max(
-    Number(rdapFeatures.original_domain_age_days) || 0,
-    Number(rdapFeatures.final_domain_age_days) || 0
+    Number(rdapFeatures.source_domain_age_days) || 0,
+    Number(rdapFeatures.page_domain_age_days) || 0
   );
   const rdapAvailable = Boolean(rdapFeatures.original_rdap_available || rdapFeatures.final_rdap_available);
   if (!rdapAvailable || age < 365) return null;
@@ -289,19 +291,38 @@ function detectRedirectRiskGuard(urlFeatures = {}) {
   };
 }
 
-function detectBrandImpersonationGuard(brandFeatures = {}, urlFeatures = {}) {
+export function detectBrandImpersonationGuard(brandFeatures = {}, urlFeatures = {}) {
   // Domain berbeda saja tidak cukup; cari penyebutan brand atau kemiripan tambahan.
-  if (!brandFeatures?.brand_candidate_found) return null;
+  if (!brandFeatures?.brand_found) return null;
 
   const matchedOfficialDomain = Boolean(
-    brandFeatures.brand_candidate_matches_original_domain ||
-    brandFeatures.brand_candidate_matches_final_domain
+    brandFeatures.brand_matches_source ||
+    brandFeatures.brand_matches_page
   );
   if (matchedOfficialDomain) return null;
 
   const brandLabel = domainLabel(brandFeatures.brand_top_candidate_domain) ||
     normalizeToken(brandFeatures.brand_top_candidate_name);
   if (!brandLabel || brandLabel.length < 4) return null;
+
+  // A directory result is a candidate, not proof of the page's identity.
+  // Path/query mentions and fuzzy similarity alone cannot force a phishing verdict.
+  const generic = new Set(["register", "registration", "admission", "admissions",
+    "apply", "applynow", "privacy", "contact", "services", "permit", "permits"]);
+  if (generic.has(brandLabel)) return null;
+  const hostnames = [urlFeatures.original_hostname, urlFeatures.final_hostname,
+    urlFeatures.hostname].filter(Boolean).map((host) => String(host).toLowerCase());
+  const embeddedOfficialDomain = hostnames.some((host) => {
+    const official = String(brandFeatures.brand_top_candidate_domain || "").toLowerCase();
+    return official && host.includes(`${official}.`) && !host.endsWith(`.${official}`);
+  });
+  const distinctHostClaim = hostnames.some((host) => {
+    const tokens = host.split(/[^a-z0-9]+/).filter(Boolean);
+    return tokens.includes(brandLabel) &&
+      [urlFeatures.original_registrable_domain, urlFeatures.final_registrable_domain]
+        .filter(Boolean).some((domain) => host.endsWith(String(domain)) && domainLabel(domain) !== brandLabel);
+  });
+  if (!embeddedOfficialDomain && !distinctHostClaim) return null;
 
   const registrableHosts = [
     urlFeatures.original_registrable_domain,
@@ -316,31 +337,31 @@ function detectBrandImpersonationGuard(brandFeatures = {}, urlFeatures = {}) {
 
   const brandMentionedInHost = registrableHosts.some((host) => host.includes(brandLabel));
   const brandMentionedInUrlPart = Boolean(
-    brandFeatures.brand_candidate_in_original_subdomain ||
-    brandFeatures.brand_candidate_in_original_path ||
-    brandFeatures.brand_candidate_in_original_query
+    brandFeatures.brand_in_source_subdomain ||
+    brandFeatures.brand_in_source_path ||
+    brandFeatures.brand_in_source_query
   );
   const similarity = Math.max(
-    Number(brandFeatures.brand_candidate_original_domain_similarity) || 0,
-    Number(brandFeatures.brand_candidate_final_domain_similarity) || 0
+    Number(brandFeatures.brand_source_similarity) || 0,
+    Number(brandFeatures.brand_page_similarity) || 0
   );
 
   const sameLabelDifferentSuffix = activeLabels.some((label) => label === brandLabel);
   if (sameLabelDifferentSuffix && !brandMentionedInUrlPart) {
     const hasAdditionalRisk = Boolean(urlFeatures.final_domain_changed) ||
       Number(urlFeatures.cross_domain_redirect_count || 0) > 0 ||
-      Boolean(urlFeatures.original_uses_shared_hosting_domain || urlFeatures.final_uses_shared_hosting_domain) ||
+      Boolean(urlFeatures.source_uses_shared_hosting_domain || urlFeatures.final_uses_shared_hosting_domain) ||
       Number(urlFeatures.original_sensitive_word_count || 0) > 0 ||
       Number(urlFeatures.final_sensitive_word_count || 0) > 0 ||
       Number(urlFeatures.sensitive_word_count || 0) > 0;
-    if (!hasAdditionalRisk) return null;
+    if (!hasAdditionalRisk && !embeddedOfficialDomain) return null;
   }
 
   if (
     brandFeatures.brand_top_candidate_source === "brandfetch" &&
     sameLabelDifferentSuffix &&
     !brandMentionedInUrlPart &&
-    (Number(brandFeatures.brand_top_candidate_quality_score) || 0) < 0.5
+    (Number(brandFeatures.brand_quality_score) || 0) < 0.5 && !embeddedOfficialDomain
   ) {
     return null;
   }

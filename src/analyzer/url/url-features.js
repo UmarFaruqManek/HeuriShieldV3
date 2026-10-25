@@ -4,10 +4,11 @@
  */
 import { parse as parseDomain } from "../../shared/tldts.js";
 import { isPublicHostingPlatformHost } from "../../utils/hosted-platforms.js";
+import { canonicalFeatureName } from "../../rule/feature-names.js";
 
 export const URL_FEATURE_VERSION = "crawler-url-parity-v1";
 // PSL (tldts) memisahkan domain terdaftar dan subdomain, bukan sekadar memotong titik.
-// Prefix original_/final_ mempertahankan konteks sebelum dan sesudah redirect.
+// Nama fitur source_/page_ membedakan URL sumber dan halaman akhir.
 
 const FILE_EXTENSION_SUFFIXES = new Set([
   "png", "jpg", "jpeg", "gif", "svg", "webp", "ico", "css", "js", "json",
@@ -100,7 +101,7 @@ export function prefixedUrlFeatures(url, prefix, sensitiveKeywords = []) {
   const features = extractUrlFeatures(url, sensitiveKeywords);
   const output = { [`${prefix}_url`]: url };
   for (const key of URL_FEATURE_KEYS) {
-    output[`${prefix}_${key}`] = features[key];
+    output[canonicalFeatureName(`${prefix}_${key}`)] = features[key];
   }
   return output;
 }
@@ -127,7 +128,7 @@ export function calculateRedirectFields(originalUrl, finalUrl, redirectChain = [
 
   return {
     redirect_chain: sequence,
-    raw_redirect_count: Math.max(sequence.length - 1, 0),
+    redirect_count: Math.max(sequence.length - 1, 0),
     cross_domain_redirect_count: crossDomainRedirectCount,
     original_registrable_domain: originalRegistrable,
     final_registrable_domain: finalRegistrable,
@@ -148,10 +149,10 @@ export function extractCrawlerUrlFeatureSet({
     ...prefixedUrlFeatures(finalUrl, "final", sensitiveKeywords),
     ...extractUrlFeatures(finalUrl, sensitiveKeywords),
     ...calculateRedirectFields(originalUrl, finalUrl, redirectChain),
-    original_uses_shared_hosting_domain: originalSharedHosting,
+    source_uses_shared_hosting_domain: originalSharedHosting,
     final_uses_shared_hosting_domain: finalSharedHosting,
     uses_shared_hosting_domain: finalSharedHosting,
-    original_skip_domain_age_lookup: originalSharedHosting,
+    source_skip_domain_age_lookup: originalSharedHosting,
     final_skip_domain_age_lookup: finalSharedHosting
   };
 }

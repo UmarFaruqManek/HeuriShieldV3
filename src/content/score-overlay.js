@@ -462,8 +462,8 @@
 
   function brandDisplay(analysis) {
     const brand = analysis?.brand_features;
-    if (!brand?.brand_candidate_found) {
-      const value = brand?.brand_lookup_status === false ? "Lookup tidak tersedia"
+    if (!brand?.brand_found) {
+      const value = brand?.brand_lookup_success === false ? "Lookup tidak tersedia"
         : brand?.brand_lookup_failed_queries > 0 ? "Pencarian belum lengkap" : "Tidak ditemukan";
       return { label: "Brand", value };
     }
@@ -484,7 +484,7 @@
   }
 
   function domainAgeText(analysis) {
-    const days = analysis?.rdap_features?.final_domain_age_days ?? analysis?.rdap_features?.original_domain_age_days;
+    const days = analysis?.rdap_features?.page_domain_age_days ?? analysis?.rdap_features?.source_domain_age_days;
     if (days === null || days === undefined || days === "" || !Number.isFinite(Number(days))) return "Tidak tersedia";
     if (Number(days) < 365) return `${Math.round(Number(days))} hari`;
     return `${(Number(days) / 365).toFixed(1)} tahun`;

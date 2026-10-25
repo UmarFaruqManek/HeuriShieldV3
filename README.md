@@ -16,7 +16,7 @@ git clone https://github.com/UmarFaruqManek/HeuriShieldV3.git
 
 **Tidak perlu build, npm install, Python, server, API key pribadi atau konfigurasi model.** Semua file runtime/model ada di repository. Koneksi internet diperlukan untuk situs dan lookup API. Pencatatan ke file JSON bersifat opsional, bukan syarat deteksi.
 
-Chrome/Chromium desktop adalah target pengujian utama. Edge dapat memakai **Extensions -> Developer mode -> Load unpacked**, tetapi belum diuji selengkap Chrome. Firefox/Safari perlu porting; mobile belum didukung. Pembaruan: `git pull` atau unduh ZIP baru, **Reload** extension, lalu refresh tab situs. Versi paket: **5.0.13**.
+Chrome/Chromium desktop adalah target pengujian utama. Edge dapat memakai **Extensions -> Developer mode -> Load unpacked**, tetapi belum diuji selengkap Chrome. Firefox/Safari perlu porting; mobile belum didukung. Pembaruan: `git pull` atau unduh ZIP baru, **Reload** extension, lalu refresh tab situs. Versi paket: **5.0.16**.
 
 ## Alur Keputusan
 
@@ -41,7 +41,9 @@ flowchart TD
 
 **Heuristik** digunakan untuk membaca indikator situs menjadi fitur. Di dalam engine, RuleFit menjumlahkan bobot rule aktif bersama intercept, mengubah skor dengan sigmoid, lalu membandingkannya dengan threshold. Fitur kosong memakai median engine saat evaluasi.
 
-Engine juga memeriksa kecocokan brand, indikasi impersonasi dan redirect sebelum menetapkan hasil akhir. Pemeriksaan tambahan ini adalah aturan manual, **bukan bagian dari 150 rule hasil pelatihan**. Semuanya dijelaskan sebagai satu engine keputusan; detail alasan merangkum temuan yang relevan bagi pengguna.
+Nama fitur memakai bahasa Inggris: `source_` untuk URL sumber dan `page_` untuk halaman akhir, misalnya `source_url_length` dan `page_url_length`. Fitur brand disederhanakan menjadi `brand_search_score`, `brand_quality_score`, dan `brand_matches_page`. Penggantian nama tidak mengubah nilai, koefisien, atau keputusan. Dari 60 fitur input, 35 fitur unik muncul dalam kondisi model. [Daftar 60 nama aktif](src/rule/PARAMETER.md) memuat pengelompokan dan padanannya dalam bahasa Indonesia.
+
+Engine juga memeriksa kecocokan brand, indikasi impersonasi dan redirect sebelum menetapkan hasil akhir. Pemeriksaan tambahan ini adalah aturan manual, **bukan bagian dari 150 rule hasil pelatihan**. Semuanya dijelaskan sebagai satu engine keputusan; detail alasan mengutamakan temuan yang dapat dipahami, seperti perbedaan domain brand, redirect, tujuan formulir akun, atau umur domain yang teramati. Hitungan aset dan panjang URL tetap dapat dipakai model, tetapi tidak ditampilkan sebagai alasan tunggal yang menyesatkan.
 
 ## API dan Urutannya
 

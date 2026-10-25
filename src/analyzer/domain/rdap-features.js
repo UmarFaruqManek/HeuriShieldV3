@@ -2,6 +2,8 @@
  * Mengambil metadata pendaftaran domain, menghitung umur dan menandai lookup gagal/dilewati.
  * Tidak menganggap metadata yang tidak tersedia sebagai domain baru.
  */
+import { canonicalFeatureName } from "../../rule/feature-names.js";
+
 export const RDAP_FEATURE_VERSION = "crawler-rdap-parity-v3-beryl-first";
 
 const PRIMARY_RDAP_API = "https://api-check-beryl-beta.vercel.app/api/whois?domain={domain}";
@@ -165,7 +167,7 @@ export function prefixRdap(rdap, prefix) {
   const source = rdap || unavailableRdap();
   const output = {};
   for (const key of RDAP_KEYS) {
-    output[`${prefix}_${key}`] = source[key] ?? null;
+    output[canonicalFeatureName(`${prefix}_${key}`)] = source[key] ?? null;
   }
   return output;
 }

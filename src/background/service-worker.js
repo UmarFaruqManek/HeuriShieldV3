@@ -25,7 +25,7 @@ import { STORAGE_KEYS } from "../utils/constants.js";
 import { buildAnalysisExplanation } from "../shared/analysis-explanation.js";
 import { createDatasetCollector } from "../storage/dataset-collector.js";
 
-const ANALYSIS_VERSION = "v5-rulefit60-explanation-v6";
+const ANALYSIS_VERSION = "v5-rulefit60-source-page-schema-v7";
 const METADATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 let runtimeResourcesPromise = null;
@@ -557,8 +557,8 @@ function buildEvidence(domFeatures, rdapFeatures, brandFeatures) {
     source: "RDAP/WHOIS",
     status: rdapFeatures?.final_rdap_available || rdapFeatures?.original_rdap_available ? "observed" : "unavailable",
     raw_value: {
-      original_domain_age_days: rdapFeatures?.original_domain_age_days ?? null,
-      final_domain_age_days: rdapFeatures?.final_domain_age_days ?? null,
+      source_domain_age_days: rdapFeatures?.source_domain_age_days ?? null,
+      page_domain_age_days: rdapFeatures?.page_domain_age_days ?? null,
       original_rdap_available: rdapFeatures?.original_rdap_available ?? null,
       final_rdap_available: rdapFeatures?.final_rdap_available ?? null
     },
@@ -570,12 +570,12 @@ function buildEvidence(domFeatures, rdapFeatures, brandFeatures) {
     observation_id: "brand_candidate",
     dependency_group: "brand",
     source: "Brand lookup",
-    status: brandFeatures?.brand_candidate_found ? "observed" : "unavailable",
+    status: brandFeatures?.brand_found ? "observed" : "unavailable",
     raw_value: {
-      brand_candidate_found: brandFeatures?.brand_candidate_found ?? false,
+      brand_found: brandFeatures?.brand_found ?? false,
       brand_top_candidate_domain: brandFeatures?.brand_top_candidate_domain ?? null,
-      brand_top_candidate_search_score: brandFeatures?.brand_top_candidate_search_score ?? null,
-      brand_top_candidate_quality_score: brandFeatures?.brand_top_candidate_quality_score ?? null
+      brand_search_score: brandFeatures?.brand_search_score ?? null,
+      brand_quality_score: brandFeatures?.brand_quality_score ?? null
     },
     explanation: "Kandidat brand dicari melalui Clearbit terlebih dahulu, lalu Brandfetch untuk skor domain yang sama atau fallback."
   });

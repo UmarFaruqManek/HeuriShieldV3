@@ -7,6 +7,7 @@ export function buildAnalysisExplanation(analysis = {}) {
   const brand = analysis.brand_features || {};
   const dom = analysis.dom_features || {};
   const url = analysis.url_features || {};
+  const rdap = analysis.rdap_features || {};
   const model = analysis.model_result || {};
   const dangerous = analysis.verdict === "DANGEROUS";
   const safe = analysis.verdict === "SAFE";
@@ -26,8 +27,13 @@ export function buildAnalysisExplanation(analysis = {}) {
     } else if (hasCount("external_credential_form_count") && dom.external_credential_form_count > 0) {
       add("Ada form data akun yang mengarah ke domain lain. Tujuan tersebut perlu diperiksa sebelum mengisi data.");
     }
-    if (brand.brand_candidate_found && (brand.brand_candidate_matches_final_domain === false || brand.brand_candidate_matches_final_domain === 0) && brandDomain) {
-      add(`Kandidat brand ${brandName} ditemukan dengan domain ${brandDomain}, berbeda dari ${domain}. Perbedaan ini perlu diperiksa, bukan bukti tunggal penipuan.`);
+    if (brand.brand_found && (brand.brand_matches_page === false || brand.brand_matches_page === 0) && brandDomain) {
+      const activeDomain = url.final_registrable_domain || analysis.registrable_domain || domain;
+      const brandLabel = brandDomain.split(".")[0]?.toLowerCase();
+      const nameAppearsInHost = brandLabel && domain.toLowerCase().split(/[^a-z0-9]+/).includes(brandLabel);
+      add(nameAppearsInHost
+        ? `Alamat ${activeDomain} memakai nama ${brandName}, tetapi domain kandidat brand tersebut adalah ${brandDomain}. Perbedaan ini dapat menunjukkan peniruan identitas.`
+        : `Halaman berkaitan dengan ${brandName}, tetapi alamatnya ${activeDomain}, berbeda dari domain kandidat brand ${brandDomain}. Pastikan hubungan keduanya sebelum memasukkan data.`);
     }
     if (url.final_domain_changed === true || url.final_domain_changed === 1 || Number(url.cross_domain_redirect_count) > 0) {
       add("Alamat yang dibuka berpindah ke domain lain. Pastikan tujuan akhirnya sesuai dengan situs yang Anda cari.");
@@ -35,9 +41,14 @@ export function buildAnalysisExplanation(analysis = {}) {
     if (/^https?[-_]|(?:^|[.-])www[-_]/i.test(domain)) {
       add(`Nama domain "${domain}" memuat teks seperti penulisan alamat web. Teks tersebut bagian nama domain, bukan tanda bahwa alamatnya resmi.`);
     }
-    // Jelaskan nilai yang benar-benar terbaca pada rule positif. Bukan semua
-    // fitur halaman, bukan nilai median, dan bukan klaim penyebab tunggal.
-    for (const reason of observedRuleReasons(model)) add(reason);
+    // Tampilkan hanya temuan yang mudah ditindaklanjuti dan benar-benar terbaca.
+    // Hitungan aset, tautan, atau panjang URL tetap dipakai model, tetapi angka
+    // itu tidak cukup jelas untuk disajikan sebagai alasan tersendiri.
+    const age = recentObservedDomainAge(model, rdap);
+    if (age !== null) {
+      const ageDomain = url.final_registrable_domain || analysis.registrable_domain || domain;
+      add(`Data pendaftaran menunjukkan domain ${ageDomain} berumur sekitar ${age} hari. Domain yang masih baru perlu diperiksa lebih cermat.`);
+    }
     if (!reasons.length) {
       add(model.post_model_guard
         ? "Pemeriksaan tambahan menemukan kombinasi tanda risiko pada halaman ini. Pastikan identitas situs sebelum melanjutkan."
@@ -46,7 +57,7 @@ export function buildAnalysisExplanation(analysis = {}) {
           : "Halaman ditandai berisiko, tetapi rincian pemeriksaannya belum tersedia.");
     }
   } else if (safe) {
-    if (brand.brand_candidate_found && (brand.brand_candidate_matches_final_domain === true || brand.brand_candidate_matches_final_domain === 1) && brandDomain) {
+    if (brand.brand_found && (brand.brand_matches_page === true || brand.brand_matches_page === 1) && brandDomain) {
       add(`Domain halaman cocok dengan domain kandidat ${brandName}: ${brandDomain}.`);
     }
     if (!analysis.dom_error && hasCount("external_credential_form_count") && hasCount("ip_credential_form_count") &&
@@ -60,7 +71,7 @@ export function buildAnalysisExplanation(analysis = {}) {
 
   const limitations = [];
   if (analysis.dom_error) limitations.push("Struktur halaman belum berhasil dibaca lengkap.");
-  if (brand.brand_lookup_status === false || brand.brand_lookup_status === 0) limitations.push("Pencarian brand belum berhasil; identitas brand belum dapat dipastikan.");
+  if (brand.brand_lookup_success === false || brand.brand_lookup_success === 0) limitations.push("Pencarian brand belum berhasil; identitas brand belum dapat dipastikan.");
   else if (Number(brand.brand_lookup_failed_queries) > 0) limitations.push("Sebagian pencarian brand gagal; informasi brand mungkin belum lengkap.");
   return {
     title: manual ? "Diblokir oleh daftar Anda" : dangerous ? "Terindikasi phishing" : safe ? "Tidak ditemukan indikasi phishing kuat" : "Pemeriksaan belum lengkap",
@@ -72,52 +83,25 @@ export function buildAnalysisExplanation(analysis = {}) {
   };
 }
 
-function observedRuleReasons(model) {
-  const labels = {
-    domain_age_days: ["Pendaftaran domain", "umur domain", "hari"],
-    registration_lifetime_days: ["Pendaftaran domain", "masa pendaftaran", "hari"],
-    nameserver_count: ["Pendaftaran domain", "nameserver", ""],
-    hostname_length: ["Struktur alamat", "panjang nama host", "karakter"],
-    path_length: ["Struktur alamat", "panjang path", "karakter"],
-    url_length: ["Struktur alamat", "panjang URL", "karakter"],
-    query_length: ["Struktur alamat", "panjang query", "karakter"],
-    subdomain_count: ["Struktur alamat", "jumlah subdomain", ""],
-    dot_count: ["Struktur alamat", "jumlah titik pada host", ""],
-    url_token_count: ["Struktur alamat", "jumlah potongan kata/angka URL", ""],
-    special_char_ratio: ["Struktur alamat", "rasio karakter khusus", "ratio"],
-    url_entropy: ["Struktur alamat", "entropi karakter URL", ""],
-    anchor_count: ["Struktur halaman", "tautan", ""],
-    internal_anchor_count: ["Struktur halaman", "tautan internal", ""],
-    external_anchor_count: ["Struktur halaman", "tautan eksternal", ""],
-    external_anchor_ratio: ["Struktur halaman", "rasio tautan eksternal", "ratio"],
-    resource_count: ["Struktur halaman", "jumlah aset halaman", ""],
-    script_count: ["Struktur halaman", "script", ""],
-    visible_text_length: ["Struktur halaman", "panjang teks terlihat", "karakter"],
-    html_length: ["Struktur halaman", "panjang HTML", "karakter"],
-    form_count: ["Struktur halaman", "form", ""],
-    credential_form_count: ["Struktur halaman", "form data akun", ""],
-    password_input_count: ["Struktur halaman", "kolom password", ""]
-  };
-  const groups = new Map();
-  const seen = new Set();
-  const rules = [...(model.fired_rules || [])].filter(rule => Number(rule.coefficient) > 0)
-    .sort((a, b) => Number(b.coefficient) - Number(a.coefficient));
-  for (const rule of rules) {
-    for (const condition of rule.conditions || []) {
-      if (condition.passed !== true || typeof condition.value !== "number" || !Number.isFinite(condition.value)) continue;
-      const name = condition.feature || "";
-      const base = name.replace(/^(original_|final_)/, "");
-      const descriptor = labels[base];
-      if (!descriptor || seen.has(base)) continue;
-      seen.add(base);
-      const [group, label, unit] = descriptor;
-      const side = name.startsWith("original_") ? " pada alamat awal" : name.startsWith("final_") ? " pada alamat akhir" : "";
-      const value = unit === "ratio" ? `${(condition.value * 100).toFixed(1)}%` : `${Number(condition.value.toFixed(2))}${unit ? ` ${unit}` : ""}`;
-      if (!groups.has(group)) groups.set(group, []);
-      if (groups.get(group).length < 2) groups.get(group).push(`${label}${side}: ${value}`);
-    }
+function recentObservedDomainAge(model, rdap) {
+  for (const [feature, available] of [
+    ["page_domain_age_days", rdap.final_rdap_available],
+    ["source_domain_age_days", rdap.original_rdap_available]
+  ]) {
+    if (!available) continue;
+    const age = Number(rdap[feature]);
+    if (!Number.isFinite(age) || age < 0 || age > 180) continue;
+    const usedByRiskRule = (model.fired_rules || []).some(rule =>
+      Number(rule.coefficient) > 0 && (rule.conditions || []).some(condition =>
+        condition.feature === feature && condition.passed === true &&
+        (condition.operator === "<=" || condition.operator === "<") &&
+        typeof condition.value === "number" && Number.isFinite(condition.value) &&
+        Math.abs(condition.value - age) < 1
+      )
+    );
+    if (usedByRiskRule) return Math.round(age);
   }
-  return [...groups].map(([group, observations]) => `${group} yang ikut menaikkan risiko dalam kombinasi aturan model: ${observations.join("; ")}.`);
+  return null;
 }
 
 function hostname(value) {
