@@ -16,7 +16,7 @@ git clone https://github.com/UmarFaruqManek/HeuriShieldV3.git
 
 **Tidak perlu build, npm install, Python, server, API key pribadi atau konfigurasi model.** Semua file runtime/model ada di repository. Koneksi internet diperlukan untuk situs dan lookup API. Pencatatan ke file JSON bersifat opsional, bukan syarat deteksi.
 
-Chrome/Chromium desktop adalah target pengujian utama. Edge dapat memakai **Extensions -> Developer mode -> Load unpacked**, tetapi belum diuji selengkap Chrome. Firefox/Safari perlu porting; mobile belum didukung. Pembaruan: `git pull` atau unduh ZIP baru, **Reload** extension, lalu refresh tab situs. Versi paket: **5.0.16**.
+Chrome/Chromium desktop adalah target pengujian utama. Edge dapat memakai **Extensions -> Developer mode -> Load unpacked**, tetapi belum diuji selengkap Chrome. Firefox/Safari perlu porting; mobile belum didukung. Pembaruan: `git pull` atau unduh ZIP baru, **Reload** extension, lalu refresh tab situs. Versi paket: **5.0.17**.
 
 ## Alur Keputusan
 
@@ -85,9 +85,11 @@ flowchart LR
 | `src/analyzer/` | Extractor URL/DOM/domain/brand; guard di `runtime-analysis.js`. |
 | `src/rule/` | Kontrak 60 fitur, engine 150 rule dan evaluator matematika. |
 | `src/shared/analysis-explanation.js` | Penjelasan temuan. |
-| `src/content/`, `src/warning/` | Snapshot, panel, halaman blokir dan konteks situs asal. |
+| `src/content/`, `src/warning/` | Snapshot, panel, halaman blokir dan konteks situs asal. Snapshot DOM memakai `page-dom-snapshot.bundle.js` yang sudah termasuk dalam paket. |
 | `src/storage/`, `src/dataset/` | Arsip lokal, antrean dan pengaturan pencatatan. |
 
 ## Batasan
+
+Jika mengubah kode sumber `src/content/page-dom-snapshot.js` atau extractor DOM, jalankan `npm run build:content` sebelum menguji perubahan. Pengguna yang hanya mengunduh atau mengklonakan repository tidak perlu menjalankan perintah ini.
 
 HeuriShield bukan antivirus atau pendeteksi semua malware/ransomware. Legitimate tidak menjamin aman; situs dapat terbuka sebelum analisis selesai. Respons API, konten dinamis dan redirect dapat mengubah hasil. Repository tidak memuat dataset pengguna atau data latih. Baca [PRIVACY.md](PRIVACY.md) sebelum memakai atau membagikan hasil.

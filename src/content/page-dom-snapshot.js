@@ -2,6 +2,8 @@
  * Jembatan content script ke background: membalas permintaan snapshot DOM halaman aktif.
  * Extractor yang dipanggil berasal dari analyzer/dom, bukan DOM halaman blokir.
  */
+import { extractDomFeaturesFromPage } from "../analyzer/dom/dom-features.js";
+
 (function () {
   if (globalThis.__heurishieldV5DomSnapshotListener) return;
   globalThis.__heurishieldV5DomSnapshotListener = true;
@@ -21,9 +23,8 @@
   });
 
   async function collectDomSnapshot(message) {
-    // Impor modul milik extension agar definisi fitur sama dengan analyzer runtime.
-    var module = await import(chrome.runtime.getURL("src/analyzer/dom/dom-features.js"));
-    var domFeatures = module.extractDomFeaturesFromPage({
+    // Bundel lokal memuat extractor yang sama tanpa impor lintas origin saat halaman dibuka.
+    var domFeatures = extractDomFeaturesFromPage({
       finalUrl: message.finalUrl || location.href,
       html: document.documentElement?.outerHTML || ""
     });

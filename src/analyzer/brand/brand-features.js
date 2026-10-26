@@ -21,6 +21,12 @@ const GENERIC_TOKENS = new Set([
   "privacy", "contact", "services", "permit", "permits"
 ]);
 
+// Istilah autentikasi pada judul/path adalah fungsi halaman, bukan klaim brand.
+// Label hostname tetap boleh dicari agar domain brand yang kebetulan bernama sama tidak hilang.
+const AUTH_FLOW_TOKENS = new Set([
+  "2fa", "mfa", "otp", "sso", "totp", "authenticator", "verifikasi"
+]);
+
 for (const token of BRAND_TOKEN_BLOCKLIST || []) {
   GENERIC_TOKENS.add(token);
 }
@@ -130,7 +136,7 @@ export function titleBrandQueries(title) {
   return text
     .split(TITLE_SEPARATORS)
     .flatMap((part) => tokenCandidates(part))
-    .filter((token) => token.length >= 3 && token.length <= 40);
+    .filter((token) => token.length >= 3 && token.length <= 40 && !AUTH_FLOW_TOKENS.has(token));
 }
 
 export function hostnameBrandTokens(hostname) {
@@ -164,11 +170,14 @@ export function pathBrandTokens(pathname) {
   const tokens = [];
 
   for (const segment of segments) {
+    const parts = segment.split(/[^a-zA-Z0-9]+/).map(normalizeToken).filter(Boolean);
+    const meaningfulParts = parts.filter((token) => !GENERIC_TOKENS.has(token) && !AUTH_FLOW_TOKENS.has(token));
+    if (!meaningfulParts.length) continue;
     const normalizedSegment = normalizeToken(segment);
-    if (normalizedSegment && !GENERIC_TOKENS.has(normalizedSegment) && !/^\d+$/.test(normalizedSegment)) {
+    if (normalizedSegment && meaningfulParts.length === parts.length && !/^\d+$/.test(normalizedSegment)) {
       tokens.push(normalizedSegment);
     }
-    tokens.push(...tokenCandidates(segment));
+    tokens.push(...meaningfulParts.filter((token) => !/^\d+$/.test(token)));
   }
 
   return sortedUnique(tokens);
@@ -315,7 +324,9 @@ function isActiveDomainBrandCandidate(candidate, originalUrl, finalUrl) {
   const activeLabels = activeDomainLabels(originalUrl, finalUrl);
   if (!activeLabels.has(query)) return false;
 
-  return Number(candidate.qualityScore || 0) >= 0.5 && Number(candidate._score ?? candidate.score ?? 0) >= 10;
+  // Kecocokan domain persis dan query dari label hostname lebih kuat daripada
+  // skor direktori yang mungkin tidak tersedia pada penyedia utama.
+  return true;
 }
 
 function shouldPreferActiveDomainBrand(selected, activeDomainCandidate, originalUrl, finalUrl) {

@@ -31,9 +31,14 @@ export function buildAnalysisExplanation(analysis = {}) {
       const activeDomain = url.final_registrable_domain || analysis.registrable_domain || domain;
       const brandLabel = brandDomain.split(".")[0]?.toLowerCase();
       const nameAppearsInHost = brandLabel && domain.toLowerCase().split(/[^a-z0-9]+/).includes(brandLabel);
-      add(nameAppearsInHost
-        ? `Alamat ${activeDomain} memakai nama ${brandName}, tetapi domain kandidat brand tersebut adalah ${brandDomain}. Perbedaan ini dapat menunjukkan peniruan identitas.`
-        : `Halaman berkaitan dengan ${brandName}, tetapi alamatnya ${activeDomain}, berbeda dari domain kandidat brand ${brandDomain}. Pastikan hubungan keduanya sebelum memasukkan data.`);
+      // Nama yang hanya muncul di path (misalnya /login/mfa-verification)
+      // tidak cukup untuk menyatakan halaman meniru sebuah brand.
+      const pathOnlyCandidate = Number(brand.brand_top_candidate_query_priority) === 20 && !nameAppearsInHost;
+      if (!pathOnlyCandidate) {
+        add(nameAppearsInHost
+          ? `Alamat ${activeDomain} memakai nama ${brandName}, tetapi alamat resmi yang ditemukan untuk brand itu adalah ${brandDomain}. Periksa alamat situs sebelum masuk.`
+          : `Identitas halaman mengarah ke ${brandName}, sedangkan alamat yang dibuka adalah ${activeDomain}. Periksa apakah alamat resmi ${brandDomain} berkaitan dengan halaman ini.`);
+      }
     }
     if (url.final_domain_changed === true || url.final_domain_changed === 1 || Number(url.cross_domain_redirect_count) > 0) {
       add("Alamat yang dibuka berpindah ke domain lain. Pastikan tujuan akhirnya sesuai dengan situs yang Anda cari.");

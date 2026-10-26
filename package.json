@@ -1,0 +1,9 @@
+{
+  "name": "heurishield-v5",
+  "version": "5.0.17",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build:content": "npx --yes esbuild src/content/page-dom-snapshot.js --bundle --platform=browser --format=iife --target=chrome106 --outfile=src/content/page-dom-snapshot.bundle.js"
+  }
+}
