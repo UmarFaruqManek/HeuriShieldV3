@@ -4,6 +4,7 @@
  */
 import { searchBrand } from "../analyzer/brand/brand-features.js";
 import { createBrandLookupCache } from "../analyzer/brand/brand-lookup-cache.js";
+import { lookupBrandByDomain } from "../analyzer/brand/brand-domain-api.js";
 import { lookupRdapDomain } from "../analyzer/domain/rdap-features.js";
 import { buildRuntimeFeatureAnalysis } from "../analyzer/runtime-analysis.js";
 import { flattenSensitiveKeywordConfig } from "../analyzer/url/url-features.js";
@@ -25,7 +26,7 @@ import { STORAGE_KEYS } from "../utils/constants.js";
 import { buildAnalysisExplanation } from "../shared/analysis-explanation.js";
 import { createDatasetCollector } from "../storage/dataset-collector.js";
 
-const ANALYSIS_VERSION = "v5-rulefit60-source-page-schema-v8";
+const ANALYSIS_VERSION = "v5-rulefit60-brand-identity-v9";
 const METADATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 let runtimeResourcesPromise = null;
@@ -41,6 +42,26 @@ const cachedBrandLookup = createBrandLookupCache({
   updateCache: updateMetadataCache,
   ttlMs: METADATA_CACHE_TTL_MS
 });
+const brandDomainPending = new Map();
+async function cachedBrandDomainLookup(domain, { forceRefresh = false } = {}) {
+  const key = `brand:domain-fallback:v1:${String(domain || "").toLowerCase()}`;
+  if (!forceRefresh) {
+    const cached = (await getMetadataCache())[key];
+    const age = Date.now() - Date.parse(cached?.cached_at || "");
+    const ttl = cached?.metadata?.found ? METADATA_CACHE_TTL_MS : 10 * 60 * 1000;
+    if (cached?.metadata?.lookup_success && age >= 0 && age < ttl) return cached.metadata;
+  }
+  if (brandDomainPending.has(key)) return brandDomainPending.get(key);
+  const task = (async () => {
+    const result = await lookupBrandByDomain(domain);
+    if (result.lookup_success) await updateMetadataCache(cache => {
+      cache[key] = { metadata: result, cached_at: new Date().toISOString() };
+    });
+    return result;
+  })();
+  brandDomainPending.set(key, task);
+  try { return await task; } finally { brandDomainPending.delete(key); }
+}
 const httpStatusByTab = new Map();
 const autoAnalysisInFlight = new Set();
 const temporaryBypassByTab = new Map();
@@ -236,7 +257,8 @@ async function analyzeActiveTab(message) {
     rulefitEngine: resources.rulefitEngine,
     sensitiveKeywords: resources.sensitiveKeywords,
     rdapLookup: cachedRdapLookup,
-    brandLookup: (query) => cachedBrandLookup(query, { forceRefresh: message.forceRefresh === true })
+    brandLookup: (query) => cachedBrandLookup(query, { forceRefresh: message.forceRefresh === true }),
+    brandDomainLookup: (domain) => cachedBrandDomainLookup(domain, { forceRefresh: message.forceRefresh === true })
   });
   const coverage = runtime.feature_vector_coverage;
   const model = runtime.model_result;
@@ -270,6 +292,7 @@ async function analyzeActiveTab(message) {
     dom_features: domSnapshot.ok ? domSnapshot.domFeatures : null,
     rdap_features: runtime.rdap_features,
     brand_features: runtime.brand_features,
+    brand_identity: runtime.brand_identity,
     url_features: runtime.url_features,
     page_status_features: runtime.page_status_features,
     dom_analysis: domSnapshot.ok ? domSnapshot.domAnalysis : null,
@@ -705,6 +728,7 @@ async function saveFeatureJsonArchive(analysis) {
     verdict: analysis.verdict,
     score: analysis.score,
     model_result: compactModelResult(analysis.model_result),
+    brand_identity: analysis.brand_identity || null,
     feature_vector_coverage: analysis.feature_vector_coverage,
     feature_vector_30: analysis.feature_vector.vector,
     feature_vector_values: analysis.feature_vector.values,
@@ -739,6 +763,9 @@ function compactModelResult(model) {
     predicted_label: model.predicted_label || model.targetLabel || null,
     verdict: model.verdict || null,
     probability_phishing: model.probability_phishing ?? null,
+    raw_probability_phishing: model.raw_probability_phishing ?? model.probability_phishing ?? null,
+    raw_verdict: model.raw_verdict || model.verdict || null,
+    post_model_guard: model.post_model_guard || null,
     fired_rule_count: model.fired_rule_count ?? null,
     top_fired_rules: Array.isArray(model.fired_rules)
       ? model.fired_rules.slice(0, 6).map((rule) => ({

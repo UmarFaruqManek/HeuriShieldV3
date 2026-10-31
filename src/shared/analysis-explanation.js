@@ -45,6 +45,7 @@ export function buildAnalysisExplanation(analysis = {}) {
 }
 
 function guardReason(guard) {
+  if (guard.id === "BRAND_IDENTITY_MISMATCH_GUARD") return guard.reason;
   if (guard.id === "CORROBORATED_BRAND_CLAIM_MISMATCH" || guard.id === "CORROBORATED_BRAND_TYPO") return guard.reason;
   if (guard.id === "BRAND_IMPERSONATION_GUARD" && guard.active_domain && guard.official_domain)
     return `Alamat ${guard.active_domain} menggunakan identitas ${guard.brand || "merek yang ditemukan"}, tetapi domain rujukannya adalah ${guard.official_domain}. Periksa alamat sebelum memasukkan data.`;

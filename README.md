@@ -16,7 +16,7 @@ git clone https://github.com/UmarFaruqManek/HeuriShieldV3.git
 
 **Tidak perlu build, npm install, Python, server, API key pribadi atau konfigurasi model.** Semua file runtime/model ada di repository. Koneksi internet diperlukan untuk situs dan lookup API. Pencatatan ke file JSON bersifat opsional, bukan syarat deteksi.
 
-Chrome/Chromium desktop adalah target pengujian utama. Edge dapat memakai **Extensions -> Developer mode -> Load unpacked**, tetapi belum diuji selengkap Chrome. Firefox/Safari perlu porting; mobile belum didukung. Pembaruan: `git pull` atau unduh ZIP baru, **Reload** extension, lalu refresh tab situs. Versi paket: **5.0.22**.
+Chrome/Chromium desktop adalah target pengujian utama. Edge dapat memakai **Extensions -> Developer mode -> Load unpacked**, tetapi belum diuji selengkap Chrome. Firefox/Safari perlu porting; mobile belum didukung. Pembaruan: `git pull` atau unduh ZIP baru, **Reload** extension, lalu refresh tab situs. Versi paket: **5.0.23**.
 
 ## Alur Keputusan
 
@@ -43,7 +43,7 @@ flowchart TD
 
 Nama fitur memakai bahasa Inggris: `source_` untuk URL sumber dan `page_` untuk halaman akhir, misalnya `source_url_length` dan `page_url_length`. Fitur brand disederhanakan menjadi `brand_search_score`, `brand_quality_score`, dan `brand_matches_page`. Penggantian nama tidak mengubah nilai, koefisien, atau keputusan. Dari 60 fitur input, 35 fitur unik muncul dalam kondisi model. [Daftar 60 nama aktif](src/rule/PARAMETER.md) memuat pengelompokan dan padanannya dalam bahasa Indonesia.
 
-Engine juga memeriksa kecocokan brand, indikasi impersonasi dan redirect sebelum menetapkan hasil akhir. Pemeriksaan tambahan ini adalah aturan manual, **bukan bagian dari 150 rule hasil pelatihan**. Semuanya dijelaskan sebagai satu engine keputusan; detail alasan mengutamakan temuan yang dapat dipahami, seperti perbedaan domain brand, redirect, tujuan formulir akun, atau umur domain yang teramati. Hitungan aset dan panjang URL tetap dapat dipakai model, tetapi tidak ditampilkan sebagai alasan tunggal yang menyesatkan.
+Engine juga memeriksa kecocokan brand, indikasi impersonasi dan redirect sebelum menetapkan hasil akhir. Pemeriksaan tambahan ini adalah aturan manual, **bukan bagian dari 150 rule hasil pelatihan**. Nama tenant hosting seperti `facebook-247-support.blogspot.com` dibandingkan dengan domain kandidat brand, bukan dengan `blogspot.com`. Nama yang menempel seperti `instagramid` dapat dipecah menjadi kandidat `instagram`, tetapi perubahan keputusan memerlukan klaim brand pada alamat dan judul **serta** formulir akun yang teramati. Hasil API hanyalah kandidat identitas, bukan bukti kepemilikan. Bukti ini disimpan terpisah sebagai `brand_identity`; 60 fitur model tetap sama. Detail alasan mengutamakan temuan yang dapat dipahami, seperti perbedaan domain brand, redirect, tujuan formulir akun, atau umur domain yang teramati.
 
 ## API dan Urutannya
 
@@ -51,12 +51,13 @@ Engine juga memeriksa kecocokan brand, indikasi impersonasi dan redirect sebelum
 |---|---|
 | Brand 1 | `https://autocomplete.clearbit.com/v1/companies/suggest?query={token}` |
 | Brand 2 | `https://api.brandfetch.io/v2/search/{query}` |
+| Brand 3, fallback domain | `https://brnad-heuri.vercel.app/api/v1/domain/{domain}` |
 | Domain 1 | `https://api-check-beryl-beta.vercel.app/api/whois?domain={domain}` |
 | Domain 2, opsional | `http://localhost:3000/api/whois?domain={domain}` |
 | Domain 3 | `https://whois-api-dun.vercel.app/api/whois?domain={domain}` |
 | Domain 4 | `https://who-dat.as93.net/{domain}` |
 
-Clearbit menyediakan kandidat utama. Brandfetch melengkapi skor hanya untuk domain kandidat yang sama atau menjadi fallback. Lookup domain beralih berurutan saat sumber gagal/tidak memadai. API membutuhkan internet dan dapat terkena timeout/rate limit. RuleFit tidak memakai API klasifikasi eksternal. Localhost:3000 opsional hanya untuk lookup domain, bukan pencatatan.
+Clearbit menyediakan kandidat utama. Brandfetch melengkapi skor hanya untuk domain kandidat yang sama atau menjadi fallback. Jika pencarian token belum menghasilkan identitas yang relevan, sistem mencoba potongan nama domain; jika masih kosong, API Brand 3 mencari domain situs. API umur domain beralih berurutan saat sumber gagal/tidak memadai. API membutuhkan internet dan dapat terkena timeout/rate limit. RuleFit tidak memakai API klasifikasi eksternal. Localhost:3000 opsional hanya untuk lookup umur domain, bukan pencatatan.
 
 ## History Extract Tanpa Server
 

@@ -10,6 +10,7 @@
 !/tests/
 /tests/*
 !/tests/brand-guard-calibration.mjs
+!/tests/brand-identity.mjs
 /history-extract/
 
 # Jangan commit data pengujian, file hasil pencatatan, secret, atau cache.

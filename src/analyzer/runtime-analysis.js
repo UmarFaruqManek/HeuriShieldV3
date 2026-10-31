@@ -9,8 +9,10 @@ import { extractCrawlerUrlFeatureSet } from "./url/url-features.js";
 import { evaluateRuleFitEngine } from "../rule/rulefit-engine.js";
 import { PUBLIC_HOSTING_PLATFORM_DOMAINS, SHORTENER_DOMAINS } from "../utils/constants.js";
 import { applyBrandClaimGuard } from "../shared/brand-claim-guard.js";
+import { analyzeBrandIdentity, applyBrandIdentityGuard } from "./brand/brand-identity.js";
+import { lookupBrandByDomain } from "./brand/brand-domain-api.js";
 
-export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-evidence-v6";
+export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-identity-v7";
 
 const EXTRA_SHORTENER_DOMAINS = new Set([
   "bitly.com",
@@ -65,7 +67,8 @@ export async function buildRuntimeFeatureAnalysis({
   rulefitEngine,
   sensitiveKeywords = [],
   rdapLookup = lookupRdapDomain,
-  brandLookup = searchBrand
+  brandLookup = searchBrand,
+  brandDomainLookup = lookupBrandByDomain
 } = {}) {
   // Ekstraksi tetap mengikuti definisi crawler agar fitur latih dan runtime sepadan.
   const urlFeatures = extractCrawlerUrlFeatureSet({
@@ -108,9 +111,15 @@ export async function buildRuntimeFeatureAnalysis({
     title,
     httpStatusCode
   });
-  const model = await applyBrandClaimGuard(postModel, {
+  const claimModel = await applyBrandClaimGuard(postModel, {
     originalUrl, finalUrl, title, domFeatures, brandFeatures, rdapFeatures, lookup: brandLookup
   });
+  // Bukti identitas baru dicari setelah 60 fitur dan skor RuleFit selesai dihitung.
+  const brandIdentity = rulefitModel?.ready ? await analyzeBrandIdentity({
+    finalUrl, title, domFeatures, brandFeatures,
+    tokenLookup: brandLookup, domainLookup: brandDomainLookup
+  }) : { status: "unknown", reason: "model_not_ready" };
+  const model = applyBrandIdentityGuard(claimModel, brandIdentity);
 
   return {
     analyzer_version: RUNTIME_ANALYSIS_VERSION,
@@ -120,6 +129,7 @@ export async function buildRuntimeFeatureAnalysis({
     dom_features: domFeatures,
     rdap_features: rdapFeatures,
     brand_features: brandFeatures,
+    brand_identity: brandIdentity,
     page_status_features: statusFeatures,
     feature_vector: assembled,
     feature_vector_coverage: coverage,
