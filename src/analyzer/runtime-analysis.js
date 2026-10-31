@@ -10,7 +10,7 @@ import { evaluateRuleFitEngine } from "../rule/rulefit-engine.js";
 import { PUBLIC_HOSTING_PLATFORM_DOMAINS, SHORTENER_DOMAINS } from "../utils/constants.js";
 import { applyBrandClaimGuard } from "../shared/brand-claim-guard.js";
 
-export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-evidence-v5";
+export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-evidence-v6";
 
 const EXTRA_SHORTENER_DOMAINS = new Set([
   "bitly.com",
@@ -127,7 +127,7 @@ export async function buildRuntimeFeatureAnalysis({
   };
 }
 
-function applyPostModelGuards(model, { brandFeatures, urlFeatures, rdapFeatures, domFeatures, title, httpStatusCode } = {}) {
+export function applyPostModelGuards(model, { brandFeatures, urlFeatures, rdapFeatures, domFeatures, title, httpStatusCode } = {}) {
   // Aturan manual setelah model, bukan rule hasil pelatihan. Guard pertama menang.
   // Skor yang disesuaikan guard tidak lagi merupakan probabilitas murni RuleFit.
   if (!model?.ready) return model;
@@ -167,6 +167,19 @@ function applyPostModelGuards(model, { brandFeatures, urlFeatures, rdapFeatures,
 
   const guard = detectBrandImpersonationGuard(brandFeatures, urlFeatures);
   if (!guard) return model;
+  // Kandidat direktori yang hanya cocok dengan kata pada host tidak cukup
+  // untuk membatalkan putusan model yang sangat yakin aman. Pertahankan
+  // pemeriksaan bila domain resmi benar-benar disisipkan pada host atau
+  // halaman memuat form kredensial yang teramati.
+  const rawRisk = Number(model.raw_probability_phishing ?? model.probability_phishing);
+  const hasCredentialField = Number(domFeatures?.password_credential_field_count || 0) > 0 ||
+    Number(domFeatures?.credential_form_count || 0) > 0 ||
+    Number(domFeatures?.external_credential_form_count || 0) > 0 ||
+    Number(domFeatures?.ip_credential_form_count || 0) > 0;
+  if (model.verdict === "SAFE" && Number.isFinite(rawRisk) && rawRisk < 0.30 &&
+      domFeatures && !hasCredentialField && !guard.embedded_official_domain) {
+    return model;
+  }
 
   return {
     ...model,
@@ -279,7 +292,7 @@ function detectRedirectRiskGuard(urlFeatures = {}) {
 
   if (!reason) return null;
   return {
-    id: "REDIRECT_RISK_GUARD",
+    id: crossDomainRedirect ? "REDIRECT_RISK_GUARD" : "SHARED_HOSTING_BRAND_GUARD",
     severity: "high",
     feature: "initial_final_redirect_risk",
     reason,
@@ -382,6 +395,7 @@ export function detectBrandImpersonationGuard(brandFeatures = {}, urlFeatures = 
     brand: brandFeatures.brand_top_candidate_name || brandLabel,
     official_domain: official,
     active_domain: active,
+    embedded_official_domain: embeddedOfficialDomain,
     similarity
   };
 }

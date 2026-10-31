@@ -7,6 +7,9 @@
 !/package.json
 !/src/
 !/assets/
+!/tests/
+/tests/*
+!/tests/brand-guard-calibration.mjs
 /history-extract/
 
 # Jangan commit data pengujian, file hasil pencatatan, secret, atau cache.

@@ -74,7 +74,8 @@ export async function applyBrandClaimGuard(model, { originalUrl, finalUrl, title
     Number(domFeatures.credential_form_count || 0) > 0;
   const candidateResults = [{
     domain: brandFeatures?.brand_top_candidate_domain,
-    name: brandFeatures?.brand_top_candidate_name
+    name: brandFeatures?.brand_top_candidate_name,
+    qualityScore: brandFeatures?.brand_quality_score
   }];
   // Pencarian mengikuti bagian host: subdomain dahulu, lalu nama domain terdaftar.
   // Respons API ini hanya bukti tambahan; 32/60 nilai fitur model tidak diubah.
@@ -101,11 +102,12 @@ export async function applyBrandClaimGuard(model, { originalUrl, finalUrl, title
       Number(brandFeatures?.brand_quality_score) > 0 &&
       Number(brandFeatures?.brand_quality_score) < 0.5;
     const possibleTypo = selfCandidate && differsByOneCharacter(domainLabel, token);
-    if (!inHostname && !hasCredentialField && !possibleTypo) continue;
+    const credentialTypo = hasCredentialField && differsByOneCharacter(domainLabel, token);
+    if (!inHostname && !hasCredentialField && !possibleTypo && !credentialTypo) continue;
     let matches = candidateResults.map(item => exactCandidate(item, token)).filter(Boolean);
     // Kandidat domain aktif dapat muncul lebih dulu; untuk salah eja, cari
     // juga token pada judul agar domain pembanding tidak tertutup kandidat itu.
-    if ((possibleTypo || !matches.length) && typeof lookup === "function") {
+    if ((possibleTypo || credentialTypo || !matches.length) && typeof lookup === "function") {
       let result = null;
       try { result = await lookup(token); } catch { continue; }
       if (result?.lookup_success !== true && result?.status !== "ok") continue;
@@ -119,20 +121,42 @@ export async function applyBrandClaimGuard(model, { originalUrl, finalUrl, title
     const officialEmbedded = hostText.includes(clean(official));
     const brandAffix = domainLabel !== token && domainLabel.startsWith(token) &&
       ["id", "login", "secure", "support", "verify"].includes(domainLabel.slice(token.length));
-    const corroboratedTypo = possibleTypo && matches[0].labelMatch && matches[0].qualityScore >= 0.8;
+    const corroboratedTypo = (possibleTypo || credentialTypo) &&
+      matches[0].labelMatch && matches[0].qualityScore >= 0.8;
+    const credentialBrandClaim = hasCredentialField && inHostname &&
+      clean(title).includes(token) && matches[0].labelMatch && matches[0].qualityScore >= 0.8;
     const ageRaw = rdapFeatures?.page_domain_age_days ?? rdapFeatures?.source_domain_age_days;
     const age = ageRaw == null || ageRaw === "" ? NaN : Number(ageRaw);
     const recentlyRegistered = Number.isFinite(age) && age >= 0 && age <= 365;
     // Nama yang kebetulan sama tidak cukup. Minta peniruan alamat resmi, atau
     // klaim brand pada host+judul disertai domain yang baru terdaftar.
-    if (!officialEmbedded && !brandAffix && !(inHostname && recentlyRegistered) && !corroboratedTypo) continue;
+    if (!officialEmbedded && !brandAffix && !(inHostname && recentlyRegistered) &&
+        !corroboratedTypo && !credentialBrandClaim) continue;
     // Domain akhir resmi tidak boleh ditandai hanya karena URL awal mengarah ke sana.
     const originalDomain = domainOf(originalUrl);
     if (originalDomain === official && currentDomain === official) continue;
-    claim = { token, official, inHostname, corroboratedTypo };
+    claim = { token, official, inHostname, corroboratedTypo, credentialBrandClaim };
     break;
   }
   if (!claim) return model;
+  // Kandidat utama yang tepat menunjuk domain halaman (dari Clearbit) adalah
+  // bukti identitas yang lebih langsung daripada benturan satu kata pada
+  // judul/hostname dengan brand lain, misalnya Guelph-Humber vs Humber.
+  // Jangan abaikan domain resmi yang disisipkan sebagai subdomain dan jangan
+  // abaikan typo yang telah dikonfirmasi secara terpisah.
+  const selfCandidateDomain = domainOf(brandFeatures?.brand_top_candidate_domain);
+  const ownBrandConfirmed = brandFeatures?.brand_top_candidate_source === "clearbit" &&
+    brandFeatures?.brand_matches_source && brandFeatures?.brand_matches_page &&
+    selfCandidateDomain === currentDomain && domainOf(originalUrl) === currentDomain;
+  const tokenBelongsToOwnBrand = clean(hostnameBrandParts(currentDomain).domainLabel).includes(claim.token);
+  const officialInsertedAsSubdomain = host.includes(`${claim.official}.`);
+  const externalCredential = Number(domFeatures.external_credential_form_count || 0) > 0 ||
+    Number(domFeatures.ip_credential_form_count || 0) > 0;
+  const observedAge = rdapFeatures?.page_domain_age_days ?? rdapFeatures?.source_domain_age_days;
+  const youngDomain = observedAge != null && observedAge !== "" &&
+    Number.isFinite(Number(observedAge)) && Number(observedAge) < 365;
+  if (ownBrandConfirmed && tokenBelongsToOwnBrand && !claim.corroboratedTypo &&
+      !officialInsertedAsSubdomain && !externalCredential && !youngDomain) return model;
   const guard = {
     id: claim.corroboratedTypo ? "CORROBORATED_BRAND_TYPO" : "CORROBORATED_BRAND_CLAIM_MISMATCH",
     feature: "visible_brand_domain_mismatch",
@@ -142,6 +166,8 @@ export async function applyBrandClaimGuard(model, { originalUrl, finalUrl, title
     active_domain: currentDomain,
     reason: claim.corroboratedTypo
       ? `Nama domain ${currentDomain} berbeda satu karakter dari nama ${claim.token} pada halaman; domain brand yang ditemukan adalah ${claim.official}.`
+      : claim.credentialBrandClaim
+      ? `Halaman ${currentDomain} meminta data akun dan memakai nama ${claim.token}, sedangkan domain brand yang ditemukan adalah ${claim.official}.`
       : `Halaman menyebut ${claim.token}, tetapi dibuka pada ${currentDomain}; domain brand yang ditemukan adalah ${claim.official}.`
   };
   return {

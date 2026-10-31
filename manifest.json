@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "minimum_chrome_version": "106",
   "name": "HeuriShield RuleFit60 T080 Clearbit First",
-  "version": "5.0.21",
+  "version": "5.0.22",
   "description": "RuleFit60 T080: Clearbit primary brand lookup, Brandfetch secondary scores and fallback.",
   "permissions": [
     "storage",

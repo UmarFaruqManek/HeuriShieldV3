@@ -52,6 +52,8 @@ function guardReason(guard) {
     return guard.cross_domain_redirect
       ? `Alamat awal ${guard.original_domain} mengalihkan Anda ke ${guard.final_domain}. Perubahan tujuan ini ikut menyebabkan halaman diblokir; periksa alamat akhirnya.`
       : `Alamat awal ${guard.original_domain} menyerupai nama layanan lain. Periksa apakah alamat itu benar milik layanan yang dituju.`;
+  if (guard.id === "SHARED_HOSTING_BRAND_GUARD" && guard.original_domain)
+    return `Alamat ${guard.original_domain} berada pada layanan hosting publik dan memuat nama layanan populer. Periksa apakah halaman itu benar milik layanan yang disebut.`;
   return "Pemeriksaan tambahan menemukan pola risiko yang memengaruhi keputusan pemblokiran. Periksa alamat situs sebelum melanjutkan.";
 }
 function riskRules(model) {
