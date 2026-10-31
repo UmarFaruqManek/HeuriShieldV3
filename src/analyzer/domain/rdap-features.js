@@ -57,6 +57,7 @@ export async function lookupRdapDomain(domain, options = {}) {
       : FALLBACK_RDAP_APIS;
   const timeoutMs = Number(options.timeoutMs || DEFAULT_TIMEOUT_MS);
   const errors = [];
+  let partial = null;
 
   for (const apiUrl of apiUrls) {
     const url = buildLookupUrl(apiUrl, cleanDomain);
@@ -73,8 +74,16 @@ export async function lookupRdapDomain(domain, options = {}) {
         continue;
       }
       const normalized = normalizeRdapResponse(await response.json());
-      if (normalized.rdap_available) return normalized;
-      errors.push(normalized.rdap_error || "unusable_response");
+      // Metadata seperti nameserver belum cukup untuk menghitung umur domain.
+      // Lanjut ke provider berikut sampai tanggal pendaftaran ditemukan.
+      const returnedDomain = String(normalized.domain || "").toLowerCase().replace(/\.$/, "");
+      if (returnedDomain && returnedDomain !== cleanDomain) {
+        errors.push("domain_mismatch");
+        continue;
+      }
+      if (Number.isFinite(normalized.domain_age_days)) return normalized;
+      if (normalized.rdap_available && !partial) partial = normalized;
+      errors.push("missing_registration_date");
     } catch (error) {
       errors.push(error?.name === "AbortError" ? "timeout" : "lookup_failed");
     } finally {
@@ -82,6 +91,7 @@ export async function lookupRdapDomain(domain, options = {}) {
     }
   }
 
+  if (partial) return { ...partial, rdap_error: errors.filter(Boolean).join(";") || "missing_registration_date" };
   return unavailableRdap(errors.filter(Boolean).join(";") || "unavailable");
 }
 

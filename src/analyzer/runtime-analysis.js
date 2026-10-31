@@ -8,6 +8,7 @@ import { extractRdapFeatureSet, lookupRdapDomain } from "./domain/rdap-features.
 import { extractCrawlerUrlFeatureSet } from "./url/url-features.js";
 import { evaluateRuleFitEngine } from "../rule/rulefit-engine.js";
 import { PUBLIC_HOSTING_PLATFORM_DOMAINS, SHORTENER_DOMAINS } from "../utils/constants.js";
+import { applyBrandClaimGuard } from "../shared/brand-claim-guard.js";
 
 export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-evidence-v5";
 
@@ -99,13 +100,16 @@ export async function buildRuntimeFeatureAnalysis({
   const assembled = buildFeatureVector(featureContract.features, sources);
   const coverage = summarizeFeatureCoverage(assembled);
   const rulefitModel = rulefitEngine ? evaluateRuleFitEngine(rulefitEngine, assembled.vector) : null;
-  const model = applyPostModelGuards(rulefitModel, {
+  const postModel = applyPostModelGuards(rulefitModel, {
     brandFeatures,
     urlFeatures,
     rdapFeatures,
     domFeatures,
     title,
     httpStatusCode
+  });
+  const model = await applyBrandClaimGuard(postModel, {
+    originalUrl, finalUrl, title, domFeatures, brandFeatures, rdapFeatures, lookup: brandLookup
   });
 
   return {

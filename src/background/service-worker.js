@@ -613,7 +613,7 @@ function formatThreshold(value) {
 
 async function cachedRdapLookup(domain) {
   // Versi provider menghindari pemakaian cache RDAP lama setelah pergantian prioritas.
-  const key = `rdap:beryl-v3:${String(domain || "").toLowerCase()}`;
+  const key = `rdap:age-fallback-v4:${String(domain || "").toLowerCase()}`;
   if (!key || key.endsWith(":")) return lookupRdapDomain(domain);
   const cache = await getMetadataCache();
   const cached = cache[key];
