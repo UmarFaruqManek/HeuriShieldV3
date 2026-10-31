@@ -12,7 +12,7 @@ import { applyBrandClaimGuard } from "../shared/brand-claim-guard.js";
 import { analyzeBrandIdentity, applyBrandIdentityGuard } from "./brand/brand-identity.js";
 import { lookupBrandByDomain } from "./brand/brand-domain-api.js";
 
-export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-identity-v7";
+export const RUNTIME_ANALYSIS_VERSION = "rulefit60-brand-identity-v8";
 
 const EXTRA_SHORTENER_DOMAINS = new Set([
   "bitly.com",

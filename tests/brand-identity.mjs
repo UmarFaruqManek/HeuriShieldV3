@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { analyzeBrandIdentity, applyBrandIdentityGuard, brandIdentityQueries } from "../src/analyzer/brand/brand-identity.js";
 import { lookupBrandByDomain } from "../src/analyzer/brand/brand-domain-api.js";
+import { extractBrandFeatureSet } from "../src/analyzer/brand/brand-features.js";
 import { buildRuntimeFeatureAnalysis } from "../src/analyzer/runtime-analysis.js";
+import { buildFeatureVector } from "../src/analyzer/feature-assembler.js";
 import { readFile } from "node:fs/promises";
 
 const safe = { ready: true, verdict: "SAFE", predicted_label: "legitimate", probability_phishing: 0.2,
@@ -56,6 +58,101 @@ test("subdomain legitimate dan nama mirip tanpa formulir tidak diblokir", async 
       [{ domain: "instagram.com", name: "Instagram" }] : [] }) });
   assert.equal(lookalike.status, "possible_impersonation");
   assert.equal(applyBrandIdentityGuard(safe, lookalike).verdict, "SAFE");
+});
+
+test("nama mirip pada host dan judul perlu dukungan model untuk diblokir", async () => {
+  const evidence = await analyzeBrandIdentity({ finalUrl: "https://www.robloxc.com.es/users/1/profile",
+    title: "Profile - Roblox", domFeatures: {},
+    brandFeatures: { brand_found: true, brand_top_candidate_domain: "roblox.com",
+      brand_top_candidate_name: "Roblox", brand_top_candidate_source: "clearbit" } });
+  assert.equal(evidence.status, "possible_impersonation");
+  assert.equal(applyBrandIdentityGuard({ ...safe, raw_probability_phishing: 0.4537 }, evidence).verdict, "DANGEROUS");
+  assert.equal(applyBrandIdentityGuard({ ...safe, raw_probability_phishing: 0.20 }, evidence).verdict, "SAFE");
+});
+
+test("salah eja satu karakter pada domain dikonfirmasi lewat token judul", async () => {
+  const evidence = await analyzeBrandIdentity({ finalUrl: "https://www.robiox.com.gr/users/1/profile",
+    title: "Blox Fruits - Roblox", domFeatures: {}, tokenLookup: async query => ({
+      lookup_success: true, candidates: query === "roblox" ?
+        [{ domain: "roblox.com", name: "Roblox", source: "clearbit" }] : []
+    }), domainLookup: async () => ({ lookup_success: true, found: false }) });
+  assert.equal(evidence.candidate_domain, "roblox.com");
+  assert.equal(evidence.discovery_method, "title_correlated_typo");
+  assert.equal(applyBrandIdentityGuard({ ...safe, raw_probability_phishing: 0.47 }, evidence).verdict, "DANGEROUS");
+});
+
+test("brandfetch berkualitas tinggi dapat mengonfirmasi salah eja, TLD alternatif tidak diblokir hanya karena formulir", async () => {
+  const typo = await analyzeBrandIdentity({ finalUrl: "https://robiox.com.gr/",
+    title: "Roblox", tokenLookup: async query => ({ lookup_success: true,
+      candidates: query === "roblox" ? [{ domain: "roblox.com", name: "Roblox",
+        source: "brandfetch", qualityScore: 0.96 }] : [] }) });
+  assert.equal(applyBrandIdentityGuard({ ...safe, raw_probability_phishing: 0.47 }, typo).verdict, "DANGEROUS");
+  const alternate = await analyzeBrandIdentity({ finalUrl: "https://www.albemarle.edu/login",
+    title: "Albemarle", domFeatures: credential,
+    brandFeatures: { brand_found: true, brand_top_candidate_domain: "albemarle.com",
+      brand_top_candidate_name: "Albemarle", brand_top_candidate_source: "clearbit" } });
+  assert.equal(alternate.status, "possible_impersonation");
+  assert.equal(applyBrandIdentityGuard({ ...safe, raw_probability_phishing: 0.001 }, alternate).verdict, "SAFE");
+});
+
+test("identitas platform tidak dianggap identitas konten pengguna", async () => {
+  const surge = await analyzeBrandIdentity({ finalUrl: "https://example.surge.sh/",
+    brandFeatures: { brand_found: true, brand_top_candidate_domain: "surge.sh",
+      brand_top_candidate_name: "Surge", brand_top_candidate_source: "brandfetch" } });
+  const bio = await analyzeBrandIdentity({ finalUrl: "https://bio.site/username",
+    domainLookup: async domain => ({ lookup_success: true, found: true,
+      domain, registrable_domain: domain, brand_name: "Bio Sites" }) });
+  assert.equal(surge.status, "platform_candidate");
+  assert.equal(bio.status, "platform_candidate");
+  assert.equal(applyBrandIdentityGuard(safe, surge).verdict, "SAFE");
+});
+
+test("brand pada judul dicatat terpisah dari brand pemilik domain", async () => {
+  const evidence = await analyzeBrandIdentity({ finalUrl: "https://reshmatex.com/log.php",
+    title: "WeTransfer - Partage de document", domFeatures: credential,
+    brandFeatures: { brand_found: true, brand_top_candidate_domain: "reshmatex.com",
+      brand_top_candidate_name: "Reshma Tex", brand_top_candidate_source: "clearbit",
+      brand_lookup_candidates: [{ query: "wetransfer", domain: "wetransfer.com",
+        name: "WeTransfer", source: "clearbit" }] } });
+  assert.equal(evidence.status, "matched_candidate");
+  assert.equal(evidence.page_claim_candidate_domain, "wetransfer.com");
+  assert.equal(applyBrandIdentityGuard(safe, evidence).verdict, "SAFE");
+});
+
+test("extractor mempertahankan kandidat judul walau kandidat utama milik domain", async () => {
+  const features = await extractBrandFeatureSet({ originalUrl: "https://reshmatex.com/log.php",
+    title: "WeTransfer - Partage de document", lookup: async query => ({ query,
+      lookup_success: true, candidates: query === "reshmatex" ?
+        [{ domain: "reshmatex.com", name: "Reshma Tex", source: "clearbit" }] :
+        query === "wetransfer" ? [{ domain: "wetransfer.com", name: "WeTransfer", source: "clearbit" }] : [] }) });
+  assert.equal(features.brand_top_candidate_domain, "reshmatex.com");
+  assert.ok(features.brand_lookup_candidates.some(item => item.domain === "wetransfer.com"));
+  const contract = JSON.parse(await readFile(new URL("../src/rule/feature-contract-60.json", import.meta.url)));
+  const originalSources = { brand: { ...features } };
+  delete originalSources.brand.brand_lookup_candidates;
+  assert.deepEqual(buildFeatureVector(contract.features, { brand: features }).vector,
+    buildFeatureVector(contract.features, originalSources).vector);
+});
+
+test("klaim brand pada judul dicatat walau API domain tidak menemukan identitas pemilik", async () => {
+  const evidence = await analyzeBrandIdentity({ finalUrl: "https://example-new-domain.com/",
+    title: "TikTok", brandFeatures: { brand_found: false,
+      brand_lookup_candidates: [{ query: "tiktok", domain: "tiktok.com",
+        name: "TikTok", source: "clearbit" }] },
+    domainLookup: async () => ({ lookup_success: true, found: false }) });
+  assert.equal(evidence.status, "title_brand_mismatch");
+  assert.equal(evidence.page_claim_candidate_domain, "tiktok.com");
+  assert.equal(applyBrandIdentityGuard(safe, evidence).verdict, "SAFE");
+});
+
+test("nama brand pendek pada tenant tetap tercatat sebagai bukti", async () => {
+  const evidence = await analyzeBrandIdentity({ finalUrl: "https://ebay-phone-number.blogspot.com/",
+    title: "Ebay Phone Number", brandFeatures: { brand_found: true,
+      brand_top_candidate_domain: "ebay.com", brand_top_candidate_name: "eBay",
+      brand_top_candidate_source: "clearbit" } });
+  assert.equal(evidence.status, "possible_impersonation");
+  assert.equal(evidence.candidate_domain, "ebay.com");
+  assert.equal(applyBrandIdentityGuard(safe, evidence).verdict, "SAFE");
 });
 
 test("fallback domain dicatat sebagai kandidat, bukan verifikasi resmi", async () => {

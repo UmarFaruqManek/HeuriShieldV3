@@ -48,8 +48,21 @@ export async function extractBrandFeatureSet({
   }));
 
   const candidate = topBrandCandidate(lookupResults, originalUrl, finalUrl);
+  // Pertahankan kandidat alternatif yang cocok persis dengan token pencarian.
+  // Nama yang tampak di judul dapat berbeda dari identitas domain pemilik situs.
+  // Bidang audit ini tidak masuk kontrak 60 fitur model.
+  const identityCandidates = lookupResults.flatMap(result => {
+    const query = normalizeToken(result?.query);
+    if (!result?.lookup_success || !query) return [];
+    return (result.candidates || []).filter(item =>
+      normalizeToken(domainLabel(item.domain)) === query).slice(0, 2)
+      .map(item => ({ query, domain: registrableBrandDomain(item.domain),
+        name: item.name || null, source: item.source || null,
+        quality_score: numberOrNull(item.qualityScore) }));
+  }).filter(item => item.domain).slice(0, 12);
   return {
     ...candidate,
+    brand_lookup_candidates: identityCandidates,
     brand_lookup_success: lookupResults.some((item) => item.lookup_success),
     brand_lookup_failed_queries: lookupResults.filter((item) => !item.lookup_success).length
   };

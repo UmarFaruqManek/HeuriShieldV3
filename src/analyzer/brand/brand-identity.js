@@ -1,5 +1,10 @@
 import { parse } from "../../shared/tldts.js";
 import { lookupBrandByDomain } from "./brand-domain-api.js";
+import { titleBrandQueries } from "./brand-features.js";
+import { PUBLIC_HOSTING_PLATFORM_DOMAINS } from "../../utils/constants.js";
+
+// Layanan ini dapat memuat halaman milik pengguna pada path atau subdomain.
+const HOSTED_PAGE_DOMAINS = new Set(["bio.site", "easy-feedback.de", "tw1.ru"]);
 
 const clean = value => String(value || "").toLowerCase().normalize("NFKD")
   .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
@@ -11,14 +16,32 @@ function candidateDomain(value) {
 
 function siteParts(url) {
   try {
-    const hostname = new URL(url).hostname.toLowerCase();
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.toLowerCase();
     const privateParts = parse(hostname, { allowPrivateDomains: true });
     const publicParts = parse(hostname, { allowPrivateDomains: false });
+    const publicDomain = publicParts.domain || null;
+    const platformHosted = Boolean(publicDomain && (
+      PUBLIC_HOSTING_PLATFORM_DOMAINS.has(publicDomain) && publicParts.subdomain ||
+      HOSTED_PAGE_DOMAINS.has(publicDomain) &&
+        (publicParts.subdomain || parsedUrl.pathname !== "/")));
     return { hostname, siteDomain: privateParts.domain || null,
       siteLabel: privateParts.domainWithoutSuffix || "",
       tenantSuffix: privateParts.isPrivate ? privateParts.publicSuffix : null,
-      publicDomain: publicParts.domain || null };
+      publicDomain, platformHosted };
   } catch { return null; }
+}
+
+function oneCharacterApart(left, right) {
+  if (!left || !right || left === right || Math.abs(left.length - right.length) > 1) return false;
+  if (left.length === right.length) {
+    return [...left].filter((char, index) => char !== right[index]).length === 1;
+  }
+  const [shorter, longer] = left.length < right.length ? [left, right] : [right, left];
+  for (let index = 0; index < longer.length; index++) {
+    if (shorter === longer.slice(0, index) + longer.slice(index + 1)) return true;
+  }
+  return false;
 }
 
 function exactCandidate(item, query) {
@@ -52,6 +75,7 @@ export async function analyzeBrandIdentity({ finalUrl, title = "", domFeatures =
   if (!site?.siteDomain) return { status: "unknown", reason: "invalid_url" };
   const base = { status: "unknown", active_domain: site.siteDomain,
     hostname: site.hostname, platform_domain: site.tenantSuffix || null,
+    hosted_page: site.platformHosted,
     candidate_domain: null, candidate_name: null, discovery_method: null,
     hostname_claim: false, title_claim: false, credential_form_observed: false,
     domain_fallback_status: "not_queried" };
@@ -66,7 +90,7 @@ export async function analyzeBrandIdentity({ finalUrl, title = "", domFeatures =
   let candidate = null;
   let method = null;
   if (fromFeatures && (fromFeatures === site.siteDomain ||
-      (featureLabel.length >= 5 && siteText.includes(featureLabel)))) {
+      (featureLabel.length >= 4 && siteText.includes(featureLabel)))) {
     candidate = { domain: fromFeatures, name: brandFeatures.brand_top_candidate_name,
       source: brandFeatures.brand_top_candidate_source, quality_score: brandFeatures.brand_quality_score };
     method = "existing_token_search";
@@ -91,6 +115,21 @@ export async function analyzeBrandIdentity({ finalUrl, title = "", domFeatures =
         candidate = found; method = "domain_fragment"; break;
       }
     }
+    // Judul yang berbeda satu karakter dari label domain dapat menunjukkan
+    // salah eja terarah. Wajib ada kandidat API dengan label domain tepat.
+    if (!candidate) {
+      const nearTitleTokens = titleBrandQueries(title).map(clean)
+        .filter(token => token.length >= 5 && oneCharacterApart(clean(site.siteLabel), token))
+        .slice(0, 2);
+      for (const query of nearTitleTokens) {
+        let response;
+        try { response = await tokenLookup(query); } catch { continue; }
+        if (response?.lookup_success !== true) continue;
+        const found = (response.candidates || []).map(item => exactCandidate(item, query))
+          .find(item => item && item.domain !== site.siteDomain);
+        if (found) { candidate = found; method = "title_correlated_typo"; break; }
+      }
+    }
   }
 
   if (!candidate && typeof domainLookup === "function") {
@@ -105,30 +144,61 @@ export async function analyzeBrandIdentity({ finalUrl, title = "", domFeatures =
       method = "domain_fallback";
     }
   }
-  if (!candidate) return base;
+  const titleTokens = new Set(titleBrandQueries(title).map(clean));
+  const pageClaim = (brandFeatures.brand_lookup_candidates || []).find(item =>
+    titleTokens.has(clean(item.query)) && item.domain !== site.siteDomain &&
+    clean(parse(item.domain, { allowPrivateDomains: true }).domainWithoutSuffix) === clean(item.query));
+  const pageClaimFields = {
+    page_claim_candidate_domain: pageClaim?.domain || null,
+    page_claim_candidate_name: pageClaim?.name || null,
+    page_claim_candidate_source: pageClaim?.source || null
+  };
+  if (!candidate) return { ...base, status: pageClaim ? "title_brand_mismatch" : "unknown", ...pageClaimFields };
 
   const brandLabel = clean(parse(candidate.domain, { allowPrivateDomains: true }).domainWithoutSuffix);
-  const hostnameClaim = brandLabel.length >= 5 && siteText.includes(brandLabel);
-  const titleClaim = brandLabel.length >= 5 && clean(title).includes(brandLabel);
+  const hostnameClaim = brandLabel.length >= 4 && siteText.includes(brandLabel);
+  const titleClaim = brandLabel.length >= 4 && clean(title).includes(brandLabel);
   return { ...base,
-    status: candidate.domain === site.siteDomain ? "matched_candidate" : hostnameClaim ? "possible_impersonation" : "unknown",
+    status: candidate.domain === site.siteDomain
+      ? site.platformHosted ? "platform_candidate" : "matched_candidate"
+      : hostnameClaim || method === "title_correlated_typo" ? "possible_impersonation" : "unknown",
     candidate_domain: candidate.domain, candidate_name: candidate.name,
     candidate_source: candidate.source, candidate_quality_score: candidate.quality_score ?? null,
     candidate_verification_status: candidate.verification_status || null,
     candidate_brand_verified: candidate.brand_verified === true,
     discovery_method: method, hostname_claim: hostnameClaim, title_claim: titleClaim,
-    credential_form_observed: credential };
+    credential_form_observed: credential, ...pageClaimFields };
 }
 
 export function applyBrandIdentityGuard(model, evidence) {
   if (!model?.ready || model.verdict !== "SAFE" ||
       evidence?.status !== "possible_impersonation" ||
-      !evidence.hostname_claim || !evidence.credential_form_observed || !evidence.title_claim) return model;
-  // Tiga sinyal harus ada sekaligus. Nama mirip saja tidak mengubah putusan.
-  const guard = { id: "BRAND_IDENTITY_MISMATCH_GUARD", feature: "brand_identity_evidence",
+      !evidence.title_claim ||
+      !(evidence.hostname_claim || evidence.discovery_method === "title_correlated_typo")) return model;
+  const modelRisk = Number(model.raw_probability_phishing ?? model.probability_phishing);
+  const activeLabel = clean(parse(evidence.active_domain, { allowPrivateDomains: true }).domainWithoutSuffix);
+  const candidateLabel = clean(parse(evidence.candidate_domain, { allowPrivateDomains: true }).domainWithoutSuffix);
+  // Nama yang sama dengan TLD berbeda dapat merupakan domain resmi lain.
+  // Formulir akun saja tidak cukup untuk menyebutnya peniruan.
+  const credentialClaim = evidence.credential_form_observed && evidence.hostname_claim &&
+    activeLabel !== candidateLabel;
+  // Tanpa formulir akun, butuh kandidat dari Clearbit, nama yang sangat dekat
+  // pada host, dan risiko model yang sudah cukup tinggi. Ini bukan jaminan
+  // kepemilikan brand maupun perubahan pada koefisien 150 aturan RuleFit.
+  const closeName = oneCharacterApart(activeLabel, candidateLabel) || activeLabel === candidateLabel;
+  const credibleCandidate = evidence.candidate_source === "clearbit" ||
+    evidence.candidate_source === "brandfetch" &&
+    Number(evidence.candidate_quality_score) >= 0.9;
+  const modelSupportedClaim = credibleCandidate && closeName &&
+    Number.isFinite(modelRisk) && modelRisk >= 0.40;
+  if (!credentialClaim && !modelSupportedClaim) return model;
+  const guard = { id: credentialClaim ? "BRAND_IDENTITY_MISMATCH_GUARD" : "BRAND_LOOKALIKE_MODEL_GUARD",
+    feature: "brand_identity_evidence",
     severity: "high", brand: evidence.candidate_name,
     active_domain: evidence.active_domain, reference_domain: evidence.candidate_domain,
-    reason: `Alamat ${evidence.active_domain} menyebut ${evidence.candidate_name || "brand tersebut"} dan meminta data akun, sedangkan kandidat domain brand yang ditemukan adalah ${evidence.candidate_domain}.` };
+    reason: credentialClaim
+      ? `Alamat ${evidence.active_domain} menyebut ${evidence.candidate_name || "brand tersebut"} dan meminta data akun, sedangkan kandidat domain brand yang ditemukan adalah ${evidence.candidate_domain}.`
+      : `Nama ${evidence.active_domain} sangat mirip dengan ${evidence.candidate_domain}, dan judul halaman juga menyebut ${evidence.candidate_name || "brand tersebut"}. Risiko gabungan model mendukung peringatan ini.` };
   return { ...model, original_predicted_label: model.predicted_label,
     original_verdict: model.verdict, predicted_label: "phishing", verdict: "DANGEROUS",
     probability_phishing: Math.max(Number(model.probability_phishing) || 0, 0.86),

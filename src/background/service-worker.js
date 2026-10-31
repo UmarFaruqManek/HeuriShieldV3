@@ -26,7 +26,7 @@ import { STORAGE_KEYS } from "../utils/constants.js";
 import { buildAnalysisExplanation } from "../shared/analysis-explanation.js";
 import { createDatasetCollector } from "../storage/dataset-collector.js";
 
-const ANALYSIS_VERSION = "v5-rulefit60-brand-identity-v9";
+const ANALYSIS_VERSION = "v5-rulefit60-brand-identity-v10";
 const METADATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 let runtimeResourcesPromise = null;
